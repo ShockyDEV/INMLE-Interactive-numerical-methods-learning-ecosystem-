@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="MNO Interactivo — aprende métodos numéricos jugando: visualizaciones animadas, predicción de pasos, retos y comparación de convergencia.">
+<meta name="theme-color" content="#0b0e17">
+<title>MNO Interactivo — Métodos Numéricos</title>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎯</text></svg>">
+
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+
+<script>
+/* KaTeX en cascada: vendor local (offline) → CDN → si nada, mathtext.js usa
+   su propio fallback HTML y todo sigue siendo legible. */
+(function () {
+  var d = document;
+  function css(href, onerr) {
+    var l = d.createElement('link');
+    l.rel = 'stylesheet'; l.href = href;
+    if (onerr) l.onerror = onerr;
+    d.head.appendChild(l);
+  }
+  function js(src, onerr) {
+    var s = d.createElement('script');
+    s.src = src; s.defer = true;
+    if (onerr) s.onerror = onerr;
+    d.head.appendChild(s);
+  }
+  var CDN = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/';
+  css('vendor/katex/katex.min.css', function () { css(CDN + 'katex.min.css'); });
+  js('vendor/katex/katex.min.js', function () { js(CDN + 'katex.min.js'); });
+})();
+</script>
+</head>
+<body>
+
+<div id="app" aria-live="polite"></div>
+<noscript><div class="boot-error"><h1>MNO Interactivo</h1><p>Esta aplicación necesita JavaScript.</p></div></noscript>
+
+<!-- Orden de carga: core → plot → ui → state → content → app. -->
+<script src="js/core/num.js"></script>
+<script src="js/core/expr.js"></script>
+<script src="js/core/trace.js"></script>
+<script src="js/core/engines/rootfinding.js"></script>
+<script src="js/core/engines/linear.js"></script>
+<script src="js/core/engines/interp.js"></script>
+
+<script src="js/plot/plot2d.js"></script>
+<script src="js/plot/anim.js"></script>
+<script src="js/plot/errorchart.js"></script>
+<script src="js/plot/matrixview.js"></script>
+
+<script src="js/registry.js"></script>
+
+<script src="js/state/store.js"></script>
+<script src="js/state/achievements.js"></script>
+<script src="js/state/exporter.js"></script>
+
+<script src="js/ui/mathtext.js"></script>
+<script src="js/ui/widgets.js"></script>
+<script src="js/ui/player.js"></script>
+<script src="js/ui/theory.js"></script>
+<script src="js/ui/methodscreen.js"></script>
+<script src="js/ui/home.js"></script>
+
+<script src="js/game/quiz.js"></script>
+<script src="js/game/challenge.js"></script>
+<script src="js/game/race.js"></script>
+<script src="js/game/dashboard.js"></script>
+
+<script src="js/content/theory/teoria.js"></script>
+<script src="js/content/quizzes/preguntas.js"></script>
+<script src="js/content/challenges/retos.js"></script>
+
+<!-- Packs de contenido por método (teoría + Practicar + Retos). -->
+<script src="js/content/packs/biseccion.js"></script>
+<script src="js/content/packs/cuerda.js"></script>
+<script src="js/content/packs/puntofijo.js"></script>
+<script src="js/content/packs/newton.js"></script>
+<script src="js/content/packs/secante.js"></script>
+<script src="js/content/packs/gauss.js"></script>
+<script src="js/content/packs/jacobi.js"></script>
+<script src="js/content/packs/seidel.js"></script>
+<script src="js/content/packs/lagrange.js"></script>
+<script src="js/content/packs/newtoni.js"></script>
+<script src="js/content/packs/hermite.js"></script>
+
+<script src="js/router.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>MNO Helper</title>
+<style>
+:root {
+  --bg: #0f1117; --card: #1a1d27; --accent: #6c5ce7; --accent2: #00cec9;
+  --text: #dfe6e9; --muted: #636e72; --border: #2d3436;
+  --red: #d63031; --green: #00b894; --orange: #fdcb6e; --blue: #74b9ff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Courier New', monospace; background:var(--bg); color:var(--text); font-size:14px; min-height:100vh; padding-bottom:80px; }
+.header { background:linear-gradient(135deg,var(--accent),#2d1b69); padding:14px; text-align:center; position:sticky; top:0; z-index:100; }
+.header h1 { font-size:18px; letter-spacing:2px; }
+.header p { font-size:11px; color:var(--orange); margin-top:3px; }
+.tabs { display:flex; overflow-x:auto; background:var(--card); border-bottom:2px solid var(--border); position:sticky; top:52px; z-index:99; -webkit-overflow-scrolling:touch; }
+.tabs button { flex-shrink:0; background:none; border:none; color:var(--muted); padding:10px 12px; font-size:11px; font-family:inherit; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; }
+.tabs button.active { color:var(--accent2); border-bottom-color:var(--accent2); }
+.panel { display:none; padding:12px; }
+.panel.active { display:block; }
+.field { margin-bottom:10px; }
+.field label { display:block; font-size:11px; color:var(--accent2); margin-bottom:3px; text-transform:uppercase; letter-spacing:1px; }
+.field input, .field textarea { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:10px; border-radius:6px; font-family:inherit; font-size:14px; }
+.field textarea { min-height:70px; resize:vertical; }
+.field input:focus, .field textarea:focus { outline:none; border-color:var(--accent); }
+.hint { font-size:10px; color:var(--muted); margin-top:2px; font-style:italic; display:block; }
+.btn { display:block; width:100%; padding:12px; background:var(--accent); color:white; border:none; border-radius:8px; font-family:inherit; font-size:14px; font-weight:bold; cursor:pointer; margin-top:8px; letter-spacing:1px; }
+.btn:active { transform:scale(0.98); opacity:0.9; }
+.result { margin-top:12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px; overflow-x:auto; -webkit-overflow-scrolling:touch; font-size:13px; line-height:1.7; }
+.result h3 { color:var(--accent2); font-size:14px; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:6px; }
+.result h4 { color:var(--blue); font-size:13px; margin:12px 0 6px; }
+.step { padding:10px; border-left:3px solid var(--accent); margin-bottom:10px; background:rgba(108,92,231,0.06); border-radius:0 6px 6px 0; }
+.step-title { color:var(--orange); font-size:12px; font-weight:bold; margin-bottom:4px; display:block; }
+.error-msg { color:var(--red); font-weight:bold; }
+.hl { color:var(--orange); font-weight:bold; }
+.hl2 { color:var(--accent2); font-weight:bold; }
+.hl3 { color:var(--green); font-weight:bold; }
+.warn-msg { color:var(--orange); }
+.row { display:flex; gap:8px; }
+.row .field { flex:1; }
+.mat { font-family:'Courier New',monospace; white-space:pre; font-size:12px; line-height:1.5; background:rgba(0,0,0,0.3); padding:8px; border-radius:4px; margin:6px 0; overflow-x:auto; }
+.formula { background:rgba(108,92,231,0.12); border:1px solid var(--accent); border-radius:6px; padding:8px 10px; margin:8px 0; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="header"><h1>MNO HELPER</h1><p>Métodos Numéricos — Paso a Paso</p></div>
+<div class="tabs">
+  <button onclick="T('bis')" id="t-bis">Bisección</button>
+  <button onclick="T('cue')" id="t-cue">Cuerda</button>
+  <button onclick="T('pf')" id="t-pf">Pto Fijo</button>
+  <button onclick="T('nw')" id="t-nw">Newton</button>
+  <button onclick="T('sec')" id="t-sec">Secante</button>
+  <button onclick="T('ga')" id="t-ga">Gauss</button>
+  <button onclick="T('jc')" id="t-jc">Jacobi</button>
+  <button onclick="T('gs')" id="t-gs">G-Seidel</button>
+  <button onclick="T('lg')" id="t-lg">Lagrange</button>
+  <button onclick="T('ni')" id="t-ni">Newton-I</button>
+  <button onclick="T('hm')" id="t-hm">Hermite</button>
+  <button onclick="T('ca')" id="t-ca">Calc</button>
+</div>
+
+<div class="panel" id="p-bis">
+  <div class="field"><label>f(x)</label><input id="bis-f" value="x^2 - 2"><span class="hint">sin(x) cos(x) exp(x) log(x) sqrt(x) abs(x) pi x^n</span></div>
+  <div class="row"><div class="field"><label>a</label><input id="bis-a" value="0"></div><div class="field"><label>b</label><input id="bis-b" value="2"></div><div class="field"><label>Tol</label><input id="bis-t" value="0.01"></div></div>
+  <div class="field"><label>Máx iter</label><input id="bis-m" value="50"></div>
+  <button class="btn" onclick="doBis()">▶ BISECCIÓN</button><div id="bis-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-cue">
+  <div class="field"><label>f(x)</label><input id="cue-f" value="x^2 - 4"></div>
+  <div class="row"><div class="field"><label>a</label><input id="cue-a" value="0"></div><div class="field"><label>b</label><input id="cue-b" value="3"></div><div class="field"><label>Tol</label><input id="cue-t" value="0.01"></div></div>
+  <button class="btn" onclick="doCue()">▶ CUERDA</button><div id="cue-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-pf">
+  <div class="field"><label>g(x) auxiliar</label><input id="pf-g" value="cos(x)"><span class="hint">g(x) tal que g(α)=α</span></div>
+  <div class="row"><div class="field"><label>x₀</label><input id="pf-x" value="0"></div><div class="field"><label>Tol</label><input id="pf-t" value="0.0001"></div><div class="field"><label>Máx</label><input id="pf-m" value="50"></div></div>
+  <button class="btn" onclick="doPf()">▶ PUNTO FIJO</button><div id="pf-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-nw">
+  <div class="field"><label>f(x)</label><input id="nw-f" value="exp(x) + x"></div>
+  <div class="field"><label>f'(x)</label><input id="nw-d" value="exp(x) + 1"></div>
+  <div class="row"><div class="field"><label>x₀</label><input id="nw-x" value="-1"></div><div class="field"><label>Tol</label><input id="nw-t" value="0.0001"></div><div class="field"><label>Máx</label><input id="nw-m" value="50"></div></div>
+  <button class="btn" onclick="doNw()">▶ NEWTON</button><div id="nw-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-sec">
+  <div class="field"><label>f(x)</label><input id="sec-f" value="exp(x) + x"></div>
+  <div class="row"><div class="field"><label>x₀</label><input id="sec-0" value="-1"></div><div class="field"><label>x₁</label><input id="sec-1" value="-0.9"></div><div class="field"><label>Tol</label><input id="sec-t" value="0.0001"></div></div>
+  <button class="btn" onclick="doSec()">▶ SECANTE</button><div id="sec-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-ga">
+  <div class="field"><label>Matriz A (filas con Enter)</label><textarea id="ga-A">-2 -2 2
+2 -4 3
+-1 2 -3</textarea></div>
+  <div class="field"><label>Vector B</label><input id="ga-B" value="10 2 1"></div>
+  <button class="btn" onclick="doGa()">▶ GAUSS</button><div id="ga-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-jc">
+  <div class="field"><label>Matriz A</label><textarea id="jc-A">-4 1 -1
+-1 -5 1
+2 -2 5</textarea></div>
+  <div class="field"><label>Vector B</label><input id="jc-B" value="2 -5 10"></div>
+  <div class="field"><label>X⁽⁰⁾</label><input id="jc-x" value="0 0 0"></div>
+  <div class="row"><div class="field"><label>Tol</label><input id="jc-t" value="0.001"></div><div class="field"><label>Máx</label><input id="jc-m" value="30"></div></div>
+  <button class="btn" onclick="doJc()">▶ JACOBI</button><div id="jc-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-gs">
+  <div class="field"><label>Matriz A</label><textarea id="gs-A">-4 1 -1
+-1 -5 1
+2 -2 5</textarea></div>
+  <div class="field"><label>Vector B</label><input id="gs-B" value="2 -5 10"></div>
+  <div class="field"><label>X⁽⁰⁾</label><input id="gs-x" value="0 0 0"></div>
+  <div class="row"><div class="field"><label>Tol</label><input id="gs-t" value="0.001"></div><div class="field"><label>Máx</label><input id="gs-m" value="30"></div></div>
+  <button class="btn" onclick="doGs()">▶ GAUSS-SEIDEL</button><div id="gs-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-lg">
+  <div class="field"><label>Nodos x</label><input id="lg-n" value="-1 1 2 3"></div>
+  <div class="field"><label>f(x)</label><input id="lg-d" value="-1 1 32 243"></div>
+  <div class="field"><label>Evaluar x*</label><input id="lg-e" value="0"></div>
+  <button class="btn" onclick="doLg()">▶ LAGRANGE</button><div id="lg-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-ni">
+  <div class="field"><label>Nodos x</label><input id="ni-n" value="-1 1 2 3"></div>
+  <div class="field"><label>f(x)</label><input id="ni-d" value="-1 1 32 243"></div>
+  <div class="field"><label>Evaluar x*</label><input id="ni-e" value="0"></div>
+  <button class="btn" onclick="doNi()">▶ NEWTON INTERP.</button><div id="ni-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-hm">
+  <div class="field"><label>Nodos expandidos</label><input id="hm-n" value="1 1 1 1 4"><span class="hint">Repite nodo según datos: f,f',f'',... → 1 1 1</span></div>
+  <div class="field"><label>Datos (f, f'/1!, f''/2!,...)</label><input id="hm-d" value="0 1 -0.5 0.3333 1.3863"><span class="hint">Nodos repetidos: f(x₀), f'(x₀)/1!, f''(x₀)/2!,...</span></div>
+  <div class="field"><label>Evaluar x*</label><input id="hm-e" value="2"></div>
+  <button class="btn" onclick="doHm()">▶ HERMITE</button><div id="hm-o" class="result" style="display:none"></div>
+</div>
+<div class="panel" id="p-ca">
+  <div class="field"><label>f(x)</label><input id="ca-f" value="120*abs(x)"></div>
+  <div class="field"><label>Evaluar en x</label><input id="ca-x" value="-1 0 1 2 3"></div>
+  <button class="btn" onclick="doEv()">▶ EVALUAR</button><div id="ca-o" class="result" style="display:none"></div>
+  <div style="margin-top:14px;padding:10px;border:1px solid var(--border);border-radius:8px;">
+    <div class="field"><label>Calculadora</label><input id="ca-c" placeholder="3/7, sqrt(2), sin(pi/4)"></div>
+    <button class="btn" onclick="doCalc()" style="background:var(--accent2)">= CALCULAR</button>
+    <div id="ca-r" style="margin-top:8px;font-size:18px;color:var(--orange);"></div>
+  </div>
+</div>
+
+<script>
+const E=(e,v={})=>{try{let s=e.toString().replace(/\^/g,'**').replace(/\bpi\b/g,String(Math.PI)).replace(/\bsin\(/g,'Math.sin(').replace(/\bcos\(/g,'Math.cos(').replace(/\btan\(/g,'Math.tan(').replace(/\bexp\(/g,'Math.exp(').replace(/\blog\(/g,'Math.log(').replace(/\bln\(/g,'Math.log(').replace(/\bsqrt\(/g,'Math.sqrt(').replace(/\babs\(/g,'Math.abs(');for(let k in v)s=s.replace(new RegExp('\\b'+k+'\\b','g'),'('+v[k]+')');return Function('"use strict";return('+s+')')();}catch(x){return NaN;}};
+const R=(v,d=8)=>(typeof v!=='number'||!isFinite(v))?'NaN':parseFloat(v.toFixed(d));
+const $=id=>document.getElementById(id);
+const P=t=>t.trim().split(/[\s,;]+/).map(Number);
+const T=n=>{document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));$('p-'+n).classList.add('active');$('t-'+n).classList.add('active');};
+T('bis');
+
+// BISECCIÓN
+function doBis(){const O=$('bis-o');O.style.display='block';const f=$('bis-f').value;let a=+$('bis-a').value,b=+$('bis-b').value;const tol=+$('bis-t').value,mx=+$('bis-m').value;let fa=E(f,{x:a}),fb=E(f,{x:b});let h='<h3>Método de Bisección</h3>';h+=`<div class="step"><span class="step-title">Verificación inicial</span>f(${a}) = <span class="hl">${R(fa,6)}</span><br>f(${b}) = <span class="hl">${R(fb,6)}</span><br>`;if(fa*fb>0){h+=`<span class="error-msg">f(a)·f(b)>0 → No hay cambio de signo</span></div>`;O.innerHTML=h;return;}h+=`f(a)·f(b) = ${R(fa*fb,4)} < 0 → <span class="hl3">Cambio de signo ✓</span></div>`;for(let i=1;i<=mx;i++){const c=(a+b)/2,fc=E(f,{x:c});fa=E(f,{x:a});fb=E(f,{x:b});h+=`<div class="step"><span class="step-title">Iteración ${i}</span>`;h+=`[a, b] = [${R(a,6)}, ${R(b,6)}], long = ${R(b-a,6)}<br>`;h+=`c = (${R(a,6)} + ${R(b,6)}) / 2 = <span class="hl">${R(c,6)}</span><br>`;h+=`f(c) = f(${R(c,6)}) = <span class="hl">${R(fc,6)}</span><br>`;if(Math.abs(fc)<1e-15){h+=`<span class="hl3">f(c)=0 → Raíz exacta: ${R(c,10)}</span></div>`;break;}if((b-a)/2<tol){h+=`long/2 = ${R((b-a)/2,8)} < ${tol} → <span class="hl3">CONVERGE. Raíz ≈ ${R(c,10)}</span></div>`;break;}if(fa*fc<0){h+=`f(a)·f(c)<0 → nuevo: <span class="hl2">[${R(a,6)}, ${R(c,6)}]</span></div>`;b=c;}else{h+=`f(c)·f(b)<0 → nuevo: <span class="hl2">[${R(c,6)}, ${R(b,6)}]</span></div>`;a=c;}}O.innerHTML=h;}
+
+// CUERDA
+function doCue(){const O=$('cue-o');O.style.display='block';const f=$('cue-f').value;let a=+$('cue-a').value,b=+$('cue-b').value;const tol=+$('cue-t').value;let fa=E(f,{x:a}),fb=E(f,{x:b});let h='<h3>Método de la Cuerda</h3>';h+=`<div class="step"><span class="step-title">Verificación</span>f(${a})=${R(fa,6)}, f(${b})=${R(fb,6)}<br>`;if(fa*fb>0){h+=`<span class="error-msg">No hay cambio de signo</span></div>`;O.innerHTML=h;return;}h+=`f(a)·f(b)<0 ✓</div>`;for(let i=1;i<=50;i++){fa=E(f,{x:a});fb=E(f,{x:b});const c=a-fa*(b-a)/(fb-fa),fc=E(f,{x:c});h+=`<div class="step"><span class="step-title">Iteración ${i}</span>`;h+=`[a,b] = [${R(a,6)}, ${R(b,6)}]<br>`;h+=`Recta por (${R(a,4)}, ${R(fa,4)}) y (${R(b,4)}, ${R(fb,4)})<br>`;h+=`c = ${R(a,6)} − ${R(fa,6)}·(${R(b,6)}−${R(a,6)}) / (${R(fb,6)}−${R(fa,6)})<br>`;h+=`c = ${R(a,6)} − ${R(fa*(b-a),6)} / ${R(fb-fa,6)} = <span class="hl">${R(c,6)}</span><br>`;h+=`f(c) = <span class="hl">${R(fc,6)}</span><br>`;if(Math.abs(fc)<tol){h+=`|f(c)| = ${R(Math.abs(fc),8)} < ${tol} → <span class="hl3">CONVERGE. Raíz ≈ ${R(c,10)}</span></div>`;break;}if(fa*fc<0){h+=`Nuevo: [${R(a,6)}, ${R(c,6)}]</div>`;b=c;}else{h+=`Nuevo: [${R(c,6)}, ${R(b,6)}]</div>`;a=c;}}O.innerHTML=h;}
+
+// PUNTO FIJO
+function doPf(){const O=$('pf-o');O.style.display='block';const g=$('pf-g').value;let x=+$('pf-x').value;const tol=+$('pf-t').value,mx=+$('pf-m').value;let h='<h3>Iteración de Punto Fijo</h3>';h+=`<div class="formula">g(x) = ${g}<br>x<sub>n+1</sub> = g(x<sub>n</sub>), parada: |x<sub>n+1</sub>−x<sub>n</sub>| < ${tol}</div>`;h+=`<div class="step"><span class="step-title">x⁽⁰⁾ = ${x}</span></div>`;let pv=null;for(let i=0;i<mx;i++){const xn=E(g,{x}),d=Math.abs(xn-x),rat=pv?R(d/pv,6):'—';h+=`<div class="step"><span class="step-title">Iteración ${i+1}</span>`;h+=`x<sub>${i+1}</sub> = g(${R(x,8)}) = <span class="hl">${R(xn,8)}</span><br>`;h+=`|x<sub>${i+1}</sub> − x<sub>${i}</sub>| = |${R(xn,8)} − ${R(x,8)}| = ${R(d,8)}<br>`;h+=`cociente = ${rat}`;if(d<tol){h+=`<br><span class="hl3">CONVERGE → β ≈ ${R(xn,10)}</span><br>|g'(β)| ≈ ${rat}</div>`;break;}h+=`</div>`;if(!isFinite(xn)){h+=`<span class="error-msg">DIVERGE</span>`;break;}pv=d;x=xn;}O.innerHTML=h;}
+
+// NEWTON
+function doNw(){const O=$('nw-o');O.style.display='block';const f=$('nw-f').value,df=$('nw-d').value;let x=+$('nw-x').value;const tol=+$('nw-t').value,mx=+$('nw-m').value;let h='<h3>Newton-Raphson</h3>';h+=`<div class="formula">f(x) = ${f}, f'(x) = ${df}<br>G(x) = x − f(x)/f'(x)</div>`;for(let i=0;i<mx;i++){const fx=E(f,{x}),dfx=E(df,{x});if(Math.abs(dfx)<1e-15){h+=`<span class="error-msg">f'≈0</span>`;break;}const xn=x-fx/dfx,d=Math.abs(xn-x);h+=`<div class="step"><span class="step-title">Iteración ${i+1}</span>`;h+=`x<sub>${i}</sub> = ${R(x,8)}<br>`;h+=`f(${R(x,6)}) = ${R(fx,8)}<br>`;h+=`f'(${R(x,6)}) = ${R(dfx,8)}<br>`;h+=`x<sub>${i+1}</sub> = ${R(x,8)} − (${R(fx,8)}) / (${R(dfx,8)})<br>`;h+=`x<sub>${i+1}</sub> = ${R(x,8)} − ${R(fx/dfx,8)} = <span class="hl">${R(xn,8)}</span><br>`;h+=`|diff| = ${R(d,10)}`;if(d<tol){h+=`<br><span class="hl3">CONVERGE → raíz ≈ ${R(xn,10)}</span><br>f(raíz) = ${R(E(f,{x:xn}),10)}</div>`;break;}h+=`</div>`;x=xn;}O.innerHTML=h;}
+
+// SECANTE
+function doSec(){const O=$('sec-o');O.style.display='block';const f=$('sec-f').value;let x0=+$('sec-0').value,x1=+$('sec-1').value;const tol=+$('sec-t').value;let h='<h3>Método de la Secante</h3>';h+=`<div class="formula">x<sub>n+1</sub> = x<sub>n</sub> − f(x<sub>n</sub>)·(x<sub>n</sub>−x<sub>n-1</sub>) / (f(x<sub>n</sub>)−f(x<sub>n-1</sub>))</div>`;for(let i=0;i<50;i++){const f0=E(f,{x:x0}),f1=E(f,{x:x1});if(Math.abs(f1-f0)<1e-15){h+=`<span class="error-msg">div by 0</span>`;break;}const x2=x1-f1*(x1-x0)/(f1-f0),d=Math.abs(x2-x1);h+=`<div class="step"><span class="step-title">Iteración ${i+1}</span>`;h+=`x<sub>n-1</sub>=${R(x0,8)}, x<sub>n</sub>=${R(x1,8)}<br>`;h+=`f(${R(x0,6)})=${R(f0,8)}, f(${R(x1,6)})=${R(f1,8)}<br>`;h+=`x<sub>n+1</sub> = ${R(x1,8)} − ${R(f1,8)}·(${R(x1-x0,8)}) / (${R(f1-f0,8)})<br>`;h+=`x<sub>n+1</sub> = <span class="hl">${R(x2,8)}</span>, |diff|=${R(d,10)}`;if(d<tol){h+=`<br><span class="hl3">CONVERGE → raíz ≈ ${R(x2,10)}</span></div>`;break;}h+=`</div>`;x0=x1;x1=x2;}O.innerHTML=h;}
+
+// GAUSS
+function doGa(){const O=$('ga-o');O.style.display='block';try{const A=$('ga-A').value.trim().split('\n').map(r=>r.trim().split(/[\s,;]+/).map(Number)),B=P($('ga-B').value),n=A.length;let M=A.map((r,i)=>[...r,B[i]]);let h='<h3>Eliminación Gaussiana</h3>';const mS=M=>{let s='';M.forEach(r=>{s+='  '+r.slice(0,n).map(v=>String(R(v,6)).padStart(9)).join(' ')+' │'+String(R(r[n],6)).padStart(9)+'\n';});return s;};const rS=(r,nc)=>'['+r.slice(0,nc).map(v=>R(v,6)).join(', ')+' | '+R(r[nc],6)+']';h+=`<div class="step"><span class="step-title">Matriz ampliada inicial A⁽⁰⁾</span><div class="mat">${mS(M)}</div></div><h4>SUSTITUCIÓN PROGRESIVA</h4>`;let L=Array.from({length:n},(_,i)=>Array.from({length:n},(_,j)=>i===j?1:0));for(let k=0;k<n-1;k++){if(Math.abs(M[k][k])<1e-15){h+=`<span class="error-msg">Pivote nulo (${k+1},${k+1})</span>`;O.innerHTML=h;return;}h+=`<div class="step"><span class="step-title">Paso ${k+1}: Eliminamos x<sub>${k+1}</sub></span>Pivote: a<sub>${k+1},${k+1}</sub>⁽${k}⁾ = <span class="hl">${R(M[k][k],6)}</span><br><br><b>Multiplicadores:</b><br>`;let ms=[];for(let i=k+1;i<n;i++){const m=M[i][k]/M[k][k];ms.push({i,m});L[i][k]=m;h+=`• m<sub>${i+1},${k+1}</sub> = ${R(M[i][k],6)} / (${R(M[k][k],6)}) = <span class="hl">${R(m,6)}</span><br>`;}const pv=[...M[k]];h+=`<br><b>Operaciones elementales:</b><br>`;for(const{i,m}of ms){const old=[...M[i]];h+=`<br>• <b>F<sub>${i+1}</sub> → F<sub>${i+1}</sub> − (${R(m,6)})·F<sub>${k+1}</sub></b><br>`;h+=`&nbsp;&nbsp;${rS(old,n)} − (${R(m,6)})·${rS(pv,n)}<br>`;for(let j=k;j<=n;j++)M[i][j]-=m*pv[j];h+=`&nbsp;&nbsp;= <span class="hl">${rS(M[i],n)}</span><br>`;}h+=`</div><div class="step"><span class="step-title">A⁽${k+1}⁾</span><div class="mat">${mS(M)}</div></div>`;}h+=`<h4>SUSTITUCIÓN REGRESIVA</h4><div class="step"><span class="step-title">Despejamos</span><br>`;let X=Array(n).fill(0);for(let i=n-1;i>=0;i--){let sum=M[i][n],s=`x<sub>${i+1}</sub> = (${R(M[i][n],6)}`;for(let j=i+1;j<n;j++){sum-=M[i][j]*X[j];s+=` − (${R(M[i][j],6)})·(${R(X[j],6)})`;}X[i]=sum/M[i][i];s+=`) / (${R(M[i][i],6)}) = <span class="hl">${R(X[i],8)}</span>`;h+=s+'<br><br>';}h+=`</div><div class="step"><span class="step-title">SOLUCIÓN</span><br>`;X.forEach((v,i)=>h+=`<span class="hl" style="font-size:15px">x<sub>${i+1}</sub> = ${R(v,8)}</span><br>`);h+=`</div><div class="step"><span class="step-title">Matriz L</span><div class="mat">${L.map(r=>'  '+r.map(v=>String(R(v,6)).padStart(9)).join(' ')).join('\n')}</div></div>`;let U=M.map(r=>r.slice(0,n));h+=`<div class="step"><span class="step-title">Matriz U</span><div class="mat">${U.map(r=>'  '+r.map(v=>String(R(v,6)).padStart(9)).join(' ')).join('\n')}</div></div>`;let det=1;for(let i=0;i<n;i++)det*=U[i][i];h+=`<div class="step"><span class="step-title">det(A)</span> = ${U.map((r,i)=>R(r[i],4)).join(' × ')} = <span class="hl">${R(det,6)}</span></div>`;O.innerHTML=h;}catch(e){O.innerHTML='<span class="error-msg">'+e.message+'</span>';}}
+
+// JACOBI
+function doJc(){const O=$('jc-o');O.style.display='block';try{const A=$('jc-A').value.trim().split('\n').map(r=>r.trim().split(/[\s,;]+/).map(Number)),B=P($('jc-B').value);let X=P($('jc-x').value);const tol=+$('jc-t').value,mx=+$('jc-m').value,n=A.length,vn=['x','y','z','w','v','u','t','s'];let h='<h3>Método de Jacobi</h3>';h+=`<div class="step"><span class="step-title">Matriz A</span><div class="mat">${A.map(r=>'  '+r.map(v=>String(v).padStart(6)).join(' ')).join('\n')}</div>B = [${B.join(', ')}]</div>`;h+=`<div class="step"><span class="step-title">¿Diagonal dominante?</span><br>`;let dd=true;for(let i=0;i<n;i++){let sum=0;const others=[];for(let j=0;j<n;j++){if(j!==i){sum+=Math.abs(A[i][j]);others.push('|'+A[i][j]+'|');}}const ok=Math.abs(A[i][i])>sum;if(!ok)dd=false;h+=`Fila ${i+1}: |${A[i][i]}| = ${Math.abs(A[i][i])} ${ok?'>':'≤'} ${others.join(' + ')} = ${sum} ${ok?'<span class="hl3">✓</span>':'<span class="error-msg">✗</span>'}<br>`;}h+=`<br>${dd?'<span class="hl3">SÍ es diag. dominante → ambos métodos convergen ∀ X⁽⁰⁾</span>':'<span class="warn-msg">NO es diag. dominante → convergencia no garantizada</span>'}</div>`;h+=`<div class="step"><span class="step-title">Formulación iterativa</span><br>Despejamos cada variable:<br><br>`;for(let i=0;i<n;i++){let s=`<span class="hl2">${vn[i]}<sup>(k+1)</sup></span> = (${B[i]}`;for(let j=0;j<n;j++){if(j!==i)s+=` − (${A[i][j]})·${vn[j]}<sup>(k)</sup>`;}s+=`) / (${A[i][i]})`;h+=s+'<br>';}h+=`</div><div class="step"><span class="step-title">Iterante inicial</span>X⁽⁰⁾ = [${X.join(', ')}]</div>`;for(let it=1;it<=mx;it++){let Xn=Array(n);h+=`<div class="step"><span class="step-title">Iteración ${it} — JACOBI</span><span style="font-size:10px;color:var(--muted)"> (usa TODOS los valores del iterante anterior X⁽${it-1}⁾)</span><br><br>`;for(let i=0;i<n;i++){let sum=B[i],s=`${vn[i]}<sub>${it}</sub> = (${B[i]}`;for(let j=0;j<n;j++){if(j!==i){s+=` − (${A[i][j]})·(${R(X[j],6)})`;sum-=A[i][j]*X[j];}}Xn[i]=sum/A[i][i];s+=`) / (${A[i][i]})<br>&nbsp;&nbsp;= ${R(sum,6)} / (${A[i][i]}) = <span class="hl">${R(Xn[i],6)}</span>`;h+=s+'<br><br>';}const md=Math.max(...Xn.map((v,i)=>Math.abs(v-X[i])));h+=`<span class="hl2">X⁽${it}⁾ = [${Xn.map(v=>R(v,6)).join(', ')}]</span><br>max|diff| = ${R(md,8)}`;if(md<tol){h+=`<br><span class="hl3">CONVERGE en ${it} iter</span></div>`;break;}h+=`</div>`;X=[...Xn];}O.innerHTML=h;}catch(e){O.innerHTML='<span class="error-msg">'+e.message+'</span>';}}
+
+// GAUSS-SEIDEL
+function doGs(){const O=$('gs-o');O.style.display='block';try{const A=$('gs-A').value.trim().split('\n').map(r=>r.trim().split(/[\s,;]+/).map(Number)),B=P($('gs-B').value);let X=P($('gs-x').value);const tol=+$('gs-t').value,mx=+$('gs-m').value,n=A.length,vn=['x','y','z','w','v','u','t','s'];let h='<h3>Método de Gauss-Seidel</h3>';h+=`<div class="step"><span class="step-title">Matriz A</span><div class="mat">${A.map(r=>'  '+r.map(v=>String(v).padStart(6)).join(' ')).join('\n')}</div>B = [${B.join(', ')}]</div>`;h+=`<div class="step"><span class="step-title">¿Diagonal dominante?</span><br>`;let dd=true;for(let i=0;i<n;i++){let sum=0;const others=[];for(let j=0;j<n;j++){if(j!==i){sum+=Math.abs(A[i][j]);others.push('|'+A[i][j]+'|');}}const ok=Math.abs(A[i][i])>sum;if(!ok)dd=false;h+=`Fila ${i+1}: |${A[i][i]}| = ${Math.abs(A[i][i])} ${ok?'>':'≤'} ${others.join(' + ')} = ${sum} ${ok?'<span class="hl3">✓</span>':'<span class="error-msg">✗</span>'}<br>`;}h+=`<br>${dd?'<span class="hl3">SÍ diag. dominante ✓</span>':'<span class="warn-msg">NO diag. dominante</span>'}</div>`;h+=`<div class="step"><span class="step-title">Formulación iterativa</span><br>`;for(let i=0;i<n;i++){let s=`<span class="hl2">${vn[i]}<sup>(k+1)</sup></span> = (${B[i]}`;for(let j=0;j<n;j++){if(j!==i)s+=` − (${A[i][j]})·${vn[j]}<sup>${j<i?'(k+1)':'(k)'}</sup>`;}s+=`) / (${A[i][i]})`;h+=s+'<br>';}h+=`<span class="hint">↑ Usa valores YA ACTUALIZADOS (k+1) para j &lt; i</span></div>`;h+=`<div class="step"><span class="step-title">Iterante inicial</span>X⁽⁰⁾ = [${X.join(', ')}]</div>`;for(let it=1;it<=mx;it++){let Xold=[...X];h+=`<div class="step"><span class="step-title">Iteración ${it} — GAUSS-SEIDEL</span><span style="font-size:10px;color:var(--muted)"> (usa valores actualizados en esta misma iteración)</span><br><br>`;for(let i=0;i<n;i++){let sum=B[i],s=`${vn[i]}<sub>${it}</sub> = (${B[i]}`;for(let j=0;j<n;j++){if(j!==i){s+=` − (${A[i][j]})·(${R(X[j],6)})`;if(j<i)s+=` ← ${vn[j]}<sub>${it}</sub> recién calculado`;sum-=A[i][j]*X[j];}}X[i]=sum/A[i][i];s+=`) / (${A[i][i]})<br>&nbsp;&nbsp;= ${R(sum,6)} / (${A[i][i]}) = <span class="hl">${R(X[i],6)}</span>`;h+=s+'<br><br>';}const md=Math.max(...X.map((v,i)=>Math.abs(v-Xold[i])));h+=`<span class="hl2">X⁽${it}⁾ = [${X.map(v=>R(v,6)).join(', ')}]</span><br>max|diff| = ${R(md,8)}`;if(md<tol){h+=`<br><span class="hl3">CONVERGE en ${it} iter</span></div>`;break;}h+=`</div>`;}O.innerHTML=h;}catch(e){O.innerHTML='<span class="error-msg">'+e.message+'</span>';}}
+
+// LAGRANGE
+function doLg(){const O=$('lg-o');O.style.display='block';try{const nd=P($('lg-n').value),dt=P($('lg-d').value),n=nd.length,pts=$('lg-e').value.trim()?P($('lg-e').value):[];let h='<h3>Interpolación de Lagrange</h3>';h+=`<div class="step"><span class="step-title">Datos</span>Nodos: {${nd.join(', ')}} → ${n} nodos → grado ≤ ${n-1}<br>Valores: {${dt.join(', ')}}</div>`;h+=`<div class="step"><span class="step-title">Polinomios de Lagrange</span><br>`;let co=[];for(let i=0;i<n;i++){let d=1,ns='',ds='';for(let j=0;j<n;j++){if(j!==i){d*=(nd[i]-nd[j]);ns+=`(x−${nd[j]})`;ds+=`(${nd[i]}−${nd[j]})`;}}const A=dt[i]/d;co.push(A);h+=`<br>L<sub>${i}</sub>(x) = ${ns} / [${ds}]<br>  denom = ${R(d,6)}<br>  A<sub>${i}</sub> = ${dt[i]} / ${R(d,6)} = <span class="hl">${R(A,8)}</span><br>`;}h+=`</div>`;h+=`<div class="step"><span class="step-title">P(x)</span><div class="formula">P(x) = `;for(let i=0;i<n;i++){if(i>0)h+=' + ';h+=`${R(co[i],6)}·`;for(let j=0;j<n;j++){if(j!==i)h+=`(x−${nd[j]})`;}}h+=`</div></div>`;for(const xp of pts){h+=`<div class="step"><span class="step-title">P(${xp})</span><br>`;let v=0;for(let i=0;i<n;i++){let Li=1,ps=[];for(let j=0;j<n;j++){if(j!==i){Li*=(xp-nd[j])/(nd[i]-nd[j]);ps.push(`(${xp}−${nd[j]})/(${nd[i]}−${nd[j]})`)}}h+=`L<sub>${i}</sub>(${xp}) = ${ps.join('·')} = ${R(Li,8)}<br>`;v+=dt[i]*Li;h+=`  f·L = ${dt[i]}·${R(Li,8)} = ${R(dt[i]*Li,8)}<br>`;}h+=`<br><span class="hl" style="font-size:15px">P(${xp}) = ${R(v,8)}</span></div>`;}O.innerHTML=h;}catch(e){O.innerHTML='<span class="error-msg">'+e.message+'</span>';}}
+
+// NEWTON INTERP
+function doNi(){const O=$('ni-o');O.style.display='block';try{const nd=P($('ni-n').value),dt=P($('ni-d').value),n=nd.length,pts=$('ni-e').value.trim()?P($('ni-e').value):[];let h='<h3>Newton Interpolación</h3>';h+=`<div class="step"><span class="step-title">Datos</span>Nodos: {${nd.join(', ')}}, f: {${dt.join(', ')}}<br>Grado ≤ ${n-1}</div>`;let dd=Array.from({length:n},()=>Array(n).fill(null));for(let i=0;i<n;i++)dd[i][0]=dt[i];h+=`<div class="step"><span class="step-title">Tabla de Diferencias Divididas</span><br><br><b>Orden 0:</b><br>`;for(let i=0;i<n;i++)h+=`  f[${nd[i]}] = ${dt[i]}<br>`;for(let j=1;j<n;j++){h+=`<br><b>Orden ${j}:</b><br>`;for(let i=0;i<n-j;i++){dd[i][j]=(dd[i+1][j-1]-dd[i][j-1])/(nd[i+j]-nd[i]);h+=`  f[${nd.slice(i,i+j+1).join(',')}] = (${R(dd[i+1][j-1],6)} − ${R(dd[i][j-1],6)}) / (${nd[i+j]} − ${nd[i]}) = <span class="hl">${R(dd[i][j],8)}</span><br>`;}}h+=`</div>`;const c=[];for(let j=0;j<n;j++)c.push(dd[0][j]);h+=`<div class="step"><span class="step-title">Coeficientes (diagonal)</span><br>${c.map((v,i)=>`c<sub>${i}</sub> = <span class="hl">${R(v,8)}</span>`).join('<br>')}</div>`;h+=`<div class="step"><span class="step-title">P(x)</span><div class="formula">P(x) = ${R(c[0],6)}`;for(let j=1;j<n;j++){h+=(c[j]>=0?' + ':' − ')+Math.abs(R(c[j],6));for(let k=0;k<j;k++)h+=`(x${nd[k]>=0?'−':'+'}${Math.abs(nd[k])})`;}h+=`</div></div>`;for(const xp of pts){h+=`<div class="step"><span class="step-title">P(${xp})</span><br>`;let v=c[0],pr=1;h+=`= ${R(c[0],6)}`;for(let j=1;j<n;j++){pr*=(xp-nd[j-1]);h+=` + (${R(c[j],6)})·(${R(pr,6)})`;v+=c[j]*pr;}h+=`<br>= <span class="hl" style="font-size:15px">${R(v,8)}</span></div>`;}O.innerHTML=h;}catch(e){O.innerHTML='<span class="error-msg">'+e.message+'</span>';}}
+
+// HERMITE
+function doHm(){const O=$('hm-o');O.style.display='block';try{const nd=P($('hm-n').value),dt=P($('hm-d').value),n=nd.length,pts=$('hm-e').value.trim()?P($('hm-e').value):[];let h='<h3>Hermite</h3>';h+=`<div class="step"><span class="step-title">Datos</span>Nodos: [${nd.join(', ')}]<br>Datos: [${dt.join(', ')}]<br>Grado ≤ ${n-1}</div>`;let dd=Array.from({length:n},()=>Array(n).fill(null));for(let i=0;i<n;i++)dd[i][0]=dt[i];h+=`<div class="step"><span class="step-title">Dif. Divididas Generalizadas</span><br><br><b>Orden 0:</b> datos directos<br>`;for(let i=0;i<n;i++)h+=`  dd[${i}][0] = ${R(dt[i],8)}<br>`;for(let j=1;j<n;j++){h+=`<br><b>Orden ${j}:</b><br>`;for(let i=0;i<n-j;i++){if(nd[i+j]===nd[i]){dd[i][j]=dt[i+j];h+=`  f[${nd.slice(i,i+j+1).join(',')}] → nodos iguales → dato derivada: <span class="hl">${R(dd[i][j],8)}</span><br>`;}else{dd[i][j]=(dd[i+1][j-1]-dd[i][j-1])/(nd[i+j]-nd[i]);h+=`  f[${nd.slice(i,i+j+1).join(',')}] = (${R(dd[i+1][j-1],6)} − ${R(dd[i][j-1],6)}) / (${nd[i+j]}−${nd[i]}) = <span class="hl">${R(dd[i][j],8)}</span><br>`;}}}h+=`</div>`;const c=[];for(let j=0;j<n;j++)c.push(dd[0][j]);h+=`<div class="step"><span class="step-title">Coeficientes</span><br>${c.map((v,i)=>`c<sub>${i}</sub> = <span class="hl">${R(v,8)}</span>`).join('<br>')}</div>`;h+=`<div class="step"><span class="step-title">P(x)</span><div class="formula">P(x) = ${R(c[0],6)}`;for(let j=1;j<n;j++){h+=(c[j]>=0?' + ':' − ')+Math.abs(R(c[j],6));for(let k=0;k<j;k++)h+=`(x${nd[k]>=0?'−':'+'}${Math.abs(nd[k])})`;}h+=`</div></div>`;for(const xp of pts){h+=`<div class="step"><span class="step-title">P(${xp})</span><br>`;let v=c[0],pr=1;h+=`= ${R(c[0],6)}`;for(let j=1;j<n;j++){pr*=(xp-nd[j-1]);h+=` + (${R(c[j],6)})·(${R(pr,6)})`;v+=c[j]*pr;}h+=`<br>= <span class="hl" style="font-size:15px">${R(v,8)}</span></div>`;}O.innerHTML=h;}catch(e){O.innerHTML='<span class="error-msg">'+e.message+'</span>';}}
+
+// EVAL
+function doEv(){const O=$('ca-o');O.style.display='block';const f=$('ca-f').value,pts=P($('ca-x').value);let h=`<h3>f(x) = ${f}</h3>`;let mx=0,mX=0;for(const x of pts){const v=E(f,{x}),a=Math.abs(v);if(a>mx){mx=a;mX=x;}h+=`f(${x}) = ${R(v,8)}, |f(${x})| = ${R(a,8)}<br>`;}h+=`<br><span class="hl">max|f(x)| = ${R(mx,8)} en x=${mX}</span>`;O.innerHTML=h;}
+function doCalc(){try{$('ca-r').textContent='= '+E($('ca-c').value);}catch(e){$('ca-r').textContent='Error';}}
+</script>
+</body>
+</html>

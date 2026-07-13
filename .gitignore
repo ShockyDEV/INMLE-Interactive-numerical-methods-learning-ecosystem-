@@ -1,0 +1,15 @@
+# generados
+dist/
+
+# material del paper (privado hasta que decidas publicarlo)
+research/
+*.pdf
+
+# local
+.claude/
+Thumbs.db
+.DS_Store
+
+# borrador del paper (privado)
+paper/
+~$*
