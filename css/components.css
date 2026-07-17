@@ -34,12 +34,13 @@
 .pl-speed { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--acento); }
 
 /* ---------- pasos: numerados al margen, como ecuaciones ---------- */
-.steps { display: flex; flex-direction: column; gap: 8px; }
+.steps { display: flex; flex-direction: column; gap: 10px; }
 .step-card {
+  flex-shrink: 0; /* dentro de la columna con max-height, NUNCA aplastarse */
   background: var(--carta);
   border: 1px solid var(--linea);
   border-radius: 4px;
-  padding: 10px 14px 11px;
+  padding: 12px 16px 13px;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
   overflow-x: auto;
@@ -65,7 +66,8 @@
 .tipo-fail { border-left: 3px solid var(--bad); }
 .tipo-final .step-tit { color: var(--ok); }
 .tipo-fail .step-tit { color: var(--bad); }
-.step-linea { font-size: 13.5px; margin: 4px 0; overflow-x: auto; overflow-y: hidden; color: var(--tinta); }
+.step-linea { font-size: 14.5px; margin: 6px 0; overflow-x: auto; color: var(--tinta); line-height: 1.7; }
+.step-linea .katex { font-size: 1.12em; }
 .steps-cuaderno .step-card { cursor: default; }
 
 /* ---------- banner de resultado ---------- */
