@@ -12,6 +12,7 @@
         '.<br>Comprueba que todos los archivos js/ están presentes y en orden en index.html.</p></div>';
       return;
     }
+    if (NS.tema && NS.tema.init) NS.tema.init();
     if (NS.store && NS.store.init) NS.store.init();
     NS.router.start();
   }

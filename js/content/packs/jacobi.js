@@ -13,7 +13,7 @@
   NS.content.theory.jacobi = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'En vez de RESOLVER el sistema, Jacobi lo convierte en una máquina de mejorar soluciones: despeja cada incógnita de SU ecuación ($x_i$ de la ecuación $i$) y usa la aproximación actual para producir una mejor.',
           'Es el punto fijo de los sistemas: $X^{(k+1)} = T\\,X^{(k)} + C$. Metes un vector, sale otro más cercano a la solución… si la matriz colabora.',
@@ -21,7 +21,7 @@
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           '$x_i^{(k+1)} = \\dfrac{b_i - \\sum_{j \\ne i} a_{ij}\\, x_j^{(k)}}{a_{ii}}$',
           'Parada: $\\max_i |x_i^{(k+1)} - x_i^{(k)}| < \\varepsilon$.',
@@ -29,7 +29,7 @@
         ],
       },
       {
-        titulo: 'Convergencia', icono: '📈',
+        titulo: 'Convergencia', icono: '',
         lineas: [
           'Condición SUFICIENTE (la práctica): si $A$ es **estrictamente diagonal dominante** ($|a_{ii}| > \\sum_{j\\ne i} |a_{ij}|$ en cada fila), Jacobi converge desde CUALQUIER $X^{(0)}$.',
           'Condición exacta (la teórica): converge si y solo si el radio espectral de la matriz de iteración cumple $\\rho(T) < 1$ — el análogo matricial del $|g\'| < 1$ del punto fijo.',
@@ -38,7 +38,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -58,16 +58,16 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
           { tipo: 'error', texto: 'Usar los valores RECIÉN calculados dentro de la misma pasada «porque ya los tengo»: eso ya no es Jacobi, es Gauss-Seidel. Jacobi congela $X^{(k)}$ completo hasta terminar la pasada.' },
           { tipo: 'error', texto: 'Concluir «no es diagonal dominante → diverge»: la dominancia es SUFICIENTE, no necesaria. Sin ella, el resultado queda en «no garantizado».' },
-          { tipo: 'error', texto: 'No reordenar ecuaciones: a veces la dominancia diagonal está escondida y solo hay que intercambiar filas (preset «💥 Diverge (mal ordenado)» y reto «Hazla dominante»).' },
+          { tipo: 'error', texto: 'No reordenar ecuaciones: a veces la dominancia diagonal está escondida y solo hay que intercambiar filas (preset «Diverge (mal ordenado)» y reto «Hazla dominante»).' },
           { tipo: 'error', texto: 'Parar por número de iteraciones sin mirar $\\max|\\Delta x|$: puedes estar lejísimos (o haber convergido hace rato).' },
         ],
       },
       {
-        titulo: '¿Cuándo usarlo?', icono: '🧭',
+        titulo: '¿Cuándo usarlo?', icono: '',
         lineas: [
           'Sistemas ENORMES y dispersos (discretizaciones de EDPs, mallas, grafos) donde Gauss es impagable y la matriz es diagonal dominante o simétrica definida positiva.',
           'Cuando tienes hardware paralelo: Jacobi reparte perfecto entre procesadores. Si la ejecución es secuencial, Gauss-Seidel suele llegar antes.',
@@ -207,7 +207,7 @@
   /* ============ RETOS ============ */
   NS.content.challenges.jacobi = [
     {
-      id: 'dominante', nombre: 'Hazla dominante', icono: '🧩',
+      id: 'dominante', nombre: 'Hazla dominante', icono: '',
       tipo: 'apuesta',
       desc: 'Tres ordenaciones de las mismas tres ecuaciones. Solo una tiene la diagonal al mando: encuéntrala ANTES de correrlas.',
       pregunta: 'Las mismas tres ecuaciones, barajadas de tres maneras. Reordenar filas es GRATIS y no cambia la solución… pero a Jacobi le cambia la vida. **¿Qué ordenación converge?** (Pista: busca dónde manda la diagonal.)',
@@ -229,7 +229,7 @@
       moraleja: 'Solo el orden B pone en CADA fila su coeficiente gordo sobre la diagonal (6, −5, −7). Misma álgebra, destino opuesto: reordenar es la jugada más barata del álgebra lineal.',
     },
     {
-      id: 'horquilla', nombre: 'Apuesta de convergencia', icono: '🔮',
+      id: 'horquilla', nombre: 'Apuesta de convergencia', icono: '',
       tipo: 'quiz-serie',
       desc: 'Te enseño la matriz, tú predices el destino: ¿converge?, ¿en cuántas iteraciones? Afina tu ojo espectral.',
       n: 4,

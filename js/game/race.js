@@ -1,4 +1,4 @@
-/* MNO.views.race — 🏁 Carrera de Métodos.
+/* MNO.views.race — Carrera de métodos.
    Cuatro corredores (Bisección, Cuerda, Newton, Secante) contra la misma
    f(x). Fase de APUESTA (predice el ganador), carrera animada por carriles,
    gráfico log₁₀|error| en vivo (las pendientes SON los órdenes de
@@ -9,11 +9,15 @@
   NS.views = NS.views || {};
 
   const CORREDORES = [
-    { id: 'biseccion', nombre: 'Bisección', emoji: '✂️', color: '#74b9ff' },
-    { id: 'cuerda', nombre: 'Cuerda', emoji: '📏', color: '#a29bfe' },
-    { id: 'newton', nombre: 'Newton', emoji: '🎯', color: '#00cec9' },
-    { id: 'secante', nombre: 'Secante', emoji: '📐', color: '#fdcb6e' },
+    { id: 'biseccion', nombre: 'Bisección' },
+    { id: 'cuerda', nombre: 'Cuerda' },
+    { id: 'newton', nombre: 'Newton' },
+    { id: 'secante', nombre: 'Secante' },
   ];
+  function colorDe(i) { return NS.plotPalette().serie[i % 4]; }
+  function puntoHTML(color) {
+    return '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + color + ';margin-right:8px;vertical-align:baseline"></span>';
+  }
 
   /* Evaluaciones de f por corredor: iniciales + por iteración.
      Newton cuesta 2 por iteración (f y f'). */
@@ -51,9 +55,11 @@
       back.href = '#/';
       head.appendChild(back);
       const tit = el('div', 'met-tit');
-      tit.appendChild(el('h1', null, '🏁 Carrera de Métodos'));
+      tit.appendChild(el('p', 'eyebrow', 'Comparativa'));
+      tit.appendChild(el('h1', null, 'Carrera de métodos'));
       tit.appendChild(el('p', 'met-desc', 'Cuatro métodos, la misma raíz. Apuesta, mira la carrera y lee los órdenes de convergencia en las pendientes.'));
       head.appendChild(tit);
+      if (NS.tema) head.appendChild(NS.tema.boton());
       sec.appendChild(head);
       S.zona = el('div');
       sec.appendChild(S.zona);
@@ -110,8 +116,8 @@
 
     caja.appendChild(el('h3', null, '2 · Haz tu apuesta: ¿quién converge en MENOS iteraciones? (tol 10⁻¹⁰)'));
     const ops = el('div', 'quiz-opciones');
-    CORREDORES.forEach(function (c) {
-      const b = el('button', 'quiz-op', c.emoji + ' ' + c.nombre);
+    CORREDORES.forEach(function (c, ci) {
+      const b = el('button', 'quiz-op', puntoHTML(colorDe(ci)) + c.nombre);
       b.type = 'button';
       b.addEventListener('click', function () {
         const conf = {
@@ -150,7 +156,7 @@
     }
 
     /* series de error real |estimación − raíz| por iteración */
-    const series = CORREDORES.map(function (c) {
+    const series = CORREDORES.map(function (c, ci) {
       const tr = res[c.id];
       const data = [];
       tr.steps.forEach(function (s) {
@@ -159,7 +165,7 @@
         }
       });
       return {
-        id: c.id, label: c.emoji + ' ' + c.nombre, color: c.color, data: data,
+        id: c.id, label: c.nombre, color: colorDe(ci), data: data,
         estado: tr.status, iters: tr.status === 'converged' ? tr.result.iters : Infinity,
       };
     });
@@ -168,14 +174,15 @@
     /* UI de la carrera */
     S.zona.innerHTML = '';
     const caja = el('div', 'reto-carta');
-    caja.appendChild(el('h3', null, '🏁 ¡Carrera en marcha! — f(x) = ' + conf.f));
+    caja.appendChild(el('h3', null, 'Carrera en marcha — f(x) = ' + conf.f));
     const carriles = el('div', 'race-carriles');
     const runners = {};
     series.forEach(function (s) {
       const carril = el('div', 'race-carril');
-      carril.appendChild(el('span', 'nombre', s.label));
+      carril.appendChild(el('span', 'nombre', puntoHTML(s.color) + s.label));
       const pista = el('div', 'race-pista');
-      const runner = el('span', 'race-corredor', s.label.split(' ')[0]);
+      const runner = el('span', 'race-corredor');
+      runner.style.background = s.color;
       runner.style.left = '0%';
       pista.appendChild(runner);
       carril.appendChild(pista);
@@ -188,7 +195,7 @@
 
     const ecBox = el('div', 'ec-box');
     ecBox.style.marginTop = '14px';
-    ecBox.appendChild(el('div', null, '<div style="padding:10px 14px;font-size:13px;color:var(--muted);font-weight:600">📉 log₁₀ |xₖ − α| — fíjate en las pendientes: recta = orden 1, despeñada = orden 2</div>'));
+    ecBox.appendChild(el('div', null, '<div style="padding:10px 14px;font-size:12px;color:var(--tinta2);font-weight:600;text-transform:uppercase;letter-spacing:0.06em">log₁₀ |xₖ − α| — recta = orden 1 · despeñada = orden 2</div>'));
     const ecCanvas = document.createElement('canvas');
     ecCanvas.className = 'ec-canvas';
     ecCanvas.style.height = '260px';
@@ -211,11 +218,11 @@
         const pos = Math.min(1, k / Math.max(1, total));
         r.runner.style.left = (pos * 100) + '%';
         if (isFinite(s.iters) && k >= s.iters) {
-          r.runner.textContent = '🏁';
-          r.info.textContent = s.iters + ' iteraciones';
+          r.runner.classList.add('meta');
+          r.info.textContent = s.iters + ' iteraciones · meta';
         } else if (k >= s.data.length && !isFinite(s.iters)) {
-          r.runner.textContent = s.estado === 'diverged' ? '💥' : '🐌';
-          r.info.textContent = s.estado === 'diverged' ? 'diverge' : 'no llega (tol)';
+          r.runner.classList.add('fuera');
+          r.info.textContent = s.estado === 'diverged' ? 'diverge' : 'no alcanza la tolerancia';
         } else if (k <= s.data.length) {
           const err = s.data[Math.min(k, s.data.length) - 1];
           r.info.textContent = 'iter ' + Math.min(k, s.data.length) + ' · err ' + (err ? err.err.toExponential(1) : '—');
@@ -237,12 +244,12 @@
     if (NS.store) NS.store.carreraCorrida(acierto);
 
     const caja = el('div', 'reto-carta race-podio');
-    caja.appendChild(el('h3', null, acierto ? '🎉 ¡Apuesta ganadora!' : '😅 Tu apuesta no ganó…'));
-    const medallas = ['🥇', '🥈', '🥉', '4.º'];
+    caja.appendChild(el('h3', null, acierto ? 'Apuesta ganadora' : 'Tu apuesta no ganó'));
+    const puesto = ['1.º', '2.º', '3.º', '4.º'];
     porIters.forEach(function (s, i) {
       const fila = el('div', 'dash-fila');
-      fila.appendChild(el('span', 'nombre', medallas[i] + ' ' + s.label + (s.id === apuesta ? ' ← tu apuesta' : '')));
-      fila.appendChild(el('span', null, isFinite(s.iters) ? s.iters + ' iteraciones' : (s.estado === 'diverged' ? 'diverge 💥' : 'no converge')));
+      fila.appendChild(el('span', 'nombre', puesto[i] + ' ' + puntoHTML(s.color) + s.label + (s.id === apuesta ? ' — tu apuesta' : '')));
+      fila.appendChild(el('span', null, isFinite(s.iters) ? s.iters + ' iteraciones' : (s.estado === 'diverged' ? 'diverge' : 'no converge')));
       caja.appendChild(fila);
     });
 
@@ -252,9 +259,9 @@
       .sort(function (a, b) { return COSTE[a.id](a.iters) - COSTE[b.id](b.iters); });
     if (conCoste.length > 1) {
       const g2 = conCoste[0];
-      let txt = '🧾 **Contando EVALUACIONES de f** (Newton paga 2 por iteración): ' +
+      let txt = '**Contando evaluaciones de f** (Newton paga 2 por iteración): ' +
         conCoste.map(function (s) { return s.label + ' = ' + COSTE[s.id](s.iters); }).join(' · ') + '.';
-      if (g2.id !== ganador.id) txt += ' **¡El podio cambia: gana ' + g2.label + '!** La velocidad por iteración no es gratis.';
+      if (g2.id !== ganador.id) txt += ' **El podio cambia: gana ' + g2.label + '.** La velocidad por iteración no es gratis.';
       else txt += ' El podio no cambia, pero mira qué cerca queda la secante: 1 evaluación por iteración es su superpoder.';
       NS.math.render(notas, txt);
     }
@@ -262,7 +269,7 @@
 
     const acciones = el('div');
     acciones.style.marginTop = '14px';
-    const otra = el('button', 'btn', '↻ Otra carrera');
+    const otra = el('button', 'btn btn-suave', 'Otra carrera');
     otra.type = 'button';
     otra.addEventListener('click', setup);
     acciones.appendChild(otra);

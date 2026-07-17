@@ -17,7 +17,7 @@
   NS.registry = {
 
     biseccion: {
-      id: 'biseccion', nombre: 'Bisección', icono: '✂️', familia: 'raices',
+      id: 'biseccion', nombre: 'Bisección', icono: '', familia: 'raices',
       engine: 'biseccion', vista: 'plot', orden: 1,
       desc: 'Parte el intervalo por la mitad una y otra vez. Lenta pero infalible.',
       params: [
@@ -31,13 +31,13 @@
       presets: [
         { nombre: '√2 (clásico)', v: { f: 'x^2 - 2', a: '0', b: '2', tol: '0.01' } },
         { nombre: 'cos(x) = x', v: { f: 'cos(x) - x', a: '0', b: '1', tol: '0.0001' } },
-        { nombre: '⚠ Sin cambio de signo', v: { f: 'x^2 + 1', a: '-1', b: '1', tol: '0.01' }, nota: 'Bolzano no aplica: f > 0 en todo el intervalo.' },
-        { nombre: '⚠ Raíz doble (invisible)', v: { f: '(x - 1)^2', a: '0', b: '2', tol: '0.001' }, nota: 'La parábola toca el eje sin cruzarlo: no hay cambio de signo.' },
+        { nombre: 'Sin cambio de signo (falla)', v: { f: 'x^2 + 1', a: '-1', b: '1', tol: '0.01' }, nota: 'Bolzano no aplica: f > 0 en todo el intervalo.' },
+        { nombre: 'Raíz doble (invisible)', v: { f: '(x - 1)^2', a: '0', b: '2', tol: '0.001' }, nota: 'La parábola toca el eje sin cruzarlo: no hay cambio de signo.' },
       ],
     },
 
     cuerda: {
-      id: 'cuerda', nombre: 'Cuerda (regula falsi)', icono: '📏', familia: 'raices',
+      id: 'cuerda', nombre: 'Cuerda (regula falsi)', icono: '', familia: 'raices',
       engine: 'cuerda', vista: 'plot', orden: 2,
       desc: 'Como bisección, pero corta por la cuerda en vez del punto medio.',
       params: [
@@ -56,7 +56,7 @@
     },
 
     puntofijo: {
-      id: 'puntofijo', nombre: 'Punto Fijo', icono: '🌀', familia: 'raices',
+      id: 'puntofijo', nombre: 'Punto Fijo', icono: '', familia: 'raices',
       engine: 'puntofijo', vista: 'cobweb', orden: 3,
       desc: 'Itera x = g(x) y observa la telaraña: converge si |g′| < 1.',
       params: [
@@ -70,13 +70,13 @@
         { nombre: 'Espiral: cos(x)', v: { g: 'cos(x)', x0: '0', tol: '0.0001' }, nota: "g'(β) < 0 → la telaraña gira en espiral." },
         { nombre: 'Escalera: √(x+2)', v: { g: 'sqrt(x + 2)', x0: '0', tol: '0.00001' }, nota: "0 < g'(β) < 1 → escalera directa." },
         { nombre: 'Herón para √2', v: { g: '(x + 2/x)/2', x0: '1', tol: '0.0000001' }, nota: "g'(β) = 0 → convergencia rapidísima (¡es Newton disfrazado!)." },
-        { nombre: '⚠ Cuenca: x² desde 0.9', v: { g: 'x^2', x0: '0.9', tol: '0.0001' }, nota: 'Converge a 0. Prueba luego con x₀ = 1.1…' },
-        { nombre: '💥 Diverge: x² desde 1.1', v: { g: 'x^2', x0: '1.1', tol: '0.0001' }, nota: "El punto fijo 1 tiene g'(1) = 2 > 1: repele." },
+        { nombre: 'Cuenca: x² desde 0.9', v: { g: 'x^2', x0: '0.9', tol: '0.0001' }, nota: 'Converge a 0. Prueba luego con x₀ = 1.1…' },
+        { nombre: 'Diverge: x² desde 1.1', v: { g: 'x^2', x0: '1.1', tol: '0.0001' }, nota: "El punto fijo 1 tiene g'(1) = 2 > 1: repele." },
       ],
     },
 
     newton: {
-      id: 'newton', nombre: 'Newton–Raphson', icono: '🎯', familia: 'raices',
+      id: 'newton', nombre: 'Newton–Raphson', icono: '', familia: 'raices',
       engine: 'newton', vista: 'plot', orden: 4,
       desc: 'Sigue la tangente. Convergencia cuadrática: los decimales se duplican.',
       params: [
@@ -90,15 +90,15 @@
       presets: [
         { nombre: 'eˣ + x (clásico)', v: { f: 'exp(x) + x', df: 'exp(x) + 1', x0: '-1', tol: '0.0001' } },
         { nombre: '√2 en 5 pasos', v: { f: 'x^2 - 2', df: '2x', x0: '1', tol: '0.0000000001' }, nota: 'Mira cómo se duplican los dígitos verdes.' },
-        { nombre: '💫 Ciclo infinito', v: { f: 'x^3 - 2x + 2', df: '3x^2 - 2', x0: '0', tol: '0.0001' }, nota: 'x salta 0 → 1 → 0 → 1… para siempre.' },
-        { nombre: '🚀 Tangente horizontal', v: { f: 'x^3 - 2x + 2', df: '3x^2 - 2', x0: '0.8', tol: '0.0001' }, nota: 'Cerca del mínimo local la tangente dispara lejos.' },
-        { nombre: '💥 atan diverge', v: { f: 'atan(x)', df: '1/(1 + x^2)', x0: '1.5', tol: '0.0001' }, nota: 'Con x₀ grande, cada tangente cae más lejos.' },
-        { nombre: '⚠ Derivada mal escrita', v: { f: 'x^2 - 2', df: 'x', x0: '1', tol: '0.0000001' }, nota: 'La app la detecta… y Newton pierde su magia (converge lento).' },
+        { nombre: 'Ciclo infinito', v: { f: 'x^3 - 2x + 2', df: '3x^2 - 2', x0: '0', tol: '0.0001' }, nota: 'x salta 0 → 1 → 0 → 1… para siempre.' },
+        { nombre: 'Tangente casi horizontal', v: { f: 'x^3 - 2x + 2', df: '3x^2 - 2', x0: '0.8', tol: '0.0001' }, nota: 'Cerca del mínimo local la tangente dispara lejos.' },
+        { nombre: 'atan(x) diverge', v: { f: 'atan(x)', df: '1/(1 + x^2)', x0: '1.5', tol: '0.0001' }, nota: 'Con x₀ grande, cada tangente cae más lejos.' },
+        { nombre: 'Derivada mal escrita', v: { f: 'x^2 - 2', df: 'x', x0: '1', tol: '0.0000001' }, nota: 'La app la detecta… y Newton pierde su magia (converge lento).' },
       ],
     },
 
     secante: {
-      id: 'secante', nombre: 'Secante', icono: '📐', familia: 'raices',
+      id: 'secante', nombre: 'Secante', icono: '', familia: 'raices',
       engine: 'secante', vista: 'plot', orden: 5,
       desc: 'Newton sin derivada: aproxima la tangente con los dos últimos puntos.',
       params: [
@@ -117,7 +117,7 @@
     },
 
     gauss: {
-      id: 'gauss', nombre: 'Eliminación Gaussiana', icono: '🔻', familia: 'sistemas',
+      id: 'gauss', nombre: 'Eliminación Gaussiana', icono: '', familia: 'sistemas',
       engine: 'gauss', vista: 'matrix', orden: 6,
       desc: 'Triangula el sistema con operaciones de fila. De regalo: L, U y det(A).',
       params: [
@@ -127,13 +127,13 @@
       presets: [
         { nombre: 'Ejemplo de clase (3×3)', v: { A: '-2 -2 2\n2 -4 3\n-1 2 -3', B: '10 2 1' } },
         { nombre: 'Clásico x=2, y=3, z=−1', v: { A: '2 1 -1\n-3 -1 2\n-2 1 2', B: '8 -11 -3' } },
-        { nombre: '⚠ Pivote nulo', v: { A: '0 1\n1 1', B: '1 2' }, nota: 'a₁₁ = 0: sin intercambiar filas no se puede.' },
+        { nombre: 'Pivote nulo (falla)', v: { A: '0 1\n1 1', B: '1 2' }, nota: 'a₁₁ = 0: sin intercambiar filas no se puede.' },
         { nombre: '4×4', v: { A: '1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3', B: '10 10 10 10' } },
       ],
     },
 
     jacobi: {
-      id: 'jacobi', nombre: 'Jacobi', icono: '🔁', familia: 'sistemas',
+      id: 'jacobi', nombre: 'Jacobi', icono: '', familia: 'sistemas',
       engine: 'jacobi', vista: 'linear-iter', orden: 7,
       desc: 'Iterativo: todas las variables saltan a la vez usando el vector anterior.',
       params: [
@@ -145,13 +145,13 @@
       ],
       presets: [
         { nombre: 'Ejemplo de clase (3×3)', v: { A: '-4 1 -1\n-1 -5 1\n2 -2 5', B: '2 -5 10', X0: '0 0 0', tol: '0.001' } },
-        { nombre: '👀 2×2 visual (dos rectas)', v: { A: '3 1\n1 2', B: '5 5', X0: '0 0', tol: '0.0001' }, nota: 'Mira al punto saltar en diagonal hacia el corte.' },
-        { nombre: '💥 Diverge (mal ordenado)', v: { A: '1 3\n4 1', B: '5 6', X0: '0 0', tol: '0.001' }, nota: 'Sin dominancia diagonal… ¿y si intercambias las filas?' },
+        { nombre: '2×2 en el plano (dos rectas)', v: { A: '3 1\n1 2', B: '5 5', X0: '0 0', tol: '0.0001' }, nota: 'Mira al punto saltar en diagonal hacia el corte.' },
+        { nombre: 'Diverge (mal ordenado)', v: { A: '1 3\n4 1', B: '5 6', X0: '0 0', tol: '0.001' }, nota: 'Sin dominancia diagonal… ¿y si intercambias las filas?' },
       ],
     },
 
     seidel: {
-      id: 'seidel', nombre: 'Gauss–Seidel', icono: '🪜', familia: 'sistemas',
+      id: 'seidel', nombre: 'Gauss–Seidel', icono: '', familia: 'sistemas',
       engine: 'seidel', vista: 'linear-iter', orden: 8,
       desc: 'Como Jacobi pero usa cada valor recién calculado: la escalera es más rápida.',
       params: [
@@ -163,13 +163,13 @@
       ],
       presets: [
         { nombre: 'Ejemplo de clase (3×3)', v: { A: '-4 1 -1\n-1 -5 1\n2 -2 5', B: '2 -5 10', X0: '0 0 0', tol: '0.001' } },
-        { nombre: '👀 2×2 visual (escalera)', v: { A: '3 1\n1 2', B: '5 5', X0: '0 0', tol: '0.0001' }, nota: 'Compárala con el salto diagonal de Jacobi.' },
-        { nombre: '💥 Diverge (mal ordenado)', v: { A: '1 3\n4 1', B: '5 6', X0: '0 0', tol: '0.001' } },
+        { nombre: '2×2 en el plano (escalera)', v: { A: '3 1\n1 2', B: '5 5', X0: '0 0', tol: '0.0001' }, nota: 'Compárala con el salto diagonal de Jacobi.' },
+        { nombre: 'Diverge (mal ordenado)', v: { A: '1 3\n4 1', B: '5 6', X0: '0 0', tol: '0.001' } },
       ],
     },
 
     lagrange: {
-      id: 'lagrange', nombre: 'Lagrange', icono: '🧵', familia: 'interpolacion',
+      id: 'lagrange', nombre: 'Lagrange', icono: '', familia: 'interpolacion',
       engine: 'lagrange', vista: 'interp', orden: 9,
       desc: 'Un polinomio que pasa exactamente por todos tus puntos.',
       params: [
@@ -180,13 +180,13 @@
       dragNodes: true,
       presets: [
         { nombre: 'Ejemplo de clase', v: { nodes: '-1 1 2 3', values: '-1 1 32 243', evalXs: '0' } },
-        { nombre: '🌊 Fenómeno de Runge (7 nodos)', v: { nodes: RN.join(' '), values: RV.join(' '), evalXs: '0.95' }, nota: 'Nodos equiespaciados en 1/(1+25x²): mira los bordes oscilar.' },
+        { nombre: 'Fenómeno de Runge (7 nodos)', v: { nodes: RN.join(' '), values: RV.join(' '), evalXs: '0.95' }, nota: 'Nodos equiespaciados en 1/(1+25x²): mira los bordes oscilar.' },
         { nombre: 'Parábola por 3 puntos', v: { nodes: '0 1 2', values: '1 3 7', evalXs: '1.5' } },
       ],
     },
 
     newtoni: {
-      id: 'newtoni', nombre: 'Newton (interp.)', icono: '🪆', familia: 'interpolacion',
+      id: 'newtoni', nombre: 'Newton (interp.)', icono: '', familia: 'interpolacion',
       engine: 'newtoni', vista: 'interp', orden: 10,
       desc: 'El mismo polinomio, construido por capas con diferencias divididas.',
       params: [
@@ -197,13 +197,13 @@
       dragNodes: true,
       presets: [
         { nombre: 'Ejemplo de clase', v: { nodes: '-1 1 2 3', values: '-1 1 32 243', evalXs: '0' } },
-        { nombre: '🌊 Runge (7 nodos)', v: { nodes: RN.join(' '), values: RV.join(' '), evalXs: '0.95' } },
+        { nombre: 'Runge (7 nodos)', v: { nodes: RN.join(' '), values: RV.join(' '), evalXs: '0.95' } },
         { nombre: 'Grado oculto 2', v: { nodes: '0 1 2 3 4', values: '1 2 5 10 17', evalXs: '2.5' }, nota: 'Una columna de la tabla se hace cero: el dato es un polinomio de grado 2.' },
       ],
     },
 
     hermite: {
-      id: 'hermite', nombre: 'Hermite', icono: '🤝', familia: 'interpolacion',
+      id: 'hermite', nombre: 'Hermite', icono: '', familia: 'interpolacion',
       engine: 'hermite', vista: 'interp', orden: 11,
       desc: 'Interpola valores Y derivadas: la curva abraza a la función.',
       params: [
@@ -218,7 +218,7 @@
     },
 
     calc: {
-      id: 'calc', nombre: 'Laboratorio f(x)', icono: '🧪', familia: 'extra',
+      id: 'calc', nombre: 'Laboratorio f(x)', icono: '', familia: 'extra',
       engine: null, vista: 'calc', orden: 12,
       desc: 'Evalúa expresiones y funciones en una lista de puntos.',
       params: [],
@@ -226,10 +226,21 @@
     },
   };
 
-  /* Familias para el mapa de aprendizaje. */
+  /* Familias del temario. */
   NS.familias = [
-    { id: 'raices', nombre: 'Isla de las Raíces', desc: 'Resolver f(x) = 0', icono: '🏝️', metodos: ['biseccion', 'cuerda', 'puntofijo', 'newton', 'secante'] },
-    { id: 'sistemas', nombre: 'Isla de los Sistemas', desc: 'Resolver A·X = B', icono: '⛰️', metodos: ['gauss', 'jacobi', 'seidel'] },
-    { id: 'interpolacion', nombre: 'Isla de la Interpolación', desc: 'Curvas por tus puntos', icono: '🌋', metodos: ['lagrange', 'newtoni', 'hermite'] },
+    { id: 'raices', nombre: 'Raíces de ecuaciones', desc: 'resolver f(x) = 0', metodos: ['biseccion', 'cuerda', 'puntofijo', 'newton', 'secante'] },
+    { id: 'sistemas', nombre: 'Sistemas lineales', desc: 'resolver A·X = B', metodos: ['gauss', 'jacobi', 'seidel'] },
+    { id: 'interpolacion', nombre: 'Interpolación', desc: 'una curva por tus puntos', metodos: ['lagrange', 'newtoni', 'hermite'] },
   ];
+
+  /* Posición curricular de un método: {unidad: '01', num: '1.4', familia}. */
+  NS.numeroDe = function (mid) {
+    for (let f = 0; f < NS.familias.length; f++) {
+      const i = NS.familias[f].metodos.indexOf(mid);
+      if (i >= 0) {
+        return { unidad: '0' + (f + 1), num: (f + 1) + '.' + (i + 1), familia: NS.familias[f].nombre };
+      }
+    }
+    return { unidad: '—', num: '', familia: '' };
+  };
 })(globalThis.MNO = globalThis.MNO || {});

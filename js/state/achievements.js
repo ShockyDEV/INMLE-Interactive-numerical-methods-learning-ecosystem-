@@ -8,14 +8,14 @@
 
   const LISTA = [
     {
-      id: 'primer-paso', nombre: 'Primer Paso', icono: '👣',
+      id: 'primer-paso', nombre: 'Primer Paso',
       desc: 'Ejecuta tu primera animación paso a paso.',
       cond: function (s) {
         return Object.keys(s.metodos).some(function (k) { return s.metodos[k].ejecuciones >= 1; });
       },
     },
     {
-      id: 'cazador-de-raices', nombre: 'Cazador de Raíces', icono: '🏹',
+      id: 'cazador-de-raices', nombre: 'Cazador de Raíces',
       desc: 'Encuentra una raíz con los 5 métodos de la Isla de las Raíces.',
       cond: function (s) {
         return ['biseccion', 'cuerda', 'puntofijo', 'newton', 'secante'].every(function (k) {
@@ -24,7 +24,7 @@
       },
     },
     {
-      id: 'tangente-perfecta', nombre: 'Tangente Perfecta', icono: '🎯',
+      id: 'tangente-perfecta', nombre: 'Tangente Perfecta',
       desc: 'Acierta 5 predicciones gráficas seguidas en Newton.',
       cond: function (s) {
         const p = prac(s, 'newton');
@@ -32,7 +32,7 @@
       },
     },
     {
-      id: 'espiral-domada', nombre: 'Espiral Domada', icono: '🌀',
+      id: 'espiral-domada', nombre: 'Espiral Domada',
       desc: 'Presencia una divergencia en Punto Fijo… y luego logra converger.',
       cond: function (s) {
         const m = met(s, 'puntofijo');
@@ -40,7 +40,7 @@
       },
     },
     {
-      id: 'domador-de-matrices', nombre: 'Domador de Matrices', icono: '🦁',
+      id: 'domador-de-matrices', nombre: 'Domador de Matrices',
       desc: 'Consigue ★★★ en el reto Cirujano de Matrices.',
       cond: function (s) {
         const m = met(s, 'gauss');
@@ -48,7 +48,7 @@
       },
     },
     {
-      id: 'diagonal-dominante', nombre: 'Diagonal Dominante', icono: '💪',
+      id: 'diagonal-dominante', nombre: 'Diagonal Dominante',
       desc: 'Supera el reto Hazla Dominante.',
       cond: function (s) {
         const mj = met(s, 'jacobi'), ms = met(s, 'seidel');
@@ -57,7 +57,7 @@
       },
     },
     {
-      id: 'descubridor-de-chebyshev', nombre: 'Descubridor de Chebyshev', icono: '🔭',
+      id: 'descubridor-de-chebyshev', nombre: 'Descubridor de Chebyshev',
       desc: 'Doma al fenómeno de Runge en el reto Caza al Runge.',
       cond: function (s) {
         const m = met(s, 'lagrange');
@@ -65,26 +65,26 @@
       },
     },
     {
-      id: 'sin-red', nombre: 'Sin Red', icono: '🪢',
+      id: 'sin-red', nombre: 'Sin Red',
       desc: 'Responde 10 preguntas seguidas sin usar ninguna pista.',
       cond: function (s) {
         return Object.keys(s.metodos).some(function (k) { return s.metodos[k].practica.sinPista >= 10; });
       },
     },
     {
-      id: 'racha-de-10', nombre: 'Racha de 10', icono: '🔥',
+      id: 'racha-de-10', nombre: 'Racha de 10',
       desc: '10 aciertos consecutivos al primer intento.',
       cond: function (s) {
         return Object.keys(s.metodos).some(function (k) { return s.metodos[k].practica.mejorRacha >= 10; });
       },
     },
     {
-      id: 'ojo-clinico', nombre: 'Ojo Clínico', icono: '👁️',
+      id: 'ojo-clinico', nombre: 'Ojo Clínico',
       desc: 'Acierta 5 apuestas en la Carrera de Métodos.',
       cond: function (s) { return s.carrera.apuestasOk >= 5; },
     },
     {
-      id: 'coleccionista', nombre: 'Coleccionista', icono: '🧭',
+      id: 'coleccionista', nombre: 'Coleccionista',
       desc: 'Alcanza al menos nivel Explorador en los 11 métodos.',
       cond: function (s) {
         return Object.keys(NS.registry).filter(function (k) { return k !== 'calc'; })
@@ -92,12 +92,12 @@
       },
     },
     {
-      id: 'medio-milenio', nombre: 'Medio Millar', icono: '💫',
+      id: 'medio-milenio', nombre: 'Medio Millar',
       desc: 'Acumula 500 puntos.',
       cond: function (s) { return s.puntos >= 500; },
     },
     {
-      id: 'gran-maestro', nombre: 'Gran Maestro Numérico', icono: '👑',
+      id: 'gran-maestro', nombre: 'Gran Maestro Numérico',
       desc: 'Domina (nivel Experto o más) los 11 métodos.',
       cond: function (s) {
         void s;

@@ -13,21 +13,21 @@
   NS.content.theory.biseccion = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'Si $f$ es continua y cambia de signo entre $a$ y $b$, el teorema de Bolzano garantiza una raíz dentro. La bisección juega al **frío-caliente perfecto**: mira el signo en el punto medio, descarta la mitad donde NO puede estar la raíz, y repite.',
           'Cada iteración reduce la incertidumbre exactamente a la mitad. No es lista, pero es **implacable**: nunca falla si hay cambio de signo.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           '$c = \\dfrac{a + b}{2}$; si $f(a) \\cdot f(c) < 0$ la raíz está en $[a, c]$; si no, en $[c, b]$.',
           'Cota del error tras $n$ iteraciones: $|\\alpha - c_n| \\le \\dfrac{b - a}{2^n}$ — **sabes el error ANTES de empezar**, un lujo que ningún otro método regala.',
         ],
       },
       {
-        titulo: 'Convergencia', icono: '📈',
+        titulo: 'Convergencia', icono: '',
         lineas: [
           'Lineal con razón exactamente $\\tfrac{1}{2}$: cada iteración regala un dígito binario (~0.3 dígitos decimales).',
           'Iteraciones necesarias para tolerancia $\\varepsilon$: $n \\ge \\log_2 \\dfrac{b - a}{\\varepsilon}$. Para 6 decimales partiendo de un intervalo de longitud 1: unas 20 iteraciones. Newton lo haría en 3… si le va bien.',
@@ -35,7 +35,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -55,16 +55,16 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
-          { tipo: 'error', texto: 'Aplicarla sin comprobar $f(a) \\cdot f(b) < 0$. Sin cambio de signo no hay garantía de nada (preset «⚠ Sin cambio de signo»).' },
-          { tipo: 'error', texto: 'Buscar una raíz doble como la de $(x-1)^2$: la parábola TOCA el eje sin cruzarlo, no hay cambio de signo y la bisección es ciega ante ella (preset «⚠ Raíz doble (invisible)»).' },
+          { tipo: 'error', texto: 'Aplicarla sin comprobar $f(a) \\cdot f(b) < 0$. Sin cambio de signo no hay garantía de nada (preset «Sin cambio de signo»).' },
+          { tipo: 'error', texto: 'Buscar una raíz doble como la de $(x-1)^2$: la parábola TOCA el eje sin cruzarlo, no hay cambio de signo y la bisección es ciega ante ella (preset «Raíz doble (invisible)»).' },
           { tipo: 'error', texto: 'Confundir «hay una raíz» con «hay UNA sola»: si $f$ cambia de signo varias veces dentro de $[a,b]$, la bisección converge a alguna de las raíces, no necesariamente a la que tú querías.' },
           { tipo: 'error', texto: 'Elegir la mitad por el TAMAÑO de $|f|$ en vez de por el SIGNO: que $|f(c)|$ sea pequeño no dice en qué mitad está el cambio de signo.' },
         ],
       },
       {
-        titulo: '¿Cuándo usarlo?', icono: '🧭',
+        titulo: '¿Cuándo usarlo?', icono: '',
         lineas: [
           'Como **red de seguridad**: cuando necesitas garantía absoluta, cuando $f$ es poco fiable, o para acorralar la raíz unas iteraciones y entregarle el testigo a Newton o a la secante.',
           'Los algoritmos profesionales (como el método de Brent) son exactamente eso: bisección de guardaespaldas + secante de velocista.',
@@ -161,10 +161,10 @@
   /* ============ RETOS ============ */
   NS.content.challenges.biseccion = [
     {
-      id: 'cerco', nombre: 'Cerco a la raíz', icono: '⭐',
+      id: 'cerco', nombre: 'Cerco a la raíz', icono: '★',
       tipo: 'param-goal',
-      desc: 'f tiene TRES raíces: −2, 0 y 3. Acorrala exactamente la marcada con ⭐ (x = 3) en pocas iteraciones.',
-      enunciado: '$f(x) = x^3 - x^2 - 6x = x\\,(x + 2)(x - 3)$ tiene tres raíces: $-2$, $0$ y $\\; 3\\,⭐$. **Elige $[a, b]$ para que la bisección converja a la raíz $x = 3$** (tol $0.001$) — y cuantas menos iteraciones, más puntos. Ojo: con el intervalo inicial $[-4, 4]$ pasa algo curioso…',
+      desc: 'f tiene TRES raíces: −2, 0 y 3. Acorrala exactamente la marcada con ★ (x = 3) en pocas iteraciones.',
+      enunciado: '$f(x) = x^3 - x^2 - 6x = x\\,(x + 2)(x - 3)$ tiene tres raíces: $-2$, $0$ y $3$ (marcada con ★). **Elige $[a, b]$ para que la bisección converja a la raíz $x = 3$** (tol $0.001$) — y cuantas menos iteraciones, más puntos. Ojo: con el intervalo inicial $[-4, 4]$ pasa algo curioso…',
       libres: ['a', 'b'],
       fijos: { f: 'x^3 - x^2 - 6x', tol: '0.001', maxIter: '60' },
       inicial: { a: '-4', b: '4' },
@@ -175,17 +175,17 @@
         if (trace.status !== 'converged') return { puntos: 5, msg: 'No convergió dentro del máximo de iteraciones.' };
         const root = trace.result.root;
         if (Math.abs(root - 3) > 0.1) {
-          return { puntos: 10, msg: '🎯 Convergió… ¡pero a la raíz ' + NS.num.fmt(root, 3) + '! Has cercado a la equivocada. Pista: los DOS extremos deben dejar fuera a las otras dos raíces.' };
+          return { puntos: 10, msg: 'Convergió… ¡pero a la raíz ' + NS.num.fmt(root, 3) + '! Has cercado a la equivocada. Pista: los DOS extremos deben dejar fuera a las otras dos raíces.' };
         }
         const it = trace.result.iters;
-        if (it <= 9) return { puntos: 100, msg: '¡Raíz ⭐ cercada en ' + it + ' iteraciones! Bracket de francotirador.' };
-        if (it <= 11) return { puntos: 80, msg: 'Raíz ⭐ en ' + it + ' iteraciones. Un intervalo inicial más estrecho la cerca antes.' };
-        if (it <= 14) return { puntos: 60, msg: 'Raíz ⭐ en ' + it + ' iteraciones — correcta, pero el cerco empezó ancho.' };
-        return { puntos: 40, msg: 'Raíz ⭐ atrapada, pero tras ' + it + ' iteraciones. Recuerda: cada mitad de anchura inicial ahorra una iteración.' };
+        if (it <= 9) return { puntos: 100, msg: '¡Raíz ★ cercada en ' + it + ' iteraciones! Bracket de francotirador.' };
+        if (it <= 11) return { puntos: 80, msg: 'Raíz ★ en ' + it + ' iteraciones. Un intervalo inicial más estrecho la cerca antes.' };
+        if (it <= 14) return { puntos: 60, msg: 'Raíz ★ en ' + it + ' iteraciones — correcta, pero el cerco empezó ancho.' };
+        return { puntos: 40, msg: 'Raíz ★ atrapada, pero tras ' + it + ' iteraciones. Recuerda: cada mitad de anchura inicial ahorra una iteración.' };
       },
     },
     {
-      id: 'presupuesto', nombre: 'Presupuesto de 8 iteraciones', icono: '⏱️',
+      id: 'presupuesto', nombre: 'Presupuesto de 8 iteraciones', icono: '⏱',
       tipo: 'param-goal',
       desc: 'Solo 8 iteraciones para cazar cos(x) = x. La precisión final depende SOLO de tu intervalo inicial.',
       enunciado: 'La ecuación $\\cos(x) = x$ tiene su raíz cerca de $0.739$. Tienes un presupuesto FIJO de **8 iteraciones**. Como cada una divide el intervalo por 2, tu error final será $\\approx \\frac{b-a}{2^9}$: **todo se decide en el intervalo inicial** (que debe seguir encerrando la raíz).',
@@ -200,7 +200,7 @@
         if (!serie.length) return { puntos: 0, msg: 'Sin iteraciones registradas.' };
         const err = serie[serie.length - 1].err;
         const msg = 'Error final (semilongitud): $' + tex(err, 8) + '$.';
-        if (err < 0.0005) return { puntos: 100, msg: msg + ' 🏆 Precisión de relojero con solo 8 cortes.' };
+        if (err < 0.0005) return { puntos: 100, msg: msg + ' Precisión de relojero con solo 8 cortes.' };
         if (err < 0.002) return { puntos: 80, msg: msg + ' Muy fino: tu intervalo inicial ya valía oro.' };
         if (err < 0.005) return { puntos: 60, msg: msg + ' Bien. ¿Puedes arrancar aún más cerca de 0.739 sin perder el cambio de signo?' };
         return { puntos: 30, msg: msg + ' Demasiado ancho el punto de partida: 8 iteraciones solo dividen por 256.' };

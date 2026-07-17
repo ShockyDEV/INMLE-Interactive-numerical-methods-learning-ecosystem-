@@ -5,9 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="MNO Interactivo — aprende métodos numéricos jugando: visualizaciones animadas, predicción de pasos, retos y comparación de convergencia.">
 <meta name="theme-color" content="#0b0e17">
-<title>MNO Interactivo — Métodos Numéricos</title>
+<title>INMLE · Métodos Numéricos</title>
 
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎯</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23fbfaf6'/><path d='M5 24 Q 14 4 27 19' stroke='%231b49c8' fill='none' stroke-width='2.6' stroke-linecap='round'/><line x1='7' y1='26' x2='25' y2='8' stroke='%23c23d32' stroke-width='2' stroke-linecap='round'/><circle cx='19.5' cy='13.5' r='2.4' fill='%2314724a'/></svg>">
+
+<script>
+/* pre-init del tema: evita el destello al cargar */
+(function () {
+  try {
+    var t = localStorage.getItem('mno.tema');
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+  } catch (e) { /* sin storage */ }
+})();
+</script>
+
+<link rel="preload" href="vendor/fonts/plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="vendor/fonts/plex-serif-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="vendor/fonts/plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
 
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
@@ -60,6 +74,8 @@
 <script src="js/state/achievements.js"></script>
 <script src="js/state/exporter.js"></script>
 
+<script src="js/ui/tema.js"></script>
+<script src="js/ui/glyphs.js"></script>
 <script src="js/ui/mathtext.js"></script>
 <script src="js/ui/widgets.js"></script>
 <script src="js/ui/player.js"></script>

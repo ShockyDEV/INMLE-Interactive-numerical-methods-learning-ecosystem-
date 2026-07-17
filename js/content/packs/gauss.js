@@ -13,14 +13,14 @@
   NS.content.theory.gauss = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'Un sistema triangular se resuelve solo: la última ecuación da $x_n$ directamente, la penúltima usa ese valor, y así hacia arriba. Gauss convierte CUALQUIER sistema en uno triangular a base de **operaciones de fila que no cambian la solución**.',
           'La herramienta es una sola: restar a una fila un múltiplo de otra ($F_i \\to F_i - m\\,F_k$), con el multiplicador $m$ elegido con puntería para fabricar un CERO donde interesa.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           'Para anular $a_{ik}$ bajo el pivote $a_{kk}$: $m_{ik} = \\dfrac{a_{ik}}{a_{kk}}$ y luego $F_i \\to F_i - m_{ik} F_k$.',
           'Tras triangular: **sustitución regresiva**, $x_i = \\dfrac{b_i - \\sum_{j>i} a_{ij} x_j}{a_{ii}}$.',
@@ -28,7 +28,7 @@
         ],
       },
       {
-        titulo: 'Coste y exactitud', icono: '📈',
+        titulo: 'Coste y exactitud', icono: '',
         lineas: [
           'Método **directo**: da la solución exacta (salvo redondeo) en un número FINITO de operaciones — nada de iterar y esperar.',
           'Coste: $\\sim \\frac{n^3}{3}$ multiplicaciones. Para $n = 3$ es un pestañeo; para $n = 10^6$ (mallas de ingeniería) es prohibitivo, y ahí entran Jacobi y Gauss-Seidel.',
@@ -37,7 +37,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -56,7 +56,7 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
           { tipo: 'error', texto: 'Equivocar el SIGNO del multiplicador: $m_{ik} = a_{ik}/a_{kk}$ y la operación es RESTAR $m \\cdot F_k$. Si el cero no aparece donde toca, revisa el signo.' },
           { tipo: 'error', texto: 'Olvidar aplicar la operación al término independiente $b$: la fila es TODA la fila, columna aumentada incluida.' },
@@ -65,7 +65,7 @@
         ],
       },
       {
-        titulo: '¿Cuándo usarlo?', icono: '🧭',
+        titulo: '¿Cuándo usarlo?', icono: '',
         lineas: [
           'Sistemas de tamaño pequeño o mediano, densos, donde quieres LA solución sin condiciones de convergencia: es el estándar.',
           'Muchos sistemas con la misma $A$ → factoriza $LU$ una vez. Sistemas enormes y dispersos → métodos iterativos (Jacobi, Gauss-Seidel y sucesores).',
@@ -191,7 +191,7 @@
 
   NS.content.challenges.gauss = [
     {
-      id: 'cirujano', nombre: 'Cirujano de matrices', icono: '🩺',
+      id: 'cirujano', nombre: 'Cirujano de matrices', icono: '',
       tipo: 'quiz-serie',
       desc: 'Opera un sistema 3×3 TÚ: los tres multiplicadores y la sustitución regresiva, con verificación en cada corte.',
       n: 5,
@@ -200,7 +200,7 @@
           const op = rowops(c.tr)[0];
           return {
             tipo: 'numeric', tema: 'cirujano-m21',
-            enunciado: '🩺 Paciente: ' + pintaMatriz(c.A, c.B) + '. Primer corte: calcula $m_{21}$ (3 decimales).',
+            enunciado: 'Paciente: ' + pintaMatriz(c.A, c.B) + '. Primer corte: calcula $m_{21}$ (3 decimales).',
             respuesta: op.op.m, tol: 0.005,
             pista: '$m_{21} = a_{21}/a_{11}$.',
             solucion: '$m_{21} = ' + tex(op.op.m, 5) + '$.',
@@ -210,7 +210,7 @@
           const op = rowops(c.tr)[1];
           return {
             tipo: 'numeric', tema: 'cirujano-m31',
-            enunciado: '🩺 Paciente: ' + pintaMatriz(c.A, c.B) + '. Segundo corte: calcula $m_{31}$ (3 decimales).',
+            enunciado: 'Paciente: ' + pintaMatriz(c.A, c.B) + '. Segundo corte: calcula $m_{31}$ (3 decimales).',
             respuesta: op.op.m, tol: 0.005,
             pista: '$m_{31} = a_{31}/a_{11}$.',
             solucion: '$m_{31} = ' + tex(op.op.m, 5) + '$.',
@@ -221,7 +221,7 @@
           const prev = rowops(c.tr)[1];
           return {
             tipo: 'numeric', tema: 'cirujano-m32',
-            enunciado: '🩺 Tras el paso 1, la submatriz quedó con $a_{22}^{(1)} = ' + tex(prev.M[1][1], 4) + '$ y $a_{32}^{(1)} = ' + tex(prev.M[2][1], 4) + '$. Tercer corte: calcula $m_{32}$ (3 decimales).',
+            enunciado: 'Tras el paso 1, la submatriz quedó con $a_{22}^{(1)} = ' + tex(prev.M[1][1], 4) + '$ y $a_{32}^{(1)} = ' + tex(prev.M[2][1], 4) + '$. Tercer corte: calcula $m_{32}$ (3 decimales).',
             respuesta: op.op.m, tol: 0.005,
             pista: '¡Usa los valores YA OPERADOS, no los originales! $m_{32} = a_{32}^{(1)}/a_{22}^{(1)}$.',
             solucion: '$m_{32} = ' + tex(op.op.m, 5) + '$ — el clásico error aquí es usar la matriz original.',
@@ -230,7 +230,7 @@
         genPregCirujano(function (c) {
           return {
             tipo: 'numeric', tema: 'cirujano-x3',
-            enunciado: '🩺 Sutura final. El sistema del paciente ' + pintaMatriz(c.A, c.B) + ' ya está triangulado. Empieza la sustitución regresiva: ¿cuánto vale $x_3$? (3 decimales)',
+            enunciado: 'Sutura final. El sistema del paciente ' + pintaMatriz(c.A, c.B) + ' ya está triangulado. Empieza la sustitución regresiva: ¿cuánto vale $x_3$? (3 decimales)',
             respuesta: c.tr.result.X[2], tol: 0.005,
             pista: 'De la última fila triangulada: $x_3 = b_3^{(2)} / a_{33}^{(2)}$ — puedes reproducir la eliminación en el modo Cuaderno.',
             solucion: '$x_3 = ' + tex(c.tr.result.X[2], 5) + '$.',
@@ -239,7 +239,7 @@
         genPregCirujano(function (c) {
           return {
             tipo: 'numeric', tema: 'cirujano-x1',
-            enunciado: '🩺 Último punto: con el sistema ' + pintaMatriz(c.A, c.B) + ' ya resuelto hacia arriba, ¿cuánto vale $x_1$? (3 decimales)',
+            enunciado: 'Último punto: con el sistema ' + pintaMatriz(c.A, c.B) + ' ya resuelto hacia arriba, ¿cuánto vale $x_1$? (3 decimales)',
             respuesta: c.tr.result.X[0], tol: 0.005,
             pista: '$x_1 = \\dfrac{b_1 - a_{12}x_2 - a_{13}x_3}{a_{11}}$ con los $x_2, x_3$ ya despejados (Cuaderno si lo necesitas).',
             solucion: '$x_1 = ' + tex(c.tr.result.X[0], 5) + '$. Operación completada, doctor.',
@@ -248,7 +248,7 @@
       ],
     },
     {
-      id: 'pivotesabio', nombre: 'El pivote sabio', icono: '🦉',
+      id: 'pivotesabio', nombre: 'El pivote sabio', icono: '',
       tipo: 'quiz-serie',
       desc: 'Determinantes, pivotes nulos y el porqué del pivoteo: la sabiduría fina de Gauss en 4 preguntas.',
       n: 4,

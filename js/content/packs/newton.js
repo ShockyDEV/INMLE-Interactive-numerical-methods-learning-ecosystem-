@@ -15,21 +15,21 @@
   NS.content.theory.newton = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'En cada punto, la curva se parece mucho a su **recta tangente**. Newton explota eso sin piedad: sustituye $f$ por su tangente en $x_n$ y salta a donde la tangente corta al eje. Si la curva y la tangente se parecen, ese corte está mucho más cerca de la raíz.',
           'Repite: apoyo, tangente, salto. En pocas iteraciones el salto es microscópico.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           '$x_{n+1} = x_n - \\dfrac{f(x_n)}{f\'(x_n)}$',
           'Es una iteración de punto fijo con $G(x) = x - \\frac{f(x)}{f\'(x)}$: en la raíz simple, $G\'(\\alpha) = 0$, y por eso es tan rápido.',
         ],
       },
       {
-        titulo: 'Convergencia', icono: '📈',
+        titulo: 'Convergencia', icono: '',
         lineas: [
           'Si $\\alpha$ es raíz **simple** ($f\'(\\alpha) \\ne 0$), $f\'\'$ es continua y $x_0$ está suficientemente cerca, la convergencia es **cuadrática**: $|e_{n+1}| \\approx C\\,|e_n|^2$.',
           'En la práctica: **el número de decimales correctos se duplica en cada iteración**. Míralo en la pestaña Convergencia: la curva del error se despeña.',
@@ -37,7 +37,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -56,7 +56,7 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
           { tipo: 'error', texto: 'Derivar mal $f$. Newton "funciona" igual… pero converge lento y ya no es Newton. La app compara tu $f\'$ con la derivada numérica y te avisa. Practícalo con el preset «Derivada mal escrita».' },
           { tipo: 'error', texto: 'Elegir $x_0$ cerca de un máximo/mínimo local: la tangente es casi horizontal y el primer salto sale disparado (preset «Tangente horizontal»).' },
@@ -65,7 +65,7 @@
         ],
       },
       {
-        titulo: '¿Cuándo usarlo?', icono: '🧭',
+        titulo: '¿Cuándo usarlo?', icono: '',
         lineas: [
           'Cuando tienes $f\'$ barata y un $x_0$ razonable (por ejemplo, afinado antes con unas iteraciones de bisección): imbatible.',
           'Si no tienes derivada → **Secante**. Si necesitas garantía absoluta → **Bisección** (o híbridos). Si $f\'$ es carísima → Secante otra vez.',
@@ -179,7 +179,7 @@
   /* ============ RETOS ============ */
   NS.content.challenges.newton = [
     {
-      id: 'tiro', nombre: 'Tiro de precisión', icono: '🎯',
+      id: 'tiro', nombre: 'Tiro de precisión', icono: '',
       tipo: 'param-goal',
       desc: 'Elige x₀ para clavar la raíz de x³ − 2x + 2 en ≤ 4 iteraciones (tol 10⁻¹⁰). Cuidado: hay ciclos y despistes.',
       enunciado: 'La función $f(x) = x^3 - 2x + 2$ tiene UNA raíz real (cerca de $-1.77$)… y un campo de minas: desde $x_0 = 0$ Newton entra en ciclo, y cerca de $\\pm 0.816$ la tangente es horizontal. **Elige $x_0$ para converger con tol $10^{-10}$ en 4 iteraciones o menos.**',
@@ -190,7 +190,7 @@
       plot: true,
       evalua: function (trace) {
         if (trace.status !== 'converged') {
-          return { puntos: 0, msg: trace.status === 'maxIter' ? '💫 No convergió: ¿habrás caído en el ciclo?' : '💥 Se fue lejos: esa cuenca no era.' };
+          return { puntos: 0, msg: trace.status === 'maxIter' ? 'No convergió: ¿habrás caído en el ciclo?' : 'Se fue lejos: esa cuenca no era.' };
         }
         const it = trace.result.iters;
         if (it <= 4) return { puntos: 100, msg: '¡Convergió en ' + it + ' iteraciones! Puntería de francotirador.' };
@@ -200,7 +200,7 @@
       },
     },
     {
-      id: 'detective', nombre: 'Detective de derivadas', icono: '🕵️',
+      id: 'detective', nombre: 'Detective de derivadas', icono: '',
       tipo: 'apuesta',
       desc: 'Tres candidatas a f′ para f = x² − 5. Solo una es correcta: descúbrela por la VELOCIDAD.',
       pregunta: 'Para $f(x) = x^2 - 5$ te ofrecen tres derivadas. Con las tres, "Newton" converge a $\\sqrt{5}$… pero solo la correcta lo hace con velocidad cuadrática. **¿Cuál es la buena?** (gana la que converja en menos iteraciones)',

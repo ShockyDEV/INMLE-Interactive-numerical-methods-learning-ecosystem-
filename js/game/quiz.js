@@ -53,7 +53,7 @@
       const banco = NS.content.quizzes[ctx.method.id];
       if (!banco || !banco.generadores || !banco.generadores.length) {
         container.appendChild(el('div', 'placeholder-card',
-          '<h2>🎯 Practicar</h2><p>Las preguntas de este método se están escribiendo…</p>'));
+          '<h2>Practicar</h2><p>Las preguntas de este método se están escribiendo.</p>'));
         return;
       }
       S = { ctx: ctx, banco: banco, ultimo: -1, plot: null, sesion: { aciertos: 0, total: 0 } };
@@ -99,8 +99,8 @@
     const p = st ? st.practica : { rachaActual: 0 };
     S.marcas.innerHTML =
       '<span>Sesión: <b>' + S.sesion.aciertos + '/' + S.sesion.total + '</b></span>' +
-      '<span class="quiz-racha">🔥 racha ' + (p.rachaActual || 0) + '</span>' +
-      (NS.store ? '<span>⭐ <b>' + NS.store.raw().puntos + '</b> puntos</span>' : '');
+      '<span class="quiz-racha">racha ' + (p.rachaActual || 0) + '</span>' +
+      (NS.store ? '<span><b>' + NS.store.raw().puntos + '</b> pts</span>' : '');
   }
 
   function nueva() {
@@ -180,7 +180,7 @@
       inp.focus();
     } else if (q.tipo === 'point-x') {
       S.instr.style.display = '';
-      S.instr.textContent = '👆 Toca o haz clic sobre la gráfica en el punto que creas — también puedes enfocar la gráfica y usar flechas + Enter.';
+      S.instr.textContent = 'Toca o haz clic sobre la gráfica en el punto que creas; con teclado, enfoca la gráfica y usa las flechas y Enter.';
       S.plot.on('tap', function (t) {
         if (S.resuelta || !S.q || S.q.tipo !== 'point-x') return;
         respondePointX(t.wx);
@@ -218,9 +218,9 @@
   }
 
   function feedbackBien(extra) {
-    const puntosTxt = extra && extra.puntos ? '  (+' + extra.puntos + ' ⭐' + (extra.racha > 1 ? ' · racha ' + extra.racha + ' 🔥' : '') + ')' : '';
+    const puntosTxt = extra && extra.puntos ? '  (+' + extra.puntos + ' pts' + (extra.racha > 1 ? ' · racha ' + extra.racha : '') + ')' : '';
     const f = el('div', 'quiz-feedback bien');
-    NS.math.render(f, U.elegir(['✅ **¡Exacto!**', '✅ **¡Muy bien!**', '✅ **¡Eso es!**', '✅ **¡Clavado!**']) + puntosTxt + (S.q.solucion ? ' ' + S.q.solucion : ''));
+    NS.math.render(f, '✓ ' + U.elegir(['**Exacto.**', '**Muy bien.**', '**Eso es.**', '**Correcto.**']) + puntosTxt + (S.q.solucion ? ' ' + S.q.solucion : ''));
     S.feedback.innerHTML = '';
     S.feedback.appendChild(f);
   }
@@ -229,11 +229,11 @@
     S.feedback.innerHTML = '';
     if (S.intentos === 1 && S.q.pista) {
       const f = el('div', 'quiz-feedback pista');
-      NS.math.render(f, '💡 **Pista:** ' + S.q.pista + '  — te queda un intento.');
+      NS.math.render(f, '**Pista.** ' + S.q.pista + '  — te queda un intento.');
       S.feedback.appendChild(f);
     } else {
       const f = el('div', 'quiz-feedback mal');
-      NS.math.render(f, '❌ ' + (S.q.solucion ? '**Solución:** ' + S.q.solucion : 'No era eso.'));
+      NS.math.render(f, '✗ ' + (S.q.solucion ? '**Solución.** ' + S.q.solucion : 'No era eso.'));
       S.feedback.appendChild(f);
     }
   }
@@ -279,7 +279,7 @@
     S.intentos++;
     const ok = Math.abs(wx - S.q.puntoX) <= S.q.tolX;
     const marca = { t: 'vline', id: 'guess' + S.intentos, x: wx, cls: 'guia' };
-    const punto = { t: 'point', id: 'gp' + S.intentos, x: wx, y: 0, cls: ok ? 'raiz' : 'error', label: ok ? '¡sí!' : '✗' };
+    const punto = { t: 'point', id: 'gp' + S.intentos, x: wx, y: 0, cls: ok ? 'raiz' : 'error', label: ok ? 'sí' : 'no' };
     let prims = S.basePrims.concat([marca, punto]);
     if (ok) {
       feedbackBien(registra(true));

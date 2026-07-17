@@ -13,21 +13,21 @@
   NS.content.theory.cuerda = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'La bisección corta siempre por el centro, aunque $f(a)$ esté a un milímetro del eje y $f(b)$ a un kilómetro. La cuerda es más lista: **une $(a, f(a))$ con $(b, f(b))$ con una recta y corta por donde ESA recta cruza el eje**.',
           'Si $f$ es casi recta en el intervalo, ese corte cae casi encima de la raíz. Conserva la garantía del cambio de signo, pero apunta con conocimiento de causa.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           '$c = a - f(a)\\,\\dfrac{b - a}{f(b) - f(a)}$',
           'Después, igual que en bisección: la mitad que conserva el cambio de signo sobrevive. Criterio de parada: $|f(c)| < \\varepsilon$.',
         ],
       },
       {
-        titulo: 'Convergencia', icono: '📈',
+        titulo: 'Convergencia', icono: '',
         lineas: [
           'Lineal (orden 1), normalmente con mejor razón que el $\\tfrac{1}{2}$ de la bisección — cuanto más recta sea $f$ en el intervalo, más rápido.',
           'Fenómeno estrella: en funciones **convexas o cóncavas**, uno de los extremos se queda CLAVADO para siempre (el «extremo perezoso»). La longitud del intervalo NO tiende a cero… y sin embargo $c_n$ sí converge a la raíz.',
@@ -35,7 +35,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -54,7 +54,7 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
           { tipo: 'error', texto: 'Parar cuando el intervalo es corto: con extremo perezoso, $b - a$ NUNCA se hace pequeño aunque $c$ ya esté clavado en la raíz. Mira el preset «Extremo perezoso».' },
           { tipo: 'error', texto: 'Confundirla con la secante: la SECANTE usa siempre los dos últimos puntos y puede escaparse del intervalo; la CUERDA conserva el cambio de signo a toda costa.' },
@@ -63,7 +63,7 @@
         ],
       },
       {
-        titulo: '¿Cuándo usarla?', icono: '🧭',
+        titulo: '¿Cuándo usarla?', icono: '',
         lineas: [
           'Cuando quieres la garantía del bracket pero la bisección te parece un caracol y no tienes derivada.',
           'Si la garantía no te importa → **secante** (más rápida). Si tienes $f\'$ → **Newton**. Si la función es salvaje → **bisección** a secas.',
@@ -163,7 +163,7 @@
   /* ============ RETOS ============ */
   NS.content.challenges.cuerda = [
     {
-      id: 'duelo', nombre: '¿Qué bracket gana?', icono: '🥊',
+      id: 'duelo', nombre: '¿Qué bracket gana?', icono: '',
       tipo: 'apuesta',
       desc: 'Tres intervalos iniciales para la misma raíz de x³ = 2. ¿Cuál converge en menos iteraciones?',
       pregunta: 'Vas a resolver $x^3 - 2 = 0$ (raíz $\\sqrt[3]{2} \\approx 1.26$) con la cuerda y tol $10^{-4}$. Tres intervalos iniciales encierran la raíz: **¿cuál convergerá en MENOS iteraciones?**',
@@ -176,7 +176,7 @@
       moraleja: 'En un tramo corto, la curva es casi recta y la cuerda acierta casi a la primera. Bracket estrecho = función «casi lineal» = cuerda letal.',
     },
     {
-      id: 'punteria', nombre: 'Puntería con la cuerda', icono: '🏹',
+      id: 'punteria', nombre: 'Puntería con la cuerda', icono: '',
       tipo: 'param-goal',
       desc: 'Elige [a, b] para cazar la raíz de eˣ = 3 en muy pocas iteraciones (tol 10⁻⁵).',
       enunciado: '$f(x) = e^x - 3$ tiene su raíz en $\\ln 3 \\approx 1.0986$. Con tol $10^{-5}$: **elige $[a, b]$ (con cambio de signo) para converger en las mínimas iteraciones posibles**. La curvatura de $e^x$ te va a hacer la puñeta con un extremo…',

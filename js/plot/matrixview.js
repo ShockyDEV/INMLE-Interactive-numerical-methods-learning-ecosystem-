@@ -243,7 +243,7 @@
         nom.textContent = 'F' + (f.i + 1);
         fila.appendChild(nom);
         const total = Math.max(f.diag, f.suma, 1e-9);
-        [['|diag|', f.diag, f.ok ? '#00b894' : '#d63031'], ['Σ resto', f.suma, '#636e72']].forEach(function (par) {
+        [['|diag|', f.diag, f.ok ? NS.plotPalette().ok : NS.plotPalette().bad], ['Σ resto', f.suma, NS.plotPalette().muted]].forEach(function (par) {
           const barbox = document.createElement('span');
           barbox.className = 'mv-dbar mv-dbar-l';
           const bar = document.createElement('span');
@@ -259,7 +259,7 @@
         const res = document.createElement('span');
         res.className = 'mv-dtxt';
         res.textContent = f.ok ? '✓' : '✗';
-        res.style.color = f.ok ? '#00b894' : '#d63031';
+        res.style.color = f.ok ? NS.plotPalette().ok : NS.plotPalette().bad;
         fila.appendChild(res);
         box.appendChild(fila);
       });

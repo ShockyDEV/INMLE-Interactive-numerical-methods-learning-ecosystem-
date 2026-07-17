@@ -39,7 +39,7 @@
       const defs = NS.content.challenges[ctx.method.id];
       if (!defs || !defs.length) {
         container.appendChild(el('div', 'placeholder-card',
-          '<h2>🏆 Reto</h2><p>Los retos de este método se están diseñando…</p>'));
+          '<h2>Reto</h2><p>Los retos de este método se están diseñando.</p>'));
         return;
       }
       S = { ctx: ctx, defs: defs, plot: null };
@@ -64,7 +64,7 @@
       const card = el('div', 'reto-item');
       card.setAttribute('role', 'button');
       card.tabIndex = 0;
-      card.appendChild(el('h3', null, (def.icono || '🏆') + ' ' + def.nombre));
+      card.appendChild(el('h3', null, def.nombre));
       card.appendChild(el('p', null, def.desc || ''));
       card.appendChild(el('div', 'reto-mejor', prev
         ? estrellasTxt(prev.estrellas) + ' · mejor: ' + prev.mejor + ' pts'
@@ -80,7 +80,7 @@
   function cabecera(def, onVolver) {
     const head = el('div', 'reto-head');
     const izq = el('div');
-    izq.appendChild(el('h3', null, (def.icono || '🏆') + ' ' + def.nombre));
+    izq.appendChild(el('h3', null, def.nombre));
     head.appendChild(izq);
     S.marcador = el('div', 'reto-puntos', '');
     head.appendChild(S.marcador);
@@ -99,7 +99,7 @@
     const msg = el('div');
     NS.math.render(msg, '**' + puntos + ' puntos.** ' + (detalle || ''));
     fin.appendChild(msg);
-    const otra = el('button', 'btn', '↻ Intentar de nuevo');
+    const otra = el('button', 'btn btn-suave', 'Intentar de nuevo');
     otra.type = 'button';
     otra.style.marginTop = '12px';
     otra.addEventListener('click', function () { juega(def); });
@@ -149,7 +149,7 @@
     });
     carta.appendChild(formBox);
 
-    const btn = el('button', 'btn btn-run', '🚀 PROBAR');
+    const btn = el('button', 'btn btn-run', 'Probar');
     btn.type = 'button';
     carta.appendChild(btn);
     const resultado = el('div', 'resultado');
@@ -260,16 +260,16 @@
         const fila = el('div', 'dash-fila');
         fila.appendChild(el('span', 'nombre', c.label.replace(/\$/g, '')));
         const txt = !t ? 'error' :
-          t.status === 'converged' ? '✅ converge en ' + t.result.iters + ' iteraciones' :
-            t.status === 'diverged' ? '💥 diverge' : '⏳ no converge (' + t.status + ')';
-        fila.appendChild(el('span', null, txt + (i === ganador ? '  🏆' : '')));
+          t.status === 'converged' ? 'converge en ' + t.result.iters + ' iteraciones' :
+            t.status === 'diverged' ? 'diverge' : 'no converge (' + t.status + ')';
+        fila.appendChild(el('span', null, txt + (i === ganador ? '  — ganador' : '')));
         tabla.appendChild(fila);
       });
       S.zona.appendChild(tabla);
       const ok = idx === ganador;
       const puntos = ok ? (def.puntosAcierto || 100) : (def.puntosFallo || 25);
       setTimeout(function () {
-        termina(def, puntos, ok ? '¡Apuesta ganadora! ' + (def.moraleja || '') : 'El ganador era otro. ' + (def.moraleja || ''));
+        termina(def, puntos, ok ? '**Apuesta ganadora.** ' + (def.moraleja || '') : '**El ganador era otro.** ' + (def.moraleja || ''));
       }, 1800);
     }
   }
@@ -346,18 +346,18 @@
         fb.innerHTML = '';
         if (ok) {
           const f = el('div', 'quiz-feedback bien');
-          NS.math.render(f, '✅ **¡Bien!**' + (intentos > 1 ? ' (con pista: −10)' : ''));
+          NS.math.render(f, '✓ **Bien.**' + (intentos > 1 ? ' (con pista: −10)' : ''));
           fb.appendChild(f);
           if (inp) inp.disabled = true;
           if (ops) ops.querySelectorAll('.quiz-op').forEach(function (b) { b.disabled = true; });
           onFin({ ok: true, conPista: intentos > 1 });
         } else if (intentos === 1 && q.pista) {
           const f = el('div', 'quiz-feedback pista');
-          NS.math.render(f, '💡 ' + q.pista);
+          NS.math.render(f, '**Pista.** ' + q.pista);
           fb.appendChild(f);
         } else {
           const f = el('div', 'quiz-feedback mal');
-          NS.math.render(f, '❌ ' + (q.solucion || ''));
+          NS.math.render(f, '✗ ' + (q.solucion || ''));
           fb.appendChild(f);
           if (inp) inp.disabled = true;
           if (ops) ops.querySelectorAll('.quiz-op').forEach(function (b) { b.disabled = true; });

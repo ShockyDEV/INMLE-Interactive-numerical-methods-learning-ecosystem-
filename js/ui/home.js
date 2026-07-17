@@ -1,6 +1,5 @@
-/* MNO.views.home — mapa de aprendizaje: tres islas con anillos de maestría,
-   accesos a la Carrera de Métodos, Mi Progreso y el Laboratorio f(x).
-   MNO.views.calc — evaluador de expresiones (el "Calc" del MNO Helper). */
+/* MNO.views.home — portada tipo índice de curso: unidades numeradas, fichas
+   con glifo generativo y medidor de maestría. MNO.views.calc — laboratorio. */
 (function (NS) {
   'use strict';
 
@@ -19,77 +18,90 @@
     mount: function (root) {
       const sec = el('section', 'pantalla home');
 
-      const hero = el('div', 'hero');
-      hero.appendChild(el('h1', null, 'MNO <span class="acento">Interactivo</span>'));
-      hero.appendChild(el('p', 'hero-sub', 'Aprende métodos numéricos jugando: explora las animaciones, predice el siguiente paso y supera los retos.'));
-      const acc = el('div', 'hero-acciones');
+      /* ---- masthead ---- */
+      const mast = el('header', 'masthead');
+      mast.appendChild(el('p', 'eyebrow', 'Interactive Numerical Methods Learning Ecosystem'));
+      mast.appendChild(el('h1', null, 'INMLE · Métodos numéricos'));
+      mast.appendChild(el('p', 'lede', 'Un laboratorio interactivo para APRENDER los métodos, no solo ejecutarlos: explora cada algoritmo en movimiento, predice su siguiente paso y ponlo a competir.'));
+      const acc = el('nav', 'masthead-acciones');
       [
-        ['#/carrera', '🏁 Carrera de métodos', 'hero-btn hb-carrera'],
-        ['#/progreso', '📊 Mi progreso', 'hero-btn'],
-        ['#/calc', '🧪 Laboratorio f(x)', 'hero-btn'],
+        ['#/carrera', 'Carrera de métodos', 'btn'],
+        ['#/progreso', 'Mi progreso', 'btn btn-suave'],
+        ['#/calc', 'Laboratorio f(x)', 'btn btn-suave'],
       ].forEach(function (par) {
         const a = el('a', par[2], par[1]);
         a.href = par[0];
         acc.appendChild(a);
       });
-      hero.appendChild(acc);
-      /* resumen de progreso global */
+      mast.appendChild(acc);
+      if (NS.tema) mast.appendChild(NS.tema.boton());
       if (NS.store) {
         const g = NS.store.resumenGlobal();
         if (g.puntos > 0 || g.insignias > 0) {
-          hero.appendChild(el('p', 'hero-marcas',
-            '⭐ ' + g.puntos + ' puntos · 🎖️ ' + g.insignias + ' insignias · 🧭 ' + g.maestros + '/11 métodos dominados'));
+          mast.appendChild(el('p', 'hero-marcas',
+            g.puntos + ' pts · ' + g.insignias + '/' + NS.achievements.lista.length + ' insignias · ' + g.maestros + '/11 métodos dominados'));
         }
       }
-      sec.appendChild(hero);
+      sec.appendChild(mast);
 
-      NS.familias.forEach(function (fam) {
-        const isla = el('div', 'isla');
-        isla.appendChild(el('h2', 'isla-tit', fam.icono + ' ' + fam.nombre + ' <small>' + fam.desc + '</small>'));
-        const grid = el('div', 'isla-grid');
-        fam.metodos.forEach(function (mid, idx) {
+      /* ---- unidades ---- */
+      NS.familias.forEach(function (fam, fi) {
+        const unidad = el('section', 'unidad');
+        const cab = el('div', 'unidad-cab');
+        cab.appendChild(el('span', 'unidad-num', '0' + (fi + 1)));
+        cab.appendChild(el('h2', null, fam.nombre));
+        cab.appendChild(el('span', 'unidad-desc', fam.desc));
+        unidad.appendChild(cab);
+        const fichas = el('div', 'fichas');
+        fam.metodos.forEach(function (mid, mi) {
           const m = NS.registry[mid];
-          const card = el('a', 'met-card');
+          const card = el('a', 'ficha');
           card.href = '#/m/' + mid;
-          const nivel = NS.store ? NS.store.mastery(mid) : 0; /* 0..4 */
-          const pct = nivel / 4 * 100;
-          const anillo = el('div', 'anillo');
-          anillo.style.background = 'conic-gradient(var(--acc2) ' + pct + '%, rgba(148,163,184,0.15) ' + pct + '%)';
-          anillo.appendChild(el('span', 'anillo-ico', m.icono));
-          card.appendChild(anillo);
-          const info = el('div', 'met-card-info');
+          const glifo = el('span', 'ficha-glifo');
+          card.appendChild(glifo);
+          const info = el('div', 'ficha-info');
+          info.appendChild(el('div', 'ficha-num', (fi + 1) + '.' + (mi + 1)));
           info.appendChild(el('h3', null, m.nombre));
           info.appendChild(el('p', null, m.desc));
-          const meta = el('p', 'met-card-meta', (idx + 1) + ' de ' + fam.metodos.length +
-            ' · <span class="nivel nivel-' + nivel + '">' + NIVELES[Math.min(4, nivel)] + '</span>');
-          info.appendChild(meta);
+          const nivel = NS.store ? NS.store.mastery(mid) : 0; /* 0..4 */
+          const me = el('div', 'maestria');
+          for (let i = 0; i < 4; i++) me.appendChild(el('i', i < nivel ? 'on' : ''));
+          me.appendChild(el('span', 'maestria-txt', NIVELES[Math.min(4, nivel)]));
+          info.appendChild(me);
           card.appendChild(info);
-          grid.appendChild(card);
+          fichas.appendChild(card);
+          NS.glyphs.into(glifo, mid, 52);
         });
-        isla.appendChild(grid);
-        sec.appendChild(isla);
+        unidad.appendChild(fichas);
+        sec.appendChild(unidad);
       });
 
       sec.appendChild(el('footer', 'pie',
-        'MNO Interactivo — recurso educativo abierto de métodos numéricos · funciona sin conexión · tu progreso solo vive en tu navegador'));
+        'INMLE — recurso educativo abierto de métodos numéricos. Funciona sin conexión; tu progreso vive únicamente en este navegador.'));
       root.appendChild(sec);
     },
     unmount: function () {},
   };
 
-  /* ---------- Laboratorio f(x) (Calc) ---------- */
+  /* ---------- Laboratorio f(x) ---------- */
   NS.views.calc = {
     mount: function (root) {
       const sec = el('section', 'pantalla met');
       const head = el('header', 'met-head');
       const back = el('a', 'btn-back', '←');
       back.href = '#/';
+      back.setAttribute('aria-label', 'Volver al índice');
       head.appendChild(back);
+      const glifo = el('span', 'met-glifo');
+      head.appendChild(glifo);
       const tit = el('div', 'met-tit');
-      tit.appendChild(el('h1', null, '🧪 Laboratorio f(x)'));
+      tit.appendChild(el('p', 'eyebrow', 'Herramienta'));
+      tit.appendChild(el('h1', null, 'Laboratorio f(x)'));
       tit.appendChild(el('p', 'met-desc', 'Dibuja funciones, evalúalas en una lista de puntos y calcula expresiones.'));
       head.appendChild(tit);
+      if (NS.tema) head.appendChild(NS.tema.boton());
       sec.appendChild(head);
+      NS.glyphs.into(glifo, 'calc', 46);
 
       const cuerpo = el('div', 'met-grid');
       const visual = el('div', 'met-visual');
@@ -118,7 +130,7 @@
       }
       const inF = campo('f(x)', '120*abs(x)', 'prueba sin(x)·e^(−x/5), x^3 − 2x…');
       const inXs = campo('Evaluar en x', '-1 0 1 2 3');
-      const btn = el('button', 'btn btn-run', '▶ EVALUAR');
+      const btn = el('button', 'btn btn-run', 'Evaluar');
       btn.type = 'button';
       formBox.appendChild(btn);
       const inC = campo('Calculadora', '', '3/7, sqrt(2), sin(pi/4)…');
@@ -150,7 +162,6 @@
         plot.autoscale({ xmin: lo - mar, xmax: hi + mar }, prims);
         plot._staticDirty = true;
         plot.render();
-        /* tabla de valores */
         tabla.innerHTML = '';
         let mx = 0, mX = null;
         const grid = el('div', 'lab-grid');

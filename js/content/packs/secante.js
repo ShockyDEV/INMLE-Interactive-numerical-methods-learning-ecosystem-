@@ -13,14 +13,14 @@
   NS.content.theory.secante = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'Newton es magnífico… si tienes $f\'$. ¿Y si no? La secante hace trampa con elegancia: **aproxima la tangente con la recta que pasa por los dos últimos puntos** (una secante). No pide derivada: se la fabrica con lo que ya tiene.',
           'A diferencia de la cuerda, NO conserva el cambio de signo: siempre usa los dos iterados más recientes, estén donde estén. Menos red de seguridad, más velocidad.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           '$x_{n+1} = x_n - f(x_n)\\,\\dfrac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}$',
           'Es la fórmula de Newton con $f\'(x_n)$ sustituida por el cociente incremental $\\frac{f(x_n) - f(x_{n-1})}{x_n - x_{n-1}}$.',
@@ -28,7 +28,7 @@
         ],
       },
       {
-        titulo: 'Convergencia', icono: '📈',
+        titulo: 'Convergencia', icono: '',
         lineas: [
           'Orden $\\varphi = \\frac{1 + \\sqrt{5}}{2} \\approx 1.618$: **el número áureo**. Superlineal — entre la cuerda (1) y Newton (2).',
           'El truco del coste: cada iteración solo gasta **1 evaluación nueva de $f$** (reutiliza la anterior), mientras Newton gasta 2 ($f$ y $f\'$). Midiendo por EVALUACIONES, dos pasos de secante (orden $\\varphi^2 \\approx 2.6$) cuestan lo que uno de Newton (orden 2): la secante suele ganar en eficiencia real.',
@@ -36,7 +36,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -55,7 +55,7 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
           { tipo: 'error', texto: 'Confundirla con la cuerda (regula falsi): la cuerda elige los extremos que ENCIERRAN la raíz; la secante usa SIEMPRE los dos últimos iterados, aunque queden del mismo lado.' },
           { tipo: 'error', texto: 'Creer que mantiene el bracket: no hay garantía — el nuevo iterado puede caer fuera de cualquier intervalo anterior y hasta divergir.' },
@@ -64,7 +64,7 @@
         ],
       },
       {
-        titulo: '¿Cuándo usarla?', icono: '🧭',
+        titulo: '¿Cuándo usarla?', icono: '',
         lineas: [
           'Cuando no tienes $f\'$ (o es carísima) y quieres velocidad: es el caballo de batalla práctico de las raíces.',
           'Con una f traicionera, mejor híbrido: bisección para acorralar + secante para rematar (así funcionan los métodos profesionales tipo Brent).',
@@ -171,7 +171,7 @@
   /* ============ RETOS ============ */
   NS.content.challenges.secante = [
     {
-      id: 'aguila', nombre: 'Ojo de águila', icono: '🦅',
+      id: 'aguila', nombre: 'Ojo de águila', icono: '',
       tipo: 'param-goal',
       desc: 'sin(x) = x/3 tiene tres raíces. Caza la POSITIVA (≈ 2.279) eligiendo bien tus dos puntos de arranque.',
       enunciado: '$f(x) = \\sin(x) - x/3$ tiene tres raíces: $-2.279$, $0$ y $2.279$. **Elige $x_0$ y $x_1$ para que la secante cace la raíz POSITIVA** (tol $10^{-7}$) en las mínimas iteraciones. Ojo: sin bracket que la sujete, la secante se escapa con facilidad hacia la raíz equivocada.',
@@ -182,11 +182,11 @@
       plot: true,
       evalua: function (trace) {
         if (trace.status === 'error') return { puntos: 0, msg: '⛔ La secante se quedó sin pendiente (f(x₀) ≈ f(x₁)).' };
-        if (trace.status === 'diverged') return { puntos: 5, msg: '💥 Se fugó al infinito: esos puntos generaron una secante traicionera.' };
+        if (trace.status === 'diverged') return { puntos: 5, msg: 'Se fugó al infinito: esos puntos generaron una secante traicionera.' };
         if (trace.status !== 'converged') return { puntos: 5, msg: 'No convergió en 40 iteraciones.' };
         const root = trace.result.root;
         if (Math.abs(root - 2.2789) > 0.1) {
-          return { puntos: 15, msg: '🎯 Convergió a ' + NS.num.fmt(root, 4) + '… que no es la raíz positiva pedida. La secante fue a donde la llevaron sus dos primeros pasos.' };
+          return { puntos: 15, msg: 'Convergió a ' + NS.num.fmt(root, 4) + '… que no es la raíz positiva pedida. La secante fue a donde la llevaron sus dos primeros pasos.' };
         }
         const it = trace.result.iters;
         if (it <= 5) return { puntos: 100, msg: '¡Raíz positiva en ' + it + ' iteraciones! Vista de águila.' };
@@ -196,7 +196,7 @@
       },
     },
     {
-      id: 'presupuesto10', nombre: 'Contable de evaluaciones', icono: '🧾',
+      id: 'presupuesto10', nombre: 'Contable de evaluaciones', icono: '',
       tipo: 'quiz-serie',
       desc: 'Newton corre más por iteración… pero ¿quién gana cuando pagas por cada evaluación de f? Haz las cuentas.',
       n: 4,

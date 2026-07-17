@@ -1,8 +1,16 @@
-/* MNO.StepPlayer — reproductor de pasos: ⏮ ⏪ ▶/⏸ ⏩ + barra + velocidad.
+/* MNO.StepPlayer — reproductor de pasos: transporte + barra + velocidad.
    Un único emisor de eventos 'step' sincroniza el canvas, el panel de pasos
    y el gráfico de error: imposible que se desincronicen. */
 (function (NS) {
   'use strict';
+
+  const ICONO = {
+    reset: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.2 2.5v11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M13.5 2.8 6 8l7.5 5.2z" fill="currentColor"/></svg>',
+    prev: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M12 2.6 4.4 8 12 13.4z" fill="currentColor"/></svg>',
+    play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.4 2.4 13.4 8l-9 5.6z" fill="currentColor"/></svg>',
+    pausa: '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.6" y="2.6" width="3" height="10.8" rx="0.8" fill="currentColor"/><rect x="9.4" y="2.6" width="3" height="10.8" rx="0.8" fill="currentColor"/></svg>',
+    next: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.6 2.8 8 8l-5.4 5.2zM8.6 2.8 14 8l-5.4 5.2z" fill="currentColor"/></svg>',
+  };
 
   function StepPlayer(container) {
     this.el = container;
@@ -22,10 +30,10 @@
       const self = this;
       this.el.classList.add('player');
       this.el.innerHTML =
-        '<button class="pl-btn" data-a="reset" title="Al inicio" aria-label="Al inicio">⏮</button>' +
-        '<button class="pl-btn" data-a="prev" title="Paso anterior" aria-label="Anterior">◀</button>' +
-        '<button class="pl-btn pl-play" data-a="toggle" title="Reproducir/Pausa" aria-label="Reproducir">▶</button>' +
-        '<button class="pl-btn" data-a="next" title="Paso siguiente" aria-label="Siguiente">▶︎▶︎</button>' +
+        '<button class="pl-btn" data-a="reset" title="Al inicio" aria-label="Al inicio">' + ICONO.reset + '</button>' +
+        '<button class="pl-btn" data-a="prev" title="Paso anterior" aria-label="Anterior">' + ICONO.prev + '</button>' +
+        '<button class="pl-btn pl-play" data-a="toggle" title="Reproducir/Pausa" aria-label="Reproducir">' + ICONO.play + '</button>' +
+        '<button class="pl-btn" data-a="next" title="Paso siguiente" aria-label="Siguiente">' + ICONO.next + '</button>' +
         '<input class="pl-scrub" type="range" min="0" max="0" value="0" step="1" aria-label="Ir al paso">' +
         '<span class="pl-count">–</span>' +
         '<button class="pl-btn pl-speed" data-a="speed" title="Velocidad">1×</button>';
@@ -75,7 +83,7 @@
       const n = this.trace ? this.trace.steps.length : 0;
       this.count.textContent = n ? (this.i + 1) + '/' + n : '–';
       this.scrub.value = this.i;
-      this.btnPlay.textContent = this.playing ? '⏸' : '▶';
+      this.btnPlay.innerHTML = this.playing ? ICONO.pausa : ICONO.play;
       this.btnPlay.setAttribute('aria-label', this.playing ? 'Pausa' : 'Reproducir');
     },
 

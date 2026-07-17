@@ -26,6 +26,7 @@
       this.cv.width = Math.round(W * dpr);
       this.cv.height = Math.round(H * dpr);
       const c = this.ctx;
+      const P = NS.plotPalette ? NS.plotPalette() : { grid: '#ccc', tick: '#888', crosshair: '#1b49c8' };
       c.setTransform(dpr, 0, 0, dpr, 0, 0);
       c.clearRect(0, 0, W, H);
 
@@ -46,25 +47,25 @@
       const sy = function (l) { return padT + (lmax - l) / (lmax - lmin) * (H - padT - padB); };
 
       /* rejilla horizontal: potencias de 10 */
-      c.font = '10px "Cascadia Code", Consolas, monospace';
+      c.font = '10px "Plex Mono", Consolas, monospace';
       const stepL = Math.max(1, Math.ceil((lmax - lmin) / 6));
       for (let l = lmax; l >= lmin; l -= stepL) {
         const y = sy(l);
-        c.strokeStyle = 'rgba(148,163,184,0.10)';
+        c.strokeStyle = P.grid;
         c.beginPath(); c.moveTo(padL, y); c.lineTo(W - padR, y); c.stroke();
-        c.fillStyle = 'rgba(148,163,184,0.7)';
+        c.fillStyle = P.tick;
         c.fillText('1e' + l, 4, y + 3);
       }
       /* eje x: iteraciones */
       const stepK = Math.max(1, Math.ceil(kmax / 10));
-      c.fillStyle = 'rgba(148,163,184,0.7)';
+      c.fillStyle = P.tick;
       for (let k = 1; k <= kmax; k += stepK) c.fillText(String(k), sx(k) - 3, H - 6);
 
       /* cursor del paso actual */
       if (this.cursorK !== null && this.cursorK >= 1) {
-        c.strokeStyle = 'rgba(0,206,201,0.55)'; c.setLineDash([4, 3]);
+        c.strokeStyle = P.crosshair; c.globalAlpha = 0.55; c.setLineDash([4, 3]);
         c.beginPath(); c.moveTo(sx(this.cursorK), padT); c.lineTo(sx(this.cursorK), H - padB); c.stroke();
-        c.setLineDash([]);
+        c.setLineDash([]); c.globalAlpha = 1;
       }
 
       /* series */
@@ -89,8 +90,8 @@
       this.series.forEach(function (s) {
         c.fillStyle = s.color;
         c.fillRect(lx, padT + 2, 10, 3);
-        c.fillStyle = 'rgba(220,228,236,0.9)';
-        c.font = '11px sans-serif';
+        c.fillStyle = P.tick;
+        c.font = '11px "Plex Sans", sans-serif';
         c.fillText(s.label, lx + 14, padT + 8);
         lx += 14 + c.measureText(s.label).width + 16;
         void self;

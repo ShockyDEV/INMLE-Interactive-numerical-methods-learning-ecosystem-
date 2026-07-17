@@ -58,7 +58,12 @@ const JS = [
   'js/app.js',
 ];
 
-const css = CSS.map((p) => '/* === ' + p + ' === */\n' + lee(p)).join('\n');
+let css = CSS.map((p) => '/* === ' + p + ' === */\n' + lee(p)).join('\n');
+/* incrusta las fuentes woff2 como data URIs (autocontenido total) */
+css = css.replace(/url\('\.\.\/vendor\/fonts\/([a-z0-9-]+\.woff2)'\)/g, (m, nombre) => {
+  const b64 = fs.readFileSync(path.join(raiz, 'vendor/fonts', nombre)).toString('base64');
+  return "url('data:font/woff2;base64," + b64 + "')";
+});
 /* </script> dentro de strings JS rompería el inline; no existe en el código, pero por si acaso */
 const js = JS.map((p) => '/* === ' + p + ' === */\n' + lee(p)).join('\n;\n').replace(/<\/script>/gi, '<\\/script>');
 
@@ -90,7 +95,7 @@ const docCompleto = [
   '<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">',
   '<meta name="description" content="MNO Interactivo — aprende métodos numéricos jugando: visualizaciones animadas, predicción de pasos, retos y carrera de convergencia.">',
   '<meta name="theme-color" content="#0b0e17">',
-  '<link rel="icon" href="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'0.9em\' font-size=\'90\'>🎯</text></svg>">',
+  '<link rel="icon" href="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'><rect width=\'32\' height=\'32\' rx=\'6\' fill=\'%23fbfaf6\'/><path d=\'M5 24 Q 14 4 27 19\' stroke=\'%231b49c8\' fill=\'none\' stroke-width=\'2.6\' stroke-linecap=\'round\'/><line x1=\'7\' y1=\'26\' x2=\'25\' y2=\'8\' stroke=\'%23c23d32\' stroke-width=\'2\' stroke-linecap=\'round\'/><circle cx=\'19.5\' cy=\'13.5\' r=\'2.4\' fill=\'%2314724a\'/></svg>">',
   '</head>',
   '<body>',
   cuerpo,

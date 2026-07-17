@@ -13,14 +13,14 @@
   NS.content.theory.lagrange = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'Tienes $n$ puntos medidos y quieres UNA curva suave que pase EXACTAMENTE por todos. Lagrange la construye con un truco de orfebrería: fabrica $n$ polinomios base $L_i$, cada uno diseñado para valer **1 en su nodo y 0 en todos los demás**.',
           'Con esas piezas, el polinomio final es una suma directa: $P(x) = \\sum f(x_i)\\, L_i(x)$. Cada sumando «iza» la curva hasta su punto sin molestar a los demás nodos — en Explorar puedes ver el APORTE de cada término por separado.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           '$L_i(x) = \\prod_{j \\ne i} \\dfrac{x - x_j}{x_i - x_j}$, $\\qquad P(x) = \\sum_{i} f(x_i)\\, L_i(x)$',
           'El numerador se anula en todos los nodos ajenos; el denominador normaliza para que $L_i(x_i) = 1$.',
@@ -28,16 +28,16 @@
         ],
       },
       {
-        titulo: 'El error', icono: '📈',
+        titulo: 'El error', icono: '',
         lineas: [
           '$f(x) - P(x) = \\dfrac{f^{(n+1)}(\\xi)}{(n+1)!}\\, \\prod_{i}(x - x_i)$ para algún $\\xi$ del intervalo.',
           'Dos palancas: la suavidad de $f$ (sus derivadas altas) y DÓNDE colocas los nodos (el producto $\\prod(x - x_i)$).',
-          'La trampa célebre: con nodos EQUIESPACIADOS ese producto explota cerca de los bordes al crecer $n$ — es el **fenómeno de Runge** (preset 🌊). El antídoto: amontonar nodos en los extremos (nodos de Chebyshev).',
+          'La trampa célebre: con nodos EQUIESPACIADOS ese producto explota cerca de los bordes al crecer $n$ — es el **fenómeno de Runge** (preset «Fenómeno de Runge»). El antídoto: amontonar nodos en los extremos (nodos de Chebyshev).',
           'Y extrapolar (evaluar FUERA del rango de los nodos) es deporte de riesgo: ahí el producto crece sin nada que lo frene.',
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -56,16 +56,16 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
-          { tipo: 'error', texto: 'Creer que «más nodos siempre mejor»: con nodos equiespaciados y funciones tipo $\\frac{1}{1+25x^2}$, subir $n$ AGRAVA las oscilaciones en los bordes (preset «🌊 Fenómeno de Runge»).' },
+          { tipo: 'error', texto: 'Creer que «más nodos siempre mejor»: con nodos equiespaciados y funciones tipo $\\frac{1}{1+25x^2}$, subir $n$ AGRAVA las oscilaciones en los bordes (preset «Fenómeno de Runge»).' },
           { tipo: 'error', texto: 'Confundir interpolar con ajustar: el polinomio pasa por los puntos EXACTOS. Si tus datos tienen ruido, interpolar el ruido es un pésimo plan (para eso está mínimos cuadrados).' },
           { tipo: 'error', texto: 'Repetir un nodo: dos $x_i$ iguales anulan un denominador. Si tienes valor Y derivada en un punto, el método correcto es Hermite.' },
           { tipo: 'error', texto: 'Usar $P$ fuera del intervalo de los datos y fiarse: la fórmula del error no protege la extrapolación.' },
         ],
       },
       {
-        titulo: '¿Cuándo usarlo?', icono: '🧭',
+        titulo: '¿Cuándo usarlo?', icono: '',
         lineas: [
           'Pocos puntos fiables (sin ruido) y grado bajo: perfecto. También como pieza teórica para derivar reglas de integración.',
           '¿Vas a AÑADIR nodos sobre la marcha? → forma de **Newton**. ¿Tienes derivadas? → **Hermite**. ¿Muchos puntos? → splines (grado bajo a trozos, cero Runge).',
@@ -136,7 +136,7 @@
           opciones: ops.map(function (i) { return textos[i]; }),
           correcta: ops.indexOf(0),
           pista: 'Hay un contraejemplo con nombre propio y forma de campana: $\\frac{1}{1+25x^2}$…',
-          solucion: 'Falso. Para $f(x) = \\frac{1}{1+25x^2}$ en $[-1,1]$, subir $n$ con nodos equiespaciados hace crecer el error en los bordes sin límite. La solución no es «más nodos» sino «mejores nodos» (Chebyshev) o splines. Míralo en vivo con el preset 🌊.',
+          solucion: 'Falso. Para $f(x) = \\frac{1}{1+25x^2}$ en $[-1,1]$, subir $n$ con nodos equiespaciados hace crecer el error en los bordes sin límite. La solución no es «más nodos» sino «mejores nodos» (Chebyshev) o splines. Míralo en vivo con el preset «Fenómeno de Runge».',
         };
       },
 
@@ -185,7 +185,7 @@
 
   NS.content.challenges.lagrange = [
     {
-      id: 'runge', nombre: 'Caza al Runge', icono: '🌊',
+      id: 'runge', nombre: 'Caza al Runge', icono: '',
       tipo: 'param-goal',
       desc: 'Tienes 7 nodos para domar a 1/(1+25x²) en [−1,1]. Los equiespaciados fracasan: descubre TÚ dónde colocarlos.',
       enunciado: 'La función $f(x) = \\dfrac{1}{1 + 25x^2}$ parece mansa… pero interpola con 7 nodos equiespaciados en $[-1, 1]$ y verás las olas en los bordes. **Tuyos son los 7 nodos: colócalos donde quieras** (los valores $f(x_i)$ se calculan solos). Se puntúa el ERROR MÁXIMO en todo $[-1,1]$: bájalo todo lo que puedas.',
@@ -199,14 +199,14 @@
         if (trace.status !== 'converged') return { puntos: 0, msg: '⛔ ' + (trace.statusMsg || 'Revisa los nodos (deben ser distintos).') };
         const e = errMax(trace, RUNGE, -1, 1);
         const msg = 'Error máximo en $[-1,1]$: $' + tex(e, 4) + '$.';
-        if (e < 0.30) return { puntos: 100, msg: msg + ' 🏆 **¡Acabas de redescubrir los nodos de CHEBYSHEV!** Amontonarlos hacia los bordes doma el producto $\\prod(x - x_i)$ justo donde muerde. (Equiespaciados: 0.617.)' };
+        if (e < 0.30) return { puntos: 100, msg: msg + ' **¡Acabas de redescubrir los nodos de CHEBYSHEV!** Amontonarlos hacia los bordes doma el producto $\\prod(x - x_i)$ justo donde muerde. (Equiespaciados: 0.617.)' };
         if (e < 0.45) return { puntos: 75, msg: msg + ' Gran mejora sobre los equiespaciados (0.617). Insinúa aún más los bordes…' };
         if (e < 0.6) return { puntos: 50, msg: msg + ' Ya le ganas al reparto uniforme (0.617). Los extremos piden más compañía.' };
         return { puntos: 20, msg: msg + ' Las olas siguen ahí. Idea: ¿dónde hace más daño el producto $\\prod(x - x_i)$… y qué nodos lo frenan?' };
       },
     },
     {
-      id: 'francotirador', nombre: 'Francotirador de curvas', icono: '🎯',
+      id: 'francotirador', nombre: 'Francotirador de curvas', icono: '',
       tipo: 'param-goal',
       desc: 'Caza sin(3x) en [0, 2] con solo 5 nodos: cada posición cuenta.',
       enunciado: 'Objetivo: $f(x) = \\sin(3x)$ en $[0, 2]$ — una onda y media. Tienes **5 nodos** (los valores se miden solos). Minimiza el error máximo en $[0, 2]$.',
@@ -220,7 +220,7 @@
         if (trace.status !== 'converged') return { puntos: 0, msg: '⛔ ' + (trace.statusMsg || 'Revisa los nodos (deben ser distintos).') };
         const e = errMax(trace, SIN3, 0, 2);
         const msg = 'Error máximo en $[0,2]$: $' + tex(e, 4) + '$.';
-        if (e < 0.105) return { puntos: 100, msg: msg + ' 🏆 Disparo perfecto: reparto casi óptimo (Chebyshev ronda 0.096).' };
+        if (e < 0.105) return { puntos: 100, msg: msg + ' Disparo perfecto: reparto casi óptimo (Chebyshev ronda 0.096).' };
         if (e < 0.13) return { puntos: 75, msg: msg + ' Muy fino: por debajo ya solo queda afinar hacia los bordes.' };
         if (e < 0.158) return { puntos: 50, msg: msg + ' Empatas con el reparto uniforme (0.158): se puede bajar más.' };
         return { puntos: 20, msg: msg + ' Peor que los equiespaciados (0.158): alguna zona de la onda quedó sin vigilancia.' };

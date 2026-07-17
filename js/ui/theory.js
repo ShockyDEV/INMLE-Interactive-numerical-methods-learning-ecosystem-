@@ -41,7 +41,7 @@
     const head = document.createElement('div');
     head.className = 'teo-head';
     const h = document.createElement('h2');
-    h.textContent = '📖 ' + method.nombre;
+    h.textContent = method.nombre;
     head.appendChild(h);
     const x = document.createElement('button');
     x.className = 'teo-cerrar';
@@ -57,7 +57,7 @@
       const s = document.createElement('section');
       s.className = 'teo-sec';
       const st = document.createElement('h3');
-      st.textContent = (sec.icono ? sec.icono + ' ' : '') + sec.titulo;
+      st.textContent = sec.titulo;
       s.appendChild(st);
       (sec.lineas || []).forEach(function (linea) {
         if (typeof linea === 'string') {
@@ -66,7 +66,7 @@
           /* dos columnas ventajas/desventajas */
           const cols = document.createElement('div');
           cols.className = 'teo-vs';
-          [['✅ Ventajas', linea.pros], ['⚠️ Limitaciones', linea.contras]].forEach(function (par) {
+          [['Ventajas', linea.pros], ['Limitaciones', linea.contras]].forEach(function (par) {
             const col = document.createElement('div');
             const ct = document.createElement('h4');
             ct.textContent = par[0];
@@ -80,7 +80,7 @@
         } else if (linea.tipo === 'error') {
           const err = document.createElement('div');
           err.className = 'teo-error';
-          NS.math.render(err, '🚫 **Error típico:** ' + linea.texto);
+          NS.math.render(err, '**Error típico.** ' + linea.texto);
           s.appendChild(err);
         }
       });

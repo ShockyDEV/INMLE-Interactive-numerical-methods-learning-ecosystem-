@@ -9,10 +9,10 @@
   NS.modes = NS.modes || {};
 
   const MODOS = [
-    { id: 'explorar', nombre: '🔬 Explorar' },
-    { id: 'practicar', nombre: '🎯 Practicar' },
-    { id: 'reto', nombre: '🏆 Reto' },
-    { id: 'cuaderno', nombre: '📓 Cuaderno' },
+    { id: 'explorar', nombre: 'Explorar' },
+    { id: 'practicar', nombre: 'Practicar' },
+    { id: 'reto', nombre: 'Reto' },
+    { id: 'cuaderno', nombre: 'Cuaderno' },
   ];
 
   let S = null; /* estado de la pantalla montada */
@@ -66,19 +66,25 @@
     const head = el('header', 'met-head');
     const back = el('a', 'btn-back', '←');
     back.href = '#/';
-    back.setAttribute('aria-label', 'Volver al mapa');
+    back.setAttribute('aria-label', 'Volver al índice');
     head.appendChild(back);
+    const glifo = el('span', 'met-glifo');
+    head.appendChild(glifo);
+    NS.glyphs.into(glifo, method.id, 46);
+    const pos = NS.numeroDe(method.id);
     const tit = el('div', 'met-tit');
-    tit.appendChild(el('h1', null, method.icono + ' ' + method.nombre));
+    tit.appendChild(el('p', 'eyebrow', pos.num ? pos.num + ' · ' + pos.familia : ''));
+    tit.appendChild(el('h1', null, method.nombre));
     tit.appendChild(el('p', 'met-desc', method.desc));
     head.appendChild(tit);
-    const bTeo = el('button', 'btn btn-teoria', '📖 <span>Teoría</span>');
+    const bTeo = el('button', 'btn-teoria', 'Teoría');
     bTeo.type = 'button';
     bTeo.addEventListener('click', function () {
       if (NS.theory) NS.theory.open(method.id);
       else NS.ui.toast('La teoría de este método llega en breve.', 'info');
     });
     head.appendChild(bTeo);
+    if (NS.tema) head.appendChild(NS.tema.boton());
     return head;
   }
 
@@ -129,8 +135,8 @@
       });
     } else {
       const card = el('div', 'placeholder-card',
-        '<h2>' + (modo === 'practicar' ? '🎯 Practicar' : '🏆 Reto') + '</h2>' +
-        '<p>Este modo se está terminando de hornear…</p>');
+        '<h2>' + (modo === 'practicar' ? 'Practicar' : 'Reto') + '</h2>' +
+        '<p>Este modo se está terminando de preparar.</p>');
       S.cuerpo.appendChild(card);
     }
   }
@@ -181,7 +187,7 @@
     const resultado = el('div', 'resultado');
     visual.appendChild(resultado);
     const ecBox = el('details', 'ec-box');
-    ecBox.innerHTML = '<summary>📉 Convergencia — log₁₀ del error por iteración</summary>';
+    ecBox.innerHTML = '<summary>Convergencia — log₁₀ del error por iteración</summary>';
     const ecCanvas = document.createElement('canvas');
     ecCanvas.className = 'ec-canvas';
     ecBox.appendChild(ecCanvas);
@@ -190,7 +196,7 @@
     /* lateral: parámetros + pasos */
     const paramsBox = el('div');
     lado.appendChild(paramsBox);
-    const btnRun = el('button', 'btn btn-run', '▶ EJECUTAR');
+    const btnRun = el('button', 'btn btn-run', 'Ejecutar');
     btnRun.type = 'button';
     lado.appendChild(btnRun);
     const stepsBox = el('div');
@@ -362,22 +368,22 @@
     let msg = '';
     const res = trace.result;
     if (trace.status === 'error') {
-      msg = '⛔ ' + (trace.statusMsg || 'No se pudo ejecutar.');
+      msg = '**No se pudo ejecutar.** ' + (trace.statusMsg || '');
     } else if (trace.status === 'diverged') {
-      msg = '💥 **Diverge.** ' + (trace.statusMsg || '');
+      msg = '**Diverge.** ' + (trace.statusMsg || '');
     } else if (trace.status === 'maxIter') {
-      msg = '⏳ No alcanzó la tolerancia en el máximo de iteraciones.';
+      msg = 'Sin convergencia: se agotó el máximo de iteraciones.';
     } else if (res) {
       if (trace.family === 'rootfinding') {
-        msg = '✅ **Raíz ≈ ' + NS.num.fmt(res.root, 8) + '** en ' + res.iters + ' iteraciones';
+        msg = 'Converge: **raíz ≈ ' + NS.num.fmt(res.root, 8) + '** en ' + res.iters + ' iteraciones.';
       } else if (trace.method === 'gauss') {
-        msg = '✅ **X = [' + res.X.map(function (v) { return NS.num.fmt(v, 5); }).join(', ') + ']** · det(A) = ' + NS.num.fmt(res.det, 5);
+        msg = '**X = [' + res.X.map(function (v) { return NS.num.fmt(v, 5); }).join(', ') + ']** · det(A) = ' + NS.num.fmt(res.det, 5);
       } else if (trace.family === 'linear') {
-        msg = '✅ **X ≈ [' + res.X.map(function (v) { return NS.num.fmt(v, 5); }).join(', ') + ']** en ' + res.iters + ' iteraciones';
+        msg = 'Converge: **X ≈ [' + res.X.map(function (v) { return NS.num.fmt(v, 5); }).join(', ') + ']** en ' + res.iters + ' iteraciones.';
       } else if (trace.family === 'interp') {
         msg = res.evals && res.evals.length
-          ? '✅ ' + res.evals.map(function (e) { return '**P(' + NS.num.fmt(e.x) + ') = ' + NS.num.fmt(e.y, 8) + '**'; }).join(' · ')
-          : '✅ Polinomio construido.';
+          ? res.evals.map(function (e) { return '**P(' + NS.num.fmt(e.x) + ') = ' + NS.num.fmt(e.y, 8) + '**'; }).join(' · ')
+          : 'Polinomio construido.';
       }
     }
     NS.math.render(r, msg);
@@ -405,7 +411,7 @@
     const wrap = el('div', 'cuaderno');
     const paramsBox = el('div');
     wrap.appendChild(paramsBox);
-    const btnRun = el('button', 'btn btn-run', '▶ RESOLVER PASO A PASO');
+    const btnRun = el('button', 'btn btn-run', 'Resolver paso a paso');
     btnRun.type = 'button';
     wrap.appendChild(btnRun);
     const resultado = el('div', 'resultado');

@@ -13,14 +13,14 @@
   NS.content.theory.hermite = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'A veces sabes más que el valor de $f$ en cada punto: conoces también su PENDIENTE (velocidad y posición de un móvil, por ejemplo). Hermite interpola **valores Y derivadas**: la curva no solo pasa por tus puntos — sale de ellos con el ángulo correcto.',
           'El truco es de una elegancia criminal: se **repite cada nodo** tantas veces como datos aporte, y donde la tabla de diferencias divididas explotaría ($\\frac{0}{0}$), se enchufa el dato de derivada. La maquinaria de Newton hace el resto sin enterarse.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           'Nodos expandidos: $x_0, x_0, x_1, x_1, \\ldots$ (cada uno repetido según sus datos). La tabla generalizada usa la regla habitual salvo cuando los nodos extremos COINCIDEN: $f[x_i, \\ldots, x_{i+k}] = \\dfrac{f^{(k)}(x_i)}{k!}$ (con nodos iguales, el cociente se sustituye por la derivada).',
           'Convenio de esta app (y del curso): los datos se introducen ya divididos, $f,\\ \\frac{f\'}{1!},\\ \\frac{f\'\'}{2!}, \\ldots$',
@@ -28,7 +28,7 @@
         ],
       },
       {
-        titulo: 'El error', icono: '📈',
+        titulo: 'El error', icono: '',
         lineas: [
           'Análogo a Lagrange pero con los nodos por duplicado: $f(x) - P(x) = \\dfrac{f^{(2n)}(\\xi)}{(2n)!} \\prod_i (x - x_i)^2$.',
           'El cuadrado en el producto cuenta la historia: cerca de cada nodo el error muere DOS veces más rápido — la curva no solo toca, se ADHIERE.',
@@ -36,7 +36,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -55,7 +55,7 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
           { tipo: 'error', texto: 'Aplicar el cociente donde tocaba la regla de derivada (o al revés): la regla especial se usa EXACTAMENTE cuando los nodos extremos de la celda coinciden. En la tabla de la app esas celdas van en rosa.' },
           { tipo: 'error', texto: 'Olvidar el factorial: el dato que entra en la tabla de orden $k$ es $f^{(k)}/k!$. Con segunda derivada, hay que dividir entre 2 (el convenio de la app ya lo asume en la entrada).' },
@@ -64,7 +64,7 @@
         ],
       },
       {
-        titulo: '¿Cuándo usarlo?', icono: '🧭',
+        titulo: '¿Cuándo usarlo?', icono: '',
         lineas: [
           'Cuando tienes pendientes de verdad: cinemática (posición + velocidad), diseño de curvas y animación (keyframes con tangentes), soluciones de EDOs con derivada conocida.',
           'Solo valores → Newton/Lagrange. Muchos puntos → splines cúbicas (que por dentro son… Hermite a trozos).',
@@ -166,7 +166,7 @@
   /* ============ RETOS ============ */
   NS.content.challenges.hermite = [
     {
-      id: 'trampas', nombre: 'Tabla con trampas', icono: '🪤',
+      id: 'trampas', nombre: 'Tabla con trampas', icono: '',
       tipo: 'quiz-serie',
       desc: 'Una tabla generalizada mezcla celdas-cociente y celdas-derivada. Identifica la regla y calcula sin caer en las trampas.',
       n: 5,
@@ -177,7 +177,7 @@
           void U;
           return {
             tipo: 'choice', tema: 'trampas',
-            enunciado: '🪤 Nodos expandidos $\\{0, 0, 1, 1\\}$. La celda $f[x_0, x_1] = f[0, 0]$… ¿qué regla usa?',
+            enunciado: 'Nodos expandidos $\\{0, 0, 1, 1\\}$. La celda $f[x_0, x_1] = f[0, 0]$… ¿qué regla usa?',
             opciones: ops.map(function (i) { return textos[i]; }),
             correcta: ops.indexOf(0),
             pista: 'Mira los nodos EXTREMOS del tramo de la celda: $x_0 = 0$ y $x_1 = 0$.',
@@ -189,7 +189,7 @@
           const tr = NS.engines.hermite({ nodes: [0, 0, 1, 1], values: [f0, d0, f1, d1], evalXs: [] });
           return {
             tipo: 'numeric', tema: 'trampas',
-            enunciado: '🪤 Datos: $f(0) = ' + f0 + '$, $f\'(0) = ' + d0 + '$, $f(1) = ' + f1 + '$, $f\'(1) = ' + d1 + '$. La celda $f[x_1, x_2] = f[0, 1]$ (¡extremos distintos!): calcúlala (3 decimales).',
+            enunciado: 'Datos: $f(0) = ' + f0 + '$, $f\'(0) = ' + d0 + '$, $f(1) = ' + f1 + '$, $f\'(1) = ' + d1 + '$. La celda $f[x_1, x_2] = f[0, 1]$ (¡extremos distintos!): calcúlala (3 decimales).',
             respuesta: tr.result.tabla[1][1], tol: 0.005,
             pista: 'Extremos 0 y 1, distintos → cociente normal: $\\dfrac{f(1) - f(0)}{1 - 0}$. ¡No uses la derivada aquí: esa es la trampa!',
             solucion: '$f[0, 1] = \\dfrac{' + f1 + ' - (' + f0 + ')}{1} = ' + tex(tr.result.tabla[1][1], 4) + '$ — cociente, porque los extremos difieren aunque haya nodos repetidos por medio.',
@@ -201,7 +201,7 @@
           void U;
           return {
             tipo: 'choice', tema: 'trampas',
-            enunciado: '🪤 Misma tabla ($\\{0, 0, 1, 1\\}$): la celda $f[x_2, x_3] = f[1, 1]$… ¿qué regla usa?',
+            enunciado: 'Misma tabla ($\\{0, 0, 1, 1\\}$): la celda $f[x_2, x_3] = f[1, 1]$… ¿qué regla usa?',
             opciones: ops.map(function (i) { return textos[i]; }),
             correcta: ops.indexOf(0),
             pista: '¿Los extremos del tramo son iguales o distintos?',
@@ -213,7 +213,7 @@
           const tr = NS.engines.hermite({ nodes: [0, 0, 1, 1], values: [f0, d0, f1, d1], evalXs: [] });
           return {
             tipo: 'numeric', tema: 'trampas',
-            enunciado: '🪤 Con $f(0) = ' + f0 + '$, $f\'(0) = ' + d0 + '$, $f(1) = ' + f1 + '$, $f\'(1) = ' + d1 + '$: calcula la celda de orden 2, $f[x_0, x_1, x_2] = f[0, 0, 1]$ (3 decimales).',
+            enunciado: 'Con $f(0) = ' + f0 + '$, $f\'(0) = ' + d0 + '$, $f(1) = ' + f1 + '$, $f\'(1) = ' + d1 + '$: calcula la celda de orden 2, $f[x_0, x_1, x_2] = f[0, 0, 1]$ (3 decimales).',
             respuesta: tr.result.tabla[0][2], tol: 0.005,
             pista: 'Extremos 0 y 1 (distintos) → cociente de sus padres: $\\dfrac{f[0,1] - f[0,0]}{1 - 0}$, donde $f[0,0] = f\'(0)$.',
             solucion: '$f[0,0,1] = ' + tex(tr.result.tabla[0][2], 4) + '$ — cociente cuyos PADRES ya mezclan una celda-derivada y una celda-cociente.',
@@ -225,7 +225,7 @@
           void U;
           return {
             tipo: 'choice', tema: 'trampas',
-            enunciado: '🪤 Última trampa: un nodo del que conoces $f$, $f\'$ y $f\'\'$, ¿cuántas veces aparece en la lista de nodos expandidos?',
+            enunciado: 'Última trampa: un nodo del que conoces $f$, $f\'$ y $f\'\'$, ¿cuántas veces aparece en la lista de nodos expandidos?',
             opciones: ops.map(function (i) { return textos[i]; }),
             correcta: ops.indexOf(0),
             pista: 'Repeticiones = datos que aporta el nodo.',
@@ -235,7 +235,7 @@
       ],
     },
     {
-      id: 'tangentes', nombre: 'Ajuste de tangentes', icono: '🎨',
+      id: 'tangentes', nombre: 'Ajuste de tangentes', icono: '',
       tipo: 'param-goal',
       desc: 'Curva de Hermite entre (0,·) y (1,·): elige valores y pendientes para que pase EXACTAMENTE por el blanco en x = 0.5.',
       enunciado: 'Vas a esculpir una cúbica de Hermite con nodos $\\{0, 0, 1, 1\\}$: tus cuatro datos son $f(0),\\ f\'(0),\\ f(1),\\ f\'(1)$ (en ese orden). **Objetivo: que la curva pase por el blanco $P(0.5) = 0.75$.** Con los datos iniciales pasa por $0.625$: ajusta valores y/o pendientes con cabeza (¿qué dato empuja más al centro?).',
@@ -251,7 +251,7 @@
         const y = trace.result.evals[0].y;
         const d = Math.abs(y - 0.75);
         const msg = '$P(0.5) = ' + tex(y, 5) + '$ (blanco: 0.75, desvío ' + tex(d, 4) + ').';
-        if (d < 0.01) return { puntos: 100, msg: msg + ' 🎯 En la diana: escultura de precisión.' };
+        if (d < 0.01) return { puntos: 100, msg: msg + ' En la diana: escultura de precisión.' };
         if (d < 0.05) return { puntos: 75, msg: msg + ' Rozando el blanco: un pelín más de pendiente en 0 o de altura en los extremos.' };
         if (d < 0.15) return { puntos: 45, msg: msg + ' Se acerca. Sugerencia: subir $f\'(0)$ levanta el centro sin mover los extremos.' };
         return { puntos: 15, msg: msg + ' Lejos del blanco. Recuerda: los 4 datos son palancas independientes — juega con las pendientes.' };

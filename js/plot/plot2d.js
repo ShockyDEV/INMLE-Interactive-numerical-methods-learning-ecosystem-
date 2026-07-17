@@ -7,32 +7,10 @@
 (function (NS) {
   'use strict';
 
-  const PAL = {
-    grid: 'rgba(148,163,184,0.07)',
-    axis: 'rgba(148,163,184,0.35)',
-    tick: 'rgba(148,163,184,0.65)',
-    crosshair: 'rgba(0,206,201,0.8)',
-    principal: '#74b9ff',
-    secundaria: '#a29bfe',
-    identidad: 'rgba(148,163,184,0.55)',
-    base: '#a29bfe',
-    interpolante: '#00cec9',
-    tangente: '#fdcb6e',
-    secante: '#fdcb6e',
-    cuerda: '#fdcb6e',
-    intervalo: 'rgba(108,92,231,0.20)',
-    descartado: 'rgba(214,72,72,0.13)',
-    candidato: '#fdcb6e',
-    extremo: '#74b9ff',
-    siguiente: '#00e0b0',
-    raiz: '#00e0b0',
-    guia: 'rgba(148,163,184,0.5)',
-    trayectoria: '#fd79a8',
-    recta1: '#74b9ff',
-    recta2: '#a29bfe',
-    nodo: '#74b9ff',
-    error: '#ff7675',
-  };
+  /* La paleta vive en NS.plotPalette() (tema claro/oscuro); ver ui/tema.js. */
+  function palAct() {
+    return NS.plotPalette ? NS.plotPalette() : { grid: '#ccc', axis: '#888', tick: '#888', crosshair: '#1b49c8', principal: '#1b49c8', pointStroke: '#fff' };
+  }
 
   /* Paso "bonito" 1-2-5 para los ticks. */
   function niceStep(span, target) {
@@ -175,6 +153,7 @@
 
     /* ------------ pintado ------------ */
     _renderStatic: function () {
+      const PAL = palAct();
       const c = this._static.getContext('2d');
       c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
       c.clearRect(0, 0, this.W, this.H);
@@ -182,7 +161,7 @@
       const xs = niceStep(w.xmax - w.xmin, this.W < 480 ? 6 : 9);
       const ysp = niceStep(w.ymax - w.ymin, this.H < 320 ? 5 : 7);
 
-      c.font = '11px "Cascadia Code", Consolas, monospace';
+      c.font = '10.5px "Plex Mono", Consolas, monospace';
       /* rejilla + ticks */
       c.strokeStyle = PAL.grid; c.fillStyle = PAL.tick; c.lineWidth = 1;
       for (let x = Math.ceil(w.xmin / xs) * xs; x <= w.xmax; x += xs) {
@@ -236,6 +215,7 @@
     },
 
     render: function (prims) {
+      const PAL = palAct();
       if (prims) this.setDynamic(prims);
       if (!this.W) return;
       if (this._staticDirty) this._renderStatic();
@@ -253,6 +233,7 @@
     },
 
     _drawPrim: function (c, p) {
+      const PAL = palAct();
       const col = PAL[p.cls] || '#ffffff';
       const alpha = p._alpha !== undefined ? p._alpha : 1;
       if (alpha <= 0.01) return;
@@ -272,7 +253,7 @@
           c.strokeStyle = col; c.lineWidth = 1.2; c.setLineDash([5, 4]);
           c.beginPath(); c.moveTo(sx, 0); c.lineTo(sx, this.H); c.stroke();
           c.setLineDash([]);
-          if (p.label) { c.fillStyle = col; c.font = '11px sans-serif'; c.fillText(p.label, sx + 4, 14); }
+          if (p.label) { c.fillStyle = col; c.font = '11px "Plex Sans", sans-serif'; c.fillText(p.label, sx + 4, 14); }
           break;
         }
         case 'hline': {
@@ -315,7 +296,7 @@
           c.strokeStyle = col; c.lineWidth = 2;
           c.beginPath(); c.moveTo(s1[0], s1[1]); c.lineTo(s2[0], s2[1]); c.stroke();
           if (p.label) {
-            c.fillStyle = col; c.font = '11px sans-serif';
+            c.fillStyle = col; c.font = '11px "Plex Sans", sans-serif';
             c.fillText(p.label, Math.min(this.W - 40, Math.max(4, (s1[0] + s2[0]) / 2)), Math.min(this.H - 6, Math.max(12, (s1[1] + s2[1]) / 2 - 6)));
           }
           break;
@@ -356,7 +337,7 @@
           }
           c.fillStyle = col;
           c.beginPath(); c.arc(s[0], s[1], r, 0, 7); c.fill();
-          c.strokeStyle = 'rgba(10,12,20,0.9)'; c.lineWidth = 1.5;
+          c.strokeStyle = PAL.pointStroke; c.lineWidth = 1.5;
           c.beginPath(); c.arc(s[0], s[1], r, 0, 7); c.stroke();
           if (p.drag) {
             c.strokeStyle = col; c.globalAlpha = alpha * 0.55; c.setLineDash([3, 3]);
@@ -364,14 +345,14 @@
             c.setLineDash([]); c.globalAlpha = alpha;
           }
           if (p.label) {
-            c.fillStyle = col; c.font = 'bold 11.5px sans-serif';
+            c.fillStyle = col; c.font = '600 11px "Plex Sans", sans-serif';
             c.fillText(p.label, s[0] + r + 4, s[1] - r - 2);
           }
           break;
         }
         case 'label': {
           const s = this.toScreen(p.x, p.y);
-          c.fillStyle = col; c.font = '12px sans-serif';
+          c.fillStyle = col; c.font = '12px "Plex Sans", sans-serif';
           c.fillText(p.text, s[0], s[1]);
           break;
         }
@@ -380,13 +361,14 @@
     },
 
     _drawCross: function (c) {
+      const PAL = palAct();
       const { sx, sy } = this.cross;
       c.strokeStyle = PAL.crosshair; c.lineWidth = 1; c.setLineDash([4, 3]);
       c.beginPath(); c.moveTo(sx, 0); c.lineTo(sx, this.H); c.stroke();
       c.beginPath(); c.moveTo(0, sy); c.lineTo(this.W, sy); c.stroke();
       c.setLineDash([]);
       const [wx, wy] = this.toWorld(sx, sy);
-      c.fillStyle = PAL.crosshair; c.font = '11px "Cascadia Code", Consolas, monospace';
+      c.fillStyle = PAL.crosshair; c.font = '10.5px "Plex Mono", Consolas, monospace';
       const txt = '(' + NS.num.fmt(wx, 4) + ', ' + NS.num.fmt(wy, 4) + ')';
       c.fillText(txt, Math.min(sx + 8, this.W - 90), Math.max(14, sy - 8));
     },
@@ -534,5 +516,4 @@
   };
 
   NS.Plot2D = Plot2D;
-  NS.plotPalette = PAL;
 })(globalThis.MNO = globalThis.MNO || {});

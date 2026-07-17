@@ -72,7 +72,7 @@
       const nuevos = NS.achievements.evaluar(state);
       nuevos.forEach(function (a) {
         state.logros[a.id] = ahora();
-        if (NS.ui) NS.ui.toast(a.icono + ' **¡Insignia conseguida!** ' + a.nombre + ' — ' + a.desc, 'logro', 5200);
+        if (NS.ui) NS.ui.toast('**Insignia conseguida: ' + a.nombre + '.** ' + a.desc, 'logro', 5200);
       });
       if (nuevos.length) save();
     }

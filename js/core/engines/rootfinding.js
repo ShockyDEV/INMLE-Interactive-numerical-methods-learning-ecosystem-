@@ -209,7 +209,7 @@
       lastEnd = keepLeft ? 'a' : 'b';
       if (lazyCount >= 3) {
         st.lazyEnd = lastEnd;
-        st.explain.push('⚠ El extremo $' + lastEnd + '$ lleva ' + lazyCount + ' iteraciones sin moverse (típico en funciones convexas): la anchura del intervalo **no** tiende a cero, pero $c$ sí converge.');
+        st.explain.push('El extremo $' + lastEnd + '$ lleva ' + lazyCount + ' iteraciones sin moverse (típico en funciones convexas): la anchura del intervalo **no** tiende a cero, pero $c$ sí converge.');
       }
       void fixedEnd;
       if (Math.abs(fc) < tol) {
@@ -370,7 +370,7 @@
     const bad = X.checkDerivative(f, df, sample);
     if (bad) {
       setup.derivWarn = bad;
-      setup.explain.push('⚠ **Revisa tu derivada**: cerca de $x = ' + tex(bad.x, 4) + '$ tu $f\'$ da $' + tex(bad.obtenido, 6) + '$ pero la derivada numérica de $f$ da $' + tex(bad.esperado, 6) + '$. Con una derivada incorrecta Newton pierde su velocidad cuadrática (o diverge).');
+      setup.explain.push('**Revisa tu derivada**: cerca de $x = ' + tex(bad.x, 4) + '$ tu $f\'$ da $' + tex(bad.obtenido, 6) + '$ pero la derivada numérica de $f$ da $' + tex(bad.esperado, 6) + '$. Con una derivada incorrecta Newton pierde su velocidad cuadrática (o diverge).');
     }
 
     for (let i = 0; i < mx; i++) {

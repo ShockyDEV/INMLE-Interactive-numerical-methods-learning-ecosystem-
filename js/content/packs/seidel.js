@@ -13,14 +13,14 @@
   NS.content.theory.seidel = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'Jacobi tiene un despilfarro incorporado: calcula un $x^{(k+1)}$ flamante… y lo guarda en un cajón hasta la siguiente pasada. Gauss-Seidel lo arregla con puro sentido común: **cada valor recién calculado se usa INMEDIATAMENTE** en las fórmulas siguientes de la misma pasada.',
           'En el plano se ve precioso: Jacobi salta «en diagonal» hacia la solución; Gauss-Seidel baja **en escalera**, moviéndose eje a eje con la información más fresca disponible.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           '$x_i^{(k+1)} = \\dfrac{b_i - \\sum_{j < i} a_{ij}\\, x_j^{(k+1)} - \\sum_{j > i} a_{ij}\\, x_j^{(k)}}{a_{ii}}$',
           'Fíjate en los superíndices: para $j < i$ (los ya recalculados en esta pasada) usa $(k+1)$; para $j > i$ (los pendientes), $(k)$.',
@@ -28,7 +28,7 @@
         ],
       },
       {
-        titulo: 'Convergencia', icono: '📈',
+        titulo: 'Convergencia', icono: '',
         lineas: [
           'Con $A$ estrictamente diagonal dominante: convergencia garantizada desde cualquier $X^{(0)}$ (igual que Jacobi). También converge si $A$ es simétrica definida positiva — un caso enorme en la práctica.',
           'Velocidad: al usar información más fresca, casi siempre adelanta a Jacobi. Regla empírica (exacta en matrices «consistentemente ordenadas»): $\\rho(T_{GS}) = \\rho(T_J)^2$ — **una pasada de Seidel avanza lo que dos de Jacobi**.',
@@ -36,7 +36,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -55,7 +55,7 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
           { tipo: 'error', texto: 'Usar valores VIEJOS para $j < i$: si en la fórmula de $y^{(k+1)}$ metes el $x^{(k)}$ antiguo en vez del $x^{(k+1)}$ recién calculado, estás haciendo Jacobi sin saberlo.' },
           { tipo: 'error', texto: 'Mezclar a medias: usar el $x$ nuevo pero el $z$ viejo cuando ya tenías el nuevo. La regla es mecánica: TODO lo ya recalculado en esta pasada entra con $(k+1)$.' },
@@ -64,7 +64,7 @@
         ],
       },
       {
-        titulo: '¿Cuándo usarlo?', icono: '🧭',
+        titulo: '¿Cuándo usarlo?', icono: '',
         lineas: [
           'La misma cancha que Jacobi (sistemas grandes y dispersos con matriz dominante o SPD) cuando la ejecución es SECUENCIAL: mismo coste por pasada, menos pasadas.',
           'Si tienes paralelismo masivo, Jacobi se reparte mejor. Si necesitas exprimir más, el siguiente escalón es SOR (Seidel con un empujón ω).',
@@ -190,7 +190,7 @@
   /* ============ RETOS ============ */
   NS.content.challenges.seidel = [
     {
-      id: 'dominante', nombre: 'Hazla dominante', icono: '🧩',
+      id: 'dominante', nombre: 'Hazla dominante', icono: '',
       tipo: 'apuesta',
       desc: 'Otras tres ecuaciones barajadas. Encuentra la ordenación con la diagonal al mando antes de correrlas.',
       pregunta: 'Tres ordenaciones de las mismas ecuaciones. Solo una deja los coeficientes grandes en la diagonal. **¿Cuál converge con Gauss-Seidel?**',
@@ -212,7 +212,7 @@
       moraleja: 'El orden B alinea −7, 9 y 8 en la diagonal: dominancia estricta y convergencia garantizada. Antes de rendirte con un sistema, pregúntate si solo está mal sentado.',
     },
     {
-      id: 'duelo', nombre: 'Duelo de gemelos', icono: '👯',
+      id: 'duelo', nombre: 'Duelo de gemelos', icono: '',
       tipo: 'quiz-serie',
       desc: 'Jacobi contra Gauss-Seidel sobre el mismo sistema: predice iteraciones, ganador y el porqué.',
       n: 4,
@@ -222,7 +222,7 @@
           const tj = NS.engines.jacobi({ A: m.A, B: m.B, X0: [0, 0, 0], tol: 1e-4, maxIter: 90 });
           return {
             tipo: 'numeric', tema: 'duelo-gemelos',
-            enunciado: '🥊 Primer asalto. Sistema: ' + pintaSistema(m.A, m.B) + ' (tol $10^{-4}$). ¿Cuántas iteraciones necesita **Jacobi**? (±2)',
+            enunciado: 'Primer asalto. Sistema: ' + pintaSistema(m.A, m.B) + ' (tol $10^{-4}$). ¿Cuántas iteraciones necesita **Jacobi**? (±2)',
             respuesta: tj.result.iters, tol: 2.2,
             pista: 'Dominancia fuerte → converge en menos de 10; floja → 15-30.',
             solucion: 'Jacobi: ' + tj.result.iters + ' iteraciones.',
@@ -233,7 +233,7 @@
           const ts = NS.engines.seidel({ A: m.A, B: m.B, X0: [0, 0, 0], tol: 1e-4, maxIter: 90 });
           return {
             tipo: 'numeric', tema: 'duelo-gemelos',
-            enunciado: '🥊 Segundo asalto. Mismo formato, otro sistema: ' + pintaSistema(m.A, m.B) + '. ¿Iteraciones de **Gauss-Seidel**? (±2)',
+            enunciado: 'Segundo asalto. Mismo formato, otro sistema: ' + pintaSistema(m.A, m.B) + '. ¿Iteraciones de **Gauss-Seidel**? (±2)',
             respuesta: ts.result.iters, tol: 2.2,
             pista: 'Piensa en «lo que tardaría Jacobi… entre dos».',
             solucion: 'Gauss-Seidel: ' + ts.result.iters + ' iteraciones.',
@@ -247,7 +247,7 @@
           const is = ts.status === 'converged' ? ts.result.iters : Infinity;
           return {
             tipo: 'choice', tema: 'duelo-gemelos',
-            enunciado: '🥊 Tercer asalto: ' + pintaSistema(m.A, m.B) + '. Corro AMBOS con tol $10^{-4}$: ¿quién gana?',
+            enunciado: 'Tercer asalto: ' + pintaSistema(m.A, m.B) + '. Corro AMBOS con tol $10^{-4}$: ¿quién gana?',
             opciones: ['Jacobi', 'Gauss-Seidel', 'Empatan'],
             correcta: is < ij ? 1 : (ij < is ? 0 : 2),
             pista: 'En sistemas dominantes «normales», el que recicla información fresca…',
@@ -263,7 +263,7 @@
           ];
           return {
             tipo: 'choice', tema: 'duelo-gemelos',
-            enunciado: '🏆 La pregunta del cinturón: ¿POR QUÉ suele ganar Gauss-Seidel?',
+            enunciado: 'La pregunta del cinturón: ¿POR QUÉ suele ganar Gauss-Seidel?',
             opciones: ops.map(function (i) { return textos[i]; }),
             correcta: ops.indexOf(0),
             pista: 'Ambos hacen las mismas cuentas por pasada…',

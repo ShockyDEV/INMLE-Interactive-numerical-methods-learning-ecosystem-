@@ -13,14 +13,14 @@
   NS.content.theory.newtoni = {
     secciones: [
       {
-        titulo: 'La idea', icono: '💡',
+        titulo: 'La idea', icono: '',
         lineas: [
           'Es EL MISMO polinomio que Lagrange (unicidad obliga), pero construido como una cebolla: **capa a capa**. Empiezas con una constante que clava el primer punto, sumas un término lineal que clava el segundo sin estropear el primero, luego uno cuadrático… ',
           'La joya práctica: si llega un dato NUEVO, no se rehace nada — se añade UNA capa más. Lagrange, en cambio, obliga a demoler y reconstruir todos sus $L_i$.',
         ],
       },
       {
-        titulo: 'Formulación', icono: '🧮',
+        titulo: 'Formulación', icono: '',
         lineas: [
           '$P(x) = c_0 + c_1(x - x_0) + c_2(x - x_0)(x - x_1) + \\cdots$',
           'Los coeficientes son **diferencias divididas**: $c_j = f[x_0, \\ldots, x_j]$, calculadas en tabla triangular con la recurrencia $f[x_i, \\ldots, x_{i+j}] = \\dfrac{f[x_{i+1}, \\ldots, x_{i+j}] - f[x_i, \\ldots, x_{i+j-1}]}{x_{i+j} - x_i}$.',
@@ -29,7 +29,7 @@
         ],
       },
       {
-        titulo: 'El error', icono: '📈',
+        titulo: 'El error', icono: '',
         lineas: [
           'Mismo error que Lagrange (¡es el mismo polinomio!): $f(x) - P(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!} \\prod (x - x_i)$.',
           'Bonus teórico precioso: $f[x_0, \\ldots, x_k] = \\frac{f^{(k)}(\\xi)}{k!}$ para algún $\\xi$. Las diferencias divididas son derivadas de incógnito.',
@@ -37,7 +37,7 @@
         ],
       },
       {
-        titulo: 'Ventajas y limitaciones', icono: '⚖️',
+        titulo: 'Ventajas y limitaciones', icono: '',
         lineas: [
           {
             tipo: 'vs',
@@ -56,7 +56,7 @@
         ],
       },
       {
-        titulo: 'Errores típicos', icono: '🚫',
+        titulo: 'Errores típicos', icono: '',
         lineas: [
           { tipo: 'error', texto: 'Denominador equivocado: en $f[x_i, \\ldots, x_{i+j}]$ se dividen los nodos EXTREMOS ($x_{i+j} - x_i$), no los vecinos. Es EL fallo del parcial.' },
           { tipo: 'error', texto: 'Desordenar la tabla: cada celda nace de sus DOS padres contiguos de la columna anterior. Si te saltas una fila, el veneno se propaga a toda la diagonal.' },
@@ -65,7 +65,7 @@
         ],
       },
       {
-        titulo: '¿Cuándo usarlo?', icono: '🧭',
+        titulo: '¿Cuándo usarlo?', icono: '',
         lineas: [
           'Siempre que interpoles a mano o por partes: es la forma de trabajo estándar (Lagrange queda para la teoría).',
           'Datos que llegan en tandas → Newton sin dudar. Derivadas disponibles → su prima Hermite. Muchísimos puntos → splines.',
@@ -164,7 +164,7 @@
   /* ============ RETOS ============ */
   NS.content.challenges.newtoni = [
     {
-      id: 'constructor', nombre: 'Constructor de tablas', icono: '🧱',
+      id: 'constructor', nombre: 'Constructor de tablas', icono: '',
       tipo: 'quiz-serie',
       desc: 'Levanta una tabla de diferencias divididas celda a celda, con inspección de obra en cada planta.',
       n: 5,
@@ -174,7 +174,7 @@
           const tr = NS.engines.newtoni({ nodes: d.nodes, values: d.values, evalXs: [] });
           return {
             tipo: 'numeric', tema: 'constructor',
-            enunciado: '🧱 Obra: nodos $\\{' + d.nodes.join(', ') + '\\}$, valores $\\{' + d.values.join(', ') + '\\}$. Primera planta: $f[x_0, x_1]$ (3 decimales).',
+            enunciado: 'Obra: nodos $\\{' + d.nodes.join(', ') + '\\}$, valores $\\{' + d.values.join(', ') + '\\}$. Primera planta: $f[x_0, x_1]$ (3 decimales).',
             respuesta: tr.result.tabla[0][1], tol: 0.005,
             pista: '$\\dfrac{f(x_1) - f(x_0)}{x_1 - x_0}$.',
             solucion: '$f[x_0,x_1] = ' + tex(tr.result.tabla[0][1], 5) + '$.',
@@ -185,7 +185,7 @@
           const tr = NS.engines.newtoni({ nodes: d.nodes, values: d.values, evalXs: [] });
           return {
             tipo: 'numeric', tema: 'constructor',
-            enunciado: '🧱 Nodos $\\{' + d.nodes.join(', ') + '\\}$, valores $\\{' + d.values.join(', ') + '\\}$. Calcula $f[x_1, x_2]$ (3 decimales).',
+            enunciado: 'Nodos $\\{' + d.nodes.join(', ') + '\\}$, valores $\\{' + d.values.join(', ') + '\\}$. Calcula $f[x_1, x_2]$ (3 decimales).',
             respuesta: tr.result.tabla[1][1], tol: 0.005,
             pista: '$\\dfrac{f(x_2) - f(x_1)}{x_2 - x_1}$ — fila de en medio, primera columna de diferencias.',
             solucion: '$f[x_1,x_2] = ' + tex(tr.result.tabla[1][1], 5) + '$.',
@@ -196,7 +196,7 @@
           const tr = NS.engines.newtoni({ nodes: d.nodes, values: d.values, evalXs: [] });
           return {
             tipo: 'numeric', tema: 'constructor',
-            enunciado: '🧱 Nodos $\\{' + d.nodes.join(', ') + '\\}$, valores $\\{' + d.values.join(', ') + '\\}$. Segunda planta: $f[x_0, x_1, x_2]$ (3 decimales).',
+            enunciado: 'Nodos $\\{' + d.nodes.join(', ') + '\\}$, valores $\\{' + d.values.join(', ') + '\\}$. Segunda planta: $f[x_0, x_1, x_2]$ (3 decimales).',
             respuesta: tr.result.tabla[0][2], tol: 0.005,
             pista: 'Sus padres son $f[x_0,x_1]$ y $f[x_1,x_2]$; denominador $x_2 - x_0$.',
             solucion: '$f[x_0,x_1,x_2] = ' + tex(tr.result.tabla[0][2], 5) + '$.',
@@ -207,7 +207,7 @@
           const tr = NS.engines.newtoni({ nodes: d.nodes, values: d.values, evalXs: [] });
           return {
             tipo: 'numeric', tema: 'constructor',
-            enunciado: '🧱 Nodos $\\{' + d.nodes.join(', ') + '\\}$, valores $\\{' + d.values.join(', ') + '\\}$. La cúspide: $c_3 = f[x_0, x_1, x_2, x_3]$ (3 decimales).',
+            enunciado: 'Nodos $\\{' + d.nodes.join(', ') + '\\}$, valores $\\{' + d.values.join(', ') + '\\}$. La cúspide: $c_3 = f[x_0, x_1, x_2, x_3]$ (3 decimales).',
             respuesta: tr.result.tabla[0][3], tol: 0.005,
             pista: 'Necesitas las dos celdas de orden 2 y dividir por $x_3 - x_0$.',
             solucion: '$c_3 = ' + tex(tr.result.tabla[0][3], 5) + '$.',
@@ -219,7 +219,7 @@
           const tr = NS.engines.newtoni({ nodes: d.nodes, values: d.values, evalXs: [xp] });
           return {
             tipo: 'numeric', tema: 'constructor',
-            enunciado: '🧱 Entrega de llaves: con nodos $\\{' + d.nodes.join(', ') + '\\}$ y valores $\\{' + d.values.join(', ') + '\\}$, evalúa $P(' + xp + ')$ (2 decimales).',
+            enunciado: 'Entrega de llaves: con nodos $\\{' + d.nodes.join(', ') + '\\}$ y valores $\\{' + d.values.join(', ') + '\\}$, evalúa $P(' + xp + ')$ (2 decimales).',
             respuesta: tr.result.evals[0].y, tol: 0.02,
             pista: 'Anida: $c_0 + (x - x_0)(c_1 + (x - x_1)(c_2 + (x - x_2) c_3))$. O construye la tabla en el modo Cuaderno.',
             solucion: '$P(' + xp + ') = ' + tex(tr.result.evals[0].y, 5) + '$.',
@@ -228,7 +228,7 @@
       ],
     },
     {
-      id: 'gradomisterioso', nombre: 'Grado misterioso', icono: '🕵️‍♀️',
+      id: 'gradomisterioso', nombre: 'Grado misterioso', icono: '♀',
       tipo: 'quiz-serie',
       desc: 'Te doy puntos muestreados de un polinomio secreto: la tabla delata su grado (una columna se anula).',
       n: 3,
@@ -245,7 +245,7 @@
           const values = nodes.map(poly);
           return {
             tipo: 'choice', tema: 'deteccion-grado',
-            enunciado: '🕵️‍♀️ Polinomio secreto muestreado en $x = 0..5$: valores $\\{' + values.join(', ') + '\\}$. Montando la tabla de diferencias divididas… **¿de qué grado es?**',
+            enunciado: '♀Polinomio secreto muestreado en $x = 0..5$: valores $\\{' + values.join(', ') + '\\}$. Montando la tabla de diferencias divididas… **¿de qué grado es?**',
             opciones: ['Grado 1', 'Grado 2', 'Grado 3'],
             correcta: g - 1,
             pista: 'La columna de orden $g+1$ se hace EXACTAMENTE cero. Mira a partir de qué orden las diferencias dejan de cambiar (constantes → siguiente columna nula).',
@@ -258,7 +258,7 @@
           const values = nodes.map(function (x) { return c1 * x + c0; });
           return {
             tipo: 'numeric', tema: 'deteccion-grado',
-            enunciado: '🕵️‍♀️ Datos de una recta secreta: $\\{' + values.join(', ') + '\\}$ en $x = 0..4$. TODAS las diferencias de orden 1 valen lo mismo: ¿cuánto?',
+            enunciado: '♀Datos de una recta secreta: $\\{' + values.join(', ') + '\\}$ en $x = 0..4$. TODAS las diferencias de orden 1 valen lo mismo: ¿cuánto?',
             respuesta: c1, tol: 0.01,
             pista: 'En una recta, $f[x_i, x_{i+1}]$ es su pendiente, siempre la misma.',
             solucion: 'Valen $' + c1 + '$ (la pendiente). Por eso la columna de orden 2 sale cero: diferencias de constantes.',
@@ -273,7 +273,7 @@
           ];
           return {
             tipo: 'choice', tema: 'deteccion-grado',
-            enunciado: '🕵️‍♀️ Pregunta de detective consumado: si al construir una tabla de diferencias divididas ves que la columna de orden 4 sale toda ceros, ¿qué significa?',
+            enunciado: '♀Pregunta de detective consumado: si al construir una tabla de diferencias divididas ves que la columna de orden 4 sale toda ceros, ¿qué significa?',
             opciones: ops.map(function (i) { return textos[i]; }),
             correcta: ops.indexOf(0),
             pista: '$f[\\ldots]$ de orden $k$ ∼ derivada $k$-ésima / $k!$…',
