@@ -1,6 +1,47 @@
 /* INMLE — componentes: reproductor-instrumento, pasos numerados como
    ecuaciones de libro, matrices, teoría-página, quiz, retos, dashboard. */
 
+/* ---------- formulario: las fórmulas del método, siempre a mano ---------- */
+.formulario {
+  display: flex;
+  gap: 6px 20px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  background: var(--acento-suave);
+  border: 1px solid var(--linea);
+  border-left: 3px solid var(--acento);
+  border-radius: 0 var(--radio) var(--radio) 0;
+  padding: 10px 16px 11px;
+  margin: -6px 0 16px;
+  overflow-x: auto;
+}
+.formulario-tit {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--acento);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  flex-shrink: 0;
+}
+.formulario-items {
+  display: flex;
+  gap: 4px 26px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+.formulario-item {
+  font-size: 13.5px;
+  color: var(--tinta);
+  font-family: var(--serif);
+  white-space: nowrap;
+}
+.formulario-item .katex { font-size: 1.06em; }
+@media (max-width: 640px) {
+  .formulario-item { white-space: normal; }
+}
+
 /* ---------- reproductor de pasos: barra de instrumento ---------- */
 .player {
   display: flex;

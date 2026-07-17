@@ -96,7 +96,7 @@
         const span = tr.plotHints ? (tr.plotHints.xmax - tr.plotHints.xmin) : 4;
         return {
           tipo: 'point-x', tema: 'geometria-tangente',
-          enunciado: 'Con $f(x) = ' + c.f.replace(/\*/g, '') + '$ y $x_0 = ' + c.x0 + '$ (punto naranja): **¿dónde cortará al eje x la tangente en $x_0$?** Haz clic sobre el eje.',
+          enunciado: 'Con $f(x) = ' + c.f.replace(/\*/g, '') + '$ y $x_0 = ' + c.x0 + '$ (punto rojo): **¿dónde cortará al eje x la tangente en $x_0$?** Haz clic sobre el eje.',
           traza: tr, hastaPaso: 0,
           puntoX: it.state.xn, tolX: Math.max(0.1, span * 0.06),
           pista: 'La pendiente en el punto es $f\'(' + c.x0 + ') = ' + tex(tr.fns.df(c.x0), 4) + '$: baja desde $(x_0, f(x_0))$ siguiendo esa pendiente hasta cruzar el eje.',

@@ -20,6 +20,11 @@
       id: 'biseccion', nombre: 'Bisección', icono: '', familia: 'raices',
       engine: 'biseccion', vista: 'plot', orden: 1,
       desc: 'Parte el intervalo por la mitad una y otra vez. Lenta pero infalible.',
+      formulas: [
+        '$c = \\dfrac{a + b}{2}$',
+        'si $f(a) \\cdot f(c) < 0$: sigue en $[a, c]$; si no, en $[c, b]$',
+        'iteraciones: $n \\ge \\log_2 \\dfrac{b - a}{\\varepsilon}$',
+      ],
       params: [
         { id: 'f', tipo: 'expr', label: 'f(x)', def: 'x^2 - 2', hint: 'sin cos tan exp log sqrt abs… — prueba 2x, -x^2, e^x' },
         { id: 'a', tipo: 'num', label: 'a', def: '0' },
@@ -40,6 +45,10 @@
       id: 'cuerda', nombre: 'Cuerda (regula falsi)', icono: '', familia: 'raices',
       engine: 'cuerda', vista: 'plot', orden: 2,
       desc: 'Como bisección, pero corta por la cuerda en vez del punto medio.',
+      formulas: [
+        '$c = a - f(a)\\,\\dfrac{b - a}{f(b) - f(a)}$',
+        'parada: $|f(c)| < \\varepsilon$ (la longitud del intervalo puede NO tender a 0)',
+      ],
       params: [
         { id: 'f', tipo: 'expr', label: 'f(x)', def: 'x^2 - 4' },
         { id: 'a', tipo: 'num', label: 'a', def: '0' },
@@ -59,6 +68,11 @@
       id: 'puntofijo', nombre: 'Punto Fijo', icono: '', familia: 'raices',
       engine: 'puntofijo', vista: 'cobweb', orden: 3,
       desc: 'Itera x = g(x) y observa la telaraña: converge si |g′| < 1.',
+      formulas: [
+        '$x_{n+1} = g(x_n)$',
+        'converge si $|g\'(\\beta)| < 1$ (y esa es su velocidad)',
+        'parada: $|x_{n+1} - x_n| < \\varepsilon$',
+      ],
       params: [
         { id: 'g', tipo: 'expr', label: 'g(x)', def: 'cos(x)', hint: 'g tal que g(β) = β' },
         { id: 'x0', tipo: 'num', label: 'x₀', def: '0' },
@@ -79,6 +93,10 @@
       id: 'newton', nombre: 'Newton–Raphson', icono: '', familia: 'raices',
       engine: 'newton', vista: 'plot', orden: 4,
       desc: 'Sigue la tangente. Convergencia cuadrática: los decimales se duplican.',
+      formulas: [
+        '$x_{n+1} = x_n - \\dfrac{f(x_n)}{f\'(x_n)}$',
+        'error: $|e_{n+1}| \\approx C\\, e_n^2$ (cuadrático en raíz simple)',
+      ],
       params: [
         { id: 'f', tipo: 'expr', label: 'f(x)', def: 'exp(x) + x' },
         { id: 'df', tipo: 'expr', label: "f'(x)", def: 'exp(x) + 1', hint: 'la app avisa si no coincide con la derivada numérica' },
@@ -89,7 +107,7 @@
       drag: { px: 'x0' },
       presets: [
         { nombre: 'eˣ + x (clásico)', v: { f: 'exp(x) + x', df: 'exp(x) + 1', x0: '-1', tol: '0.0001' } },
-        { nombre: '√2 en 5 pasos', v: { f: 'x^2 - 2', df: '2x', x0: '1', tol: '0.0000000001' }, nota: 'Mira cómo se duplican los dígitos verdes.' },
+        { nombre: '√2 en 5 pasos', v: { f: 'x^2 - 2', df: '2x', x0: '1', tol: '0.0000000001' }, nota: 'Mira |Δx| en cada paso: los decimales correctos se duplican.' },
         { nombre: 'Ciclo infinito', v: { f: 'x^3 - 2x + 2', df: '3x^2 - 2', x0: '0', tol: '0.0001' }, nota: 'x salta 0 → 1 → 0 → 1… para siempre.' },
         { nombre: 'Tangente casi horizontal', v: { f: 'x^3 - 2x + 2', df: '3x^2 - 2', x0: '0.8', tol: '0.0001' }, nota: 'Cerca del mínimo local la tangente dispara lejos.' },
         { nombre: 'atan(x) diverge', v: { f: 'atan(x)', df: '1/(1 + x^2)', x0: '1.5', tol: '0.0001' }, nota: 'Con x₀ grande, cada tangente cae más lejos.' },
@@ -101,6 +119,10 @@
       id: 'secante', nombre: 'Secante', icono: '', familia: 'raices',
       engine: 'secante', vista: 'plot', orden: 5,
       desc: 'Newton sin derivada: aproxima la tangente con los dos últimos puntos.',
+      formulas: [
+        '$x_{n+1} = x_n - f(x_n)\\,\\dfrac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}$',
+        'orden $\\varphi = \\tfrac{1+\\sqrt{5}}{2} \\approx 1.618$, con 1 evaluación por iteración',
+      ],
       params: [
         { id: 'f', tipo: 'expr', label: 'f(x)', def: 'exp(x) + x' },
         { id: 'x0', tipo: 'num', label: 'x₀', def: '-1' },
@@ -120,6 +142,11 @@
       id: 'gauss', nombre: 'Eliminación Gaussiana', icono: '', familia: 'sistemas',
       engine: 'gauss', vista: 'matrix', orden: 6,
       desc: 'Triangula el sistema con operaciones de fila. De regalo: L, U y det(A).',
+      formulas: [
+        '$m_{ik} = \\dfrac{a_{ik}}{a_{kk}}$, luego $F_i \\to F_i - m_{ik}\\, F_k$',
+        'regresiva: $x_i = \\dfrac{b_i - \\sum_{j > i} a_{ij} x_j}{a_{ii}}$',
+        '$\\det A = u_{11} u_{22} \\cdots u_{nn}$ (por cada intercambio de filas, cambia el signo)',
+      ],
       params: [
         { id: 'A', tipo: 'matrix', label: 'Matriz A', def: '-2 -2 2\n2 -4 3\n-1 2 -3', hint: 'filas separadas por Enter' },
         { id: 'B', tipo: 'nums', label: 'Vector B', def: '10 2 1' },
@@ -136,6 +163,10 @@
       id: 'jacobi', nombre: 'Jacobi', icono: '', familia: 'sistemas',
       engine: 'jacobi', vista: 'linear-iter', orden: 7,
       desc: 'Iterativo: todas las variables saltan a la vez usando el vector anterior.',
+      formulas: [
+        '$x_i^{(k+1)} = \\dfrac{b_i - \\sum_{j \\ne i} a_{ij}\\, x_j^{(k)}}{a_{ii}}$',
+        'garantía: $|a_{ii}| > \\sum_{j \\ne i} |a_{ij}|$ en cada fila (diagonal dominante)',
+      ],
       params: [
         { id: 'A', tipo: 'matrix', label: 'Matriz A', def: '-4 1 -1\n-1 -5 1\n2 -2 5' },
         { id: 'B', tipo: 'nums', label: 'Vector B', def: '2 -5 10' },
@@ -154,6 +185,10 @@
       id: 'seidel', nombre: 'Gauss–Seidel', icono: '', familia: 'sistemas',
       engine: 'seidel', vista: 'linear-iter', orden: 8,
       desc: 'Como Jacobi pero usa cada valor recién calculado: la escalera es más rápida.',
+      formulas: [
+        '$x_i^{(k+1)} = \\dfrac{b_i - \\sum_{j < i} a_{ij}\\, x_j^{(k+1)} - \\sum_{j > i} a_{ij}\\, x_j^{(k)}}{a_{ii}}$',
+        'para $j < i$ usa los valores YA recalculados en esta pasada',
+      ],
       params: [
         { id: 'A', tipo: 'matrix', label: 'Matriz A', def: '-4 1 -1\n-1 -5 1\n2 -2 5' },
         { id: 'B', tipo: 'nums', label: 'Vector B', def: '2 -5 10' },
@@ -172,6 +207,10 @@
       id: 'lagrange', nombre: 'Lagrange', icono: '', familia: 'interpolacion',
       engine: 'lagrange', vista: 'interp', orden: 9,
       desc: 'Un polinomio que pasa exactamente por todos tus puntos.',
+      formulas: [
+        '$L_i(x) = \\prod_{j \\ne i} \\dfrac{x - x_j}{x_i - x_j}$',
+        '$P(x) = \\sum_i f(x_i)\\, L_i(x)$, grado $\\le n - 1$',
+      ],
       params: [
         { id: 'nodes', tipo: 'nums', label: 'Nodos x', def: '-1 1 2 3' },
         { id: 'values', tipo: 'nums', label: 'f(x)', def: '-1 1 32 243' },
@@ -189,6 +228,10 @@
       id: 'newtoni', nombre: 'Newton (interp.)', icono: '', familia: 'interpolacion',
       engine: 'newtoni', vista: 'interp', orden: 10,
       desc: 'El mismo polinomio, construido por capas con diferencias divididas.',
+      formulas: [
+        '$P(x) = c_0 + c_1(x - x_0) + c_2(x - x_0)(x - x_1) + \\cdots$, con $c_j = f[x_0, \\ldots, x_j]$',
+        '$f[x_i, \\ldots, x_{i+j}] = \\dfrac{f[x_{i+1}, \\ldots] - f[x_i, \\ldots]}{x_{i+j} - x_i}$',
+      ],
       params: [
         { id: 'nodes', tipo: 'nums', label: 'Nodos x', def: '-1 1 2 3' },
         { id: 'values', tipo: 'nums', label: 'f(x)', def: '-1 1 32 243' },
@@ -206,6 +249,10 @@
       id: 'hermite', nombre: 'Hermite', icono: '', familia: 'interpolacion',
       engine: 'hermite', vista: 'interp', orden: 11,
       desc: 'Interpola valores Y derivadas: la curva abraza a la función.',
+      formulas: [
+        'misma tabla que Newton, pero si los nodos extremos coinciden: $f[x_i, \\ldots, x_{i+k}] = \\dfrac{f^{(k)}(x_i)}{k!}$',
+        'con $n$ nodos dobles (valor + derivada): grado $\\le 2n - 1$',
+      ],
       params: [
         { id: 'nodes', tipo: 'nums', label: 'Nodos expandidos', def: '1 1 1 1 4', hint: 'repite cada nodo según sus datos: f, f′, f″/2!…' },
         { id: 'values', tipo: 'nums', label: 'Datos (f, f′/1!, f″/2!…)', def: '0 1 -0.5 0.3333 1.3863' },

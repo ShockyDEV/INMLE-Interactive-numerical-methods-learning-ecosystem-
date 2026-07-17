@@ -92,7 +92,7 @@
           opciones: ops.map(function (i) { return textos[i]; }),
           correcta: ops.indexOf(0),
           pista: '¿Qué pasaría con el denominador $x_{i+k} - x_i$ si esos dos nodos son el mismo?',
-          solucion: 'Cuando $x_{i+k} = x_i$ el cociente es $\\frac{0}{0}$… y el límite de la diferencia dividida es precisamente $\\frac{f^{(k)}(x_i)}{k!}$: ahí entra el dato de derivada (celdas rosas en Explorar).',
+          solucion: 'Cuando $x_{i+k} = x_i$ el cociente es $\\frac{0}{0}$… y el límite de la diferencia dividida es precisamente $\\frac{f^{(k)}(x_i)}{k!}$: ahí entra el dato de derivada (celdas destacadas en rojo en Explorar).',
         };
       },
 
@@ -138,7 +138,7 @@
           traza: null,
           respuesta: tr.result.tabla[0][1], tol: 0.005,
           pista: 'Los nodos coinciden (0 y 0): no hay cociente que valga — entra el dato directamente.',
-          solucion: '$f[0, 0] = f\'(0) = ' + tex(tr.result.tabla[0][1], 4) + '$: celda de regla especial (rosa en la app).',
+          solucion: '$f[0, 0] = f\'(0) = ' + tex(tr.result.tabla[0][1], 4) + '$: celda de regla especial (destacada en rojo en la app).',
         };
       },
 

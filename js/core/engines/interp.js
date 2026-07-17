@@ -38,6 +38,15 @@
           }
         }
       }
+    } else {
+      /* Hermite: cada nodo repetido debe ir CONTIGUO (agrupado con sus derivadas) */
+      for (let i = 1; i < nd.length; i++) {
+        if (nd[i] !== nd[i - 1] && nd.slice(0, i).indexOf(nd[i]) >= 0) {
+          T.step(tr, { type: 'fail', title: 'Nodos mal agrupados', explain: ['El nodo $' + tex(nd[i]) + '$ aparece repetido en posiciones NO contiguas. En Hermite cada nodo debe ir agrupado con sus datos: p. ej. $[0,\\ 0,\\ 1,\\ 1]$, no $[0,\\ 1,\\ 0,\\ 1]$.'] });
+          T.finish(tr, 'error', null, 'Nodos repetidos no contiguos');
+          return false;
+        }
+      }
     }
     return true;
   }

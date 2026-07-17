@@ -48,6 +48,7 @@
       const sec = el('section', 'pantalla met');
       sec.appendChild(buildHeader(method));
       sec.appendChild(buildModos(method, modo));
+      if (method.formulas && method.formulas.length) sec.appendChild(buildFormulario(method));
       const cuerpo = el('div', 'met-cuerpo');
       sec.appendChild(cuerpo);
       root.appendChild(sec);
@@ -86,6 +87,19 @@
     head.appendChild(bTeo);
     if (NS.tema) head.appendChild(NS.tema.boton());
     return head;
+  }
+
+  /* Franja de fórmulas de referencia: siempre a la vista, sin abrir Teoría. */
+  function buildFormulario(method) {
+    const caja = el('aside', 'formulario');
+    caja.setAttribute('aria-label', 'Fórmulas del método');
+    caja.appendChild(el('span', 'formulario-tit', 'Fórmulas'));
+    const lista = el('div', 'formulario-items');
+    method.formulas.forEach(function (f) {
+      lista.appendChild(NS.math.line(f, 'formulario-item'));
+    });
+    caja.appendChild(lista);
+    return caja;
   }
 
   function buildModos(method, activo) {

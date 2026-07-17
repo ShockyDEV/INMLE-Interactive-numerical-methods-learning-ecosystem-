@@ -16,7 +16,7 @@
     },
     {
       id: 'cazador-de-raices', nombre: 'Cazador de Raíces',
-      desc: 'Encuentra una raíz con los 5 métodos de la Isla de las Raíces.',
+      desc: 'Encuentra una raíz con los 5 métodos de la unidad de Raíces.',
       cond: function (s) {
         return ['biseccion', 'cuerda', 'puntofijo', 'newton', 'secante'].every(function (k) {
           return met(s, k) && met(s, k).ejecuciones >= 1;

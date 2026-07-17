@@ -135,6 +135,15 @@
     }
 
     /* Sustitución regresiva. */
+    if (Math.abs(M[n - 1][n - 1]) < 1e-15) {
+      T.step(tr, {
+        type: 'fail', title: 'Sistema singular',
+        M: N.clone2D(M), aug: true,
+        highlights: [{ r: n - 1, c: n - 1, cls: 'error' }],
+        explain: ['El último pivote es cero: $\\det(A) = 0$. El sistema no tiene solución única (o es incompatible o tiene infinitas soluciones).'],
+      });
+      return T.finish(tr, 'error', null, 'Sistema singular: det(A) = 0');
+    }
     const Xs = new Array(n).fill(0);
     for (let i = n - 1; i >= 0; i--) {
       let sum = M[i][n];

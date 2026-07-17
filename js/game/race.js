@@ -204,10 +204,16 @@
     S.zona.appendChild(caja);
     S.ec = new NS.ErrorChart(ecCanvas);
 
-    /* animación por ticks de iteración */
-    let k = 0;
+    /* animación guiada por reloj de pared: si el navegador acelera los
+       temporizadores (pestaña en segundo plano), al volver la carrera está
+       donde debe, no congelada */
+    const t0 = Date.now();
+    const MS_POR_ITER = 520;
+    let kPintado = 0;
     S.timer = setInterval(function () {
-      k++;
+      const k = Math.min(maxK + 1, 1 + Math.floor((Date.now() - t0) / MS_POR_ITER));
+      if (k === kPintado) return;
+      kPintado = k;
       S.ec.setSeries(series.map(function (s) {
         return { label: s.label, color: s.color, data: s.data.slice(0, k) };
       }));
@@ -233,7 +239,7 @@
         S.timer = 0;
         setTimeout(function () { podio(series, apuesta, conf); }, 600);
       }
-    }, 520);
+    }, 200);
   }
 
   /* ---------- 3 · podio ---------- */
